@@ -11,25 +11,20 @@ Nutrition AI enables users to:
 * Instantly receive tailored nutrition advice such as meal plans and grocery lists based on their input.
 * Use 100% of the app for no cost.
 # Meet the Team
-* Nathan Wick
-    * Role: SCRUM Master, Machine Learning Engineer, and Full-Stack Software Developer
-    * LinkedIn: [nathanwick](https://www.linkedin.com/in/nathanwick/)
+### Nathan Wick
+Socials: [LinkedIn](https://www.linkedin.com/in/nathanwick/), [GitHub](https://github.com/nathan-wick)
 
-* Rena Patel
-    * Role: Data Management Specialist and User Interface/Experience Designer
-    * LinkedIn: [rena-patel-7585251b8](https://www.linkedin.com/in/rena-patel-7585251b8/)
+### Rena Patel
+Socials: [LinkedIn](https://www.linkedin.com/in/rena-patel-7585251b8/), [GitHub](https://github.com/patel5r4)
 
-* Modupeoluwa Daniel
-    * Rola: Full-Stack Software Developer with Front-End Focus
-    * LinkedIn: [modupe-daniel](https://www.linkedin.com/in/modupe-daniel/)
+### Modupeoluwa Daniel
+Socials: [LinkedIn](https://www.linkedin.com/in/modupe-daniel/), [GitHub](https://github.com/ModupeD)
 
-* Tara Poudyel
-    * Role: Full-Stack Software Developer with Back-End Focus
-    * LinkedIn: [tara-poudyel](https://www.linkedin.com/in/tara-poudyel/)
+### Tara Poudyel
+Socials: [LinkedIn](https://www.linkedin.com/in/tara-poudyel/), [GitHub](https://github.com/t820)
 
-* Emilee Schweitzer
-    * Role: Application Security Administrator and Quality Assurance Engineer
-    * LinkedIn: [emilee-schweitzer-864a00194](https://www.linkedin.com/in/emilee-schweitzer-864a00194/)
+### Emilee Schweitzer
+Socials: [LinkedIn](https://www.linkedin.com/in/emilee-schweitzer-864a00194/), [GitHub](https://github.com/EmileeSchweitzer)
 # Developer Documentation
 ## Work Breakdown Structure
 1. Ideation and Planning (1 week, February 5th - February 11)
