@@ -22,12 +22,12 @@ Nutrition AI enables users to:
     * Drag the issue from the `Ready` column to the `In progress` column
 2. Clone the Repository (if you haven't already)
     * Open Visual Studio Code
-    * Open a new terminal at the folder you'd like to store the project in
+    * Open a terminal at the folder you'd like to store the project in
     * Type the command `git clone https://github.com/nathan-wick/nutrition-ai.git`
     * Press `Enter` to run the command
 3. Create a New Branch
     * Open Visual Studio Code
-    * Open a new terminal at the repository's root
+    * Open a terminal at the repository's root
     * Type the command `git checkout -b branchName dev`
     * Replace `branchName` with the issue number (For example, a branch for issue #42 would be named `42`)
     * Press `Enter` to run the command
