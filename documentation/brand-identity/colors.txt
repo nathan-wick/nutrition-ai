@@ -1,1 +1,4 @@
-#Example color
+#We want to use the following shades for our app:
+#3fc380
+#c8f7c5
+#eaf2d7
