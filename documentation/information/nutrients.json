@@ -1,0 +1,250 @@
+[
+    {
+        "id": 1,
+        "name": "Energy"
+    },
+    {
+        "id": 2,
+        "name": "Protein"
+    },
+    {
+        "id": 3,
+        "name": "Carbohydrate"
+    },
+    {
+        "id": 4,
+        "name": "Fat"
+    },
+    {
+        "id": 5,
+        "name": "Alcohol"
+    },
+    {
+        "id": 6,
+        "name": "Sugar"
+    },
+    {
+        "id": 7,
+        "name": "Dietary Fiber"
+    },
+    {
+        "id": 8,
+        "name": "Water"
+    },
+    {
+        "id": 10,
+        "name": "Saturated Fatty Acid"
+    },
+    {
+        "id": 11,
+        "name": "Monounsaturated Fatty Acid"
+    },
+    {
+        "id": 12,
+        "name": "Polyunsaturated Fatty Acid"
+    },
+    {
+        "id": 13,
+        "name": "Cholesterol"
+    },
+    {
+        "id": 14,
+        "name": "Individual Fatty Acid 4:0"
+    },
+    {
+        "id": 15,
+        "name": "Individual Fatty Acid 6:0"
+    },
+    {
+        "id": 16,
+        "name": "Individual Fatty Acid 8:0"
+    },
+    {
+        "id": 17,
+        "name": "Individual Fatty Acid 10:0"
+    },
+    {
+        "id": 18,
+        "name": "Individual Fatty Acid 12:0"
+    },
+    {
+        "id": 19,
+        "name": "Individual Fatty Acid 14:0"
+    },
+    {
+        "id": 20,
+        "name": "Individual Fatty Acid 16:0"
+    },
+    {
+        "id": 21,
+        "name": "Individual Fatty Acid 18:0"
+    },
+    {
+        "id": 22,
+        "name": "Individual Fatty Acid 16:1"
+    },
+    {
+        "id": 23,
+        "name": "Individual Fatty Acid 18:1"
+    },
+    {
+        "id": 24,
+        "name": "Individual Fatty Acid 20:1"
+    },
+    {
+        "id": 25,
+        "name": "Individual Fatty Acid 22:1"
+    },
+    {
+        "id": 26,
+        "name": "Individual Fatty Acid 18:2"
+    },
+    {
+        "id": 27,
+        "name": "Individual Fatty Acid 18:3"
+    },
+    {
+        "id": 28,
+        "name": "Individual Fatty Acid 18:4"
+    },
+    {
+        "id": 29,
+        "name": "Individual Fatty Acid 20:4"
+    },
+    {
+        "id": 30,
+        "name": "Individual Fatty Acid 20:5 n-3"
+    },
+    {
+        "id": 31,
+        "name": "Individual Fatty Acid 22:5 n-3"
+    },
+    {
+        "id": 32,
+        "name": "Individual Fatty Acid 22:6 n-3"
+    },
+    {
+        "id": 33,
+        "name": "Vitamin A"
+    },
+    {
+        "id": 34,
+        "name": "Retinol"
+    },
+    {
+        "id": 35,
+        "name": "Carotene Alpha"
+    },
+    {
+        "id": 36,
+        "name": "Carotene Beta"
+    },
+    {
+        "id": 37,
+        "name": "Cryptoxanthin Beta"
+    },
+    {
+        "id": 38,
+        "name": "Lycopene"
+    },
+    {
+        "id": 39,
+        "name": "Lutein + Zeaxanthin"
+    },
+    {
+        "id": 40,
+        "name": "Vitamin E"
+    },
+    {
+        "id": 41,
+        "name": "Vitamin D"
+    },
+    {
+        "id": 42,
+        "name": "Vitamin K"
+    },
+    {
+        "id": 43,
+        "name": "Vitamin C"
+    },
+    {
+        "id": 44,
+        "name": "Thiamin"
+    },
+    {
+        "id": 45,
+        "name": "Riboflavin"
+    },
+    {
+        "id": 46,
+        "name": "Niacin"
+    },
+    {
+        "id": 47,
+        "name": "Vitamin B-6"
+    },
+    {
+        "id": 48,
+        "name": "Folate"
+    },
+    {
+        "id": 49,
+        "name": "Folic Acid"
+    },
+    {
+        "id": 50,
+        "name": "Food Folate"
+    },
+    {
+        "id": 51,
+        "name": "Vitamin B-12"
+    },
+    {
+        "id": 52,
+        "name": "Choline"
+    },
+    {
+        "id": 53,
+        "name": "Calcium"
+    },
+    {
+        "id": 54,
+        "name": "Iron"
+    },
+    {
+        "id": 55,
+        "name": "Magnesium"
+    },
+    {
+        "id": 56,
+        "name": "Phosphorus"
+    },
+    {
+        "id": 57,
+        "name": "Potassium"
+    },
+    {
+        "id": 58,
+        "name": "Sodium"
+    },
+    {
+        "id": 59,
+        "name": "Zinc"
+    },
+    {
+        "id": 60,
+        "name": "Copper"
+    },
+    {
+        "id": 61,
+        "name": "Selenium"
+    },
+    {
+        "id": 62,
+        "name": "Caffeine"
+    },
+    {
+        "id": 63,
+        "name": "Theobromine"
+    }
+]
