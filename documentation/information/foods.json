@@ -1,12 +1,5 @@
 [
     {
-        "code": "Food code",
-        "name": "Main food description",
-        "description": "Additional food description",
-        "categoryCode": "WWEIA Category number",
-        "categoryName": "WWEIA Category description"
-    },
-    {
         "code": "11000000",
         "name": "Milk, human",
         "description": "",
