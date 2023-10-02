@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "552519649799",
+    "project_id": "nathan-wick-nutrition-ai",
+    "storage_bucket": "nathan-wick-nutrition-ai.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:552519649799:android:2507ef049a1caeb55b38a2",
+        "android_client_info": {
+          "package_name": "com.example.nutrition_ai"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "552519649799-a382mc92dmn2r4ph9kjc5nta61kf97bq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC8qyANadHz_U-rU-lyaU_FoQFrGJkvYV4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "552519649799-a382mc92dmn2r4ph9kjc5nta61kf97bq.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,7 +1,12 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'screens/home.dart';
+import 'information/firebase_options.dart';
+import 'widgets/navigation.dart';
 
-void main() {
+void main() async {
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   runApp(const App());
 }
 
@@ -13,9 +18,10 @@ class App extends StatelessWidget {
     return MaterialApp(
       title: 'Nutrition AI',
       theme: ThemeData(
-        primarySwatch: Colors.cyan,
+        primarySwatch: Colors.blue,
       ),
-      home: const Home(),
+      home: const Navigation(),
+      debugShowCheckedModeBanner: false,
     );
   }
 }
