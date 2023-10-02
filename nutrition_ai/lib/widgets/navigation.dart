@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:nutrition_ai/screens/account.dart';
-import 'package:nutrition_ai/screens/preferences.dart';
-import 'package:nutrition_ai/screens/recommendations.dart';
+import '../screens/authenticated/account.dart';
+import '../screens/authenticated/preferences.dart';
+import '../screens/authenticated/recommendations.dart';
 
-class Home extends StatefulWidget {
-  const Home({super.key});
+class Navigation extends StatefulWidget {
+  const Navigation({super.key});
 
   @override
-  State<Home> createState() => _HomeState();
+  State<Navigation> createState() => _NavigationState();
 }
 
-class _HomeState extends State<Home> {
+class _NavigationState extends State<Navigation> {
   int _selectedIndex = 1;
   static const List<Widget> _screenOptions = <Widget>[
     Recommendations(),
@@ -34,19 +34,19 @@ class _HomeState extends State<Home> {
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(Icons.lightbulb),
-            label: 'recommendations',
+            label: 'Recommendations',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.psychology),
-            label: 'preferences',
+            label: 'Preferences',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.account_circle),
-            label: 'account',
+            label: 'Account',
           ),
         ],
         currentIndex: _selectedIndex,
-        selectedItemColor: Colors.cyan,
+        selectedItemColor: Theme.of(context).primaryColor,
         onTap: _onOptionTap,
       ),
     );
