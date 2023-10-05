@@ -19,34 +19,30 @@ class _AccountState extends State<Account> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              const SizedBox(height: 80),
-              const Icon(
-                Icons.account_circle,
-                size: 100,
-              ),
-              const SizedBox(height: 40),
-              Text(
-                'Signed in as ${user.email}',
-                style: const TextStyle(
-                  color: Colors.grey,
-                  fontSize: 16,
-                ),
-              ),
-              const SizedBox(height: 20),
-              MyButton(
-                onTap: signOut,
-                message: 'Sign Out',
-              ),
-            ],
+   const IconData account_circle = IconData(0xe043, fontFamily: 'MaterialIcons');
+
+    return MaterialApp(
+        debugShowCheckedModeBanner: false,
+        home: Scaffold(
+          backgroundColor: const Color.fromARGB(255, 207, 253, 154),
+           appBar: AppBar(
+            title: Text("My Profile"),
+            backgroundColor: Colors.lightGreen,
+            
+            ),
+        body: Center(
+          child:Container(
+            height:500,
+            width:300,
+            color: Colors.lightGreen,
+            
           ),
+          
         ),
-      ),
-    );
+        )
+
+        
+        );
+    
   }
 }
