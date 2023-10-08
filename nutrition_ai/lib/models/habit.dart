@@ -3,9 +3,11 @@ enum HabitName {
 }
 
 enum HabitFrequency {
-  never,
-  sometimes,
-  often,
+  none,
+  light,
+  moderate,
+  very,
+  extra
 }
 
 class Habit {
