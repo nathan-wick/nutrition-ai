@@ -23,7 +23,7 @@ class _AccountState extends State<Account> {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
-        backgroundColor: Color.fromARGB(255, 227, 255, 194),
+        backgroundColor: Color.fromARGB(255, 224, 255, 211),
         appBar: AppBar(
           title: Text("My Profile"),
           backgroundColor: Colors.lightGreen,
@@ -34,9 +34,9 @@ class _AccountState extends State<Account> {
         ),
         body: Center(
           child: Container(
-            height: 608.0,
+            height: 620.0,
             width: 300.0,
-            color: Colors.lightGreen,
+            color: const Color.fromARGB(255, 255, 255, 255),
             child: Column(
               children: <Widget>[
                 Padding(
@@ -52,13 +52,16 @@ class _AccountState extends State<Account> {
                     keyboardType: TextInputType.emailAddress,
                   ),
                 ),
-                DropdownButtonFormField(
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child:DropdownButtonFormField(
                   decoration: InputDecoration(labelText: 'Age'),
                   items: List.generate(100, (index) => index + 1)
                       .map((e) => DropdownMenuItem(
                           value: e.toString(), child: Text(e.toString())))
                       .toList(),
                   onChanged: (value) {},
+                ),
                 ),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
