@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
+import '../../services/authentication.dart';
 import '../../widgets/my_button.dart';
 import '../../widgets/my_textfield.dart';
 import '../../widgets/square_tile.dart';
@@ -103,10 +104,16 @@ class _SignInState extends State<SignIn> {
               const SizedBox(height: 40),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
-                children: const [
-                  SquareTile(imagePath: 'assets/images/logos/google.png'),
-                  SizedBox(width: 20),
-                  SquareTile(imagePath: 'assets/images/logos/apple.png')
+                children: [
+                  SquareTile(
+                    onTap: () => AuthenticationService().signInWithGoogle(),
+                    imagePath: 'assets/images/logos/google.png',
+                  ),
+                  const SizedBox(width: 20),
+                  SquareTile(
+                    onTap: () {},
+                    imagePath: 'assets/images/logos/apple.png',
+                  )
                 ],
               ),
             ],
