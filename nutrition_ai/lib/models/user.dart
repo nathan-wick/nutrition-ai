@@ -2,6 +2,7 @@ import 'allergy.dart';
 import 'habit.dart';
 import 'ingredient.dart';
 import 'measurement.dart';
+import 'goal.dart';
 
 enum UserSex {
   xx,
@@ -16,6 +17,7 @@ class User {
   final Measurement height;
   final Measurement weight;
   final List<Habit> habits;
+  final Goal goal;
   final List<Allergy> allergies;
   final List<Ingredient> approvedIngredients;
   final List<Ingredient> rejectedIngredients;
@@ -28,6 +30,7 @@ class User {
     required this.height,
     required this.weight,
     required this.habits,
+    required this.goal,
     required this.allergies,
     required this.approvedIngredients,
     required this.rejectedIngredients,
