@@ -1,13 +1,12 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-
-import '../../widgets/my_button.dart';
+// import '../../widgets/my_button.dart'; // Make sure you have this widget imported if you plan to use it.
 
 class Account extends StatefulWidget {
-  const Account({super.key});
+  const Account({Key? key}) : super(key: key);
 
   @override
-  State<Account> createState() => _AccountState();
+  _AccountState createState() => _AccountState();
 }
 
 class _AccountState extends State<Account> {
@@ -17,33 +16,100 @@ class _AccountState extends State<Account> {
     FirebaseAuth.instance.signOut();
   }
 
+  TextEditingController myController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              const SizedBox(height: 80),
-              const Icon(
-                Icons.account_circle,
-                size: 100,
-              ),
-              const SizedBox(height: 40),
-              Text(
-                'Signed in as ${user.email}',
-                style: const TextStyle(
-                  color: Colors.grey,
-                  fontSize: 16,
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: Scaffold(
+        backgroundColor: Color.fromARGB(255, 224, 255, 211),
+        appBar: AppBar(
+          title: Text("My Profile"),
+          backgroundColor: Colors.lightGreen,
+          leading: Icon(
+            Icons.account_circle,
+            size: 32.0,
+          ),
+        ),
+        body: Center(
+          child: Container(
+            height: 620.0,
+            width: 300.0,
+            color: const Color.fromARGB(255, 255, 255, 255),
+            child: Column(
+              children: <Widget>[
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: TextFormField(
+                    decoration: InputDecoration(labelText: 'Name'),
+                  ),
                 ),
-              ),
-              const SizedBox(height: 20),
-              MyButton(
-                onTap: signOut,
-                message: 'Sign Out',
-              ),
-            ],
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: TextFormField(
+                    decoration: InputDecoration(labelText: 'Email'),
+                    keyboardType: TextInputType.emailAddress,
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child:DropdownButtonFormField(
+                  decoration: InputDecoration(labelText: 'Age'),
+                  items: List.generate(100, (index) => index + 1)
+                      .map((e) => DropdownMenuItem(
+                          value: e.toString(), child: Text(e.toString())))
+                      .toList(),
+                  onChanged: (value) {},
+                ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: DropdownButtonFormField(
+                    decoration: InputDecoration(labelText: 'Sex'),
+                    items: [
+                      DropdownMenuItem(child: Text("Male"), value: "Male"),
+                      DropdownMenuItem(child: Text("Female"), value: "Female"),
+                    ],
+                    onChanged: (value) {},
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: DropdownButtonFormField(
+                    decoration: InputDecoration(labelText: 'Height (cm)'),
+                    items: List.generate(251, (index) => index + 50)
+                        .map((e) => DropdownMenuItem(
+                            value: e.toString(), child: Text(e.toString())))
+                        .toList(),
+                    onChanged: (value) {},
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: DropdownButtonFormField(
+                    decoration: InputDecoration(labelText: 'Weight (kg)'),
+                    items: List.generate(151, (index) => index + 40)
+                        .map((e) => DropdownMenuItem(
+                            value: e.toString(), child: Text(e.toString())))
+                        .toList(),
+                    onChanged: (value) {},
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: TextFormField(
+                    decoration: InputDecoration(labelText: 'Habit'),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: TextFormField(
+                    decoration: InputDecoration(labelText: 'Allergies'),
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),
