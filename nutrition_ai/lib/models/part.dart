@@ -9,4 +9,12 @@ class Part {
     required this.nutrient,
     required this.amount,
   });
+
+  Map<String, dynamic> toJson() {
+    return {
+      'nutrient': nutrient.toJson(),
+      'amount': amount.toJson(),
+    };
+  }
+
 }

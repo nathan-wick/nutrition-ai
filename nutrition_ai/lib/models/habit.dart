@@ -16,4 +16,12 @@ class Habit {
     required this.name,
     required this.frequency,
   });
+
+  Map<String, dynamic> toJson() {
+    return {
+      'name': name.toString().split('.').last,
+      'frequency': frequency.toString().split('.').last,
+    };
+  }
+  
 }
