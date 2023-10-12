@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import '../screens/authenticated/account.dart';
-import '../screens/authenticated/preferences.dart';
-import '../screens/authenticated/recommendations.dart';
+
+import '../pages/authenticated/recommendations.dart';
+import '../pages/authenticated/preferences.dart';
+import '../pages/authenticated/profile.dart';
 
 class Navigation extends StatefulWidget {
   const Navigation({super.key});
@@ -11,43 +12,50 @@ class Navigation extends StatefulWidget {
 }
 
 class _NavigationState extends State<Navigation> {
-  int _selectedIndex = 1;
-  static const List<Widget> _screenOptions = <Widget>[
+  int currentIndex = 0;
+  static const pages = [
     Recommendations(),
     Preferences(),
-    Account(),
+    Profile(),
   ];
-
-  void _onOptionTap(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
+    final pageController = PageController(initialPage: currentIndex);
+
     return Scaffold(
-      body: Center(
-        child: _screenOptions.elementAt(_selectedIndex),
-      ),
       bottomNavigationBar: BottomNavigationBar(
-        items: const <BottomNavigationBarItem>[
+        currentIndex: currentIndex,
+        onTap: (index) {
+          setState(() {
+            currentIndex = index;
+            pageController.jumpToPage(index);
+          });
+        },
+        items: const [
           BottomNavigationBarItem(
             icon: Icon(Icons.lightbulb),
             label: 'Recommendations',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.psychology),
+            icon: Icon(Icons.thumb_up),
             label: 'Preferences',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.account_circle),
-            label: 'Account',
+            icon: Icon(Icons.person),
+            label: 'Profile',
           ),
         ],
-        currentIndex: _selectedIndex,
         selectedItemColor: Theme.of(context).primaryColor,
-        onTap: _onOptionTap,
+      ),
+      body: PageView(
+        controller: pageController,
+        onPageChanged: (index) {
+          setState(() {
+            currentIndex = index;
+          });
+        },
+        children: pages,
       ),
     );
   }

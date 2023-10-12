@@ -14,8 +14,12 @@ class _PreferencesState extends State<Preferences> {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      body: Center(
+    return Scaffold(
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
+        title: const Text('Preferences'),
+      ),
+      body: const Center(
         child: _placeholder,
       ),
     );

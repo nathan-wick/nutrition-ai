@@ -14,8 +14,12 @@ class _RecommendationsState extends State<Recommendations> {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      body: Center(
+    return Scaffold(
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
+        title: const Text('Recommendations'),
+      ),
+      body: const Center(
         child: _placeholder,
       ),
     );
