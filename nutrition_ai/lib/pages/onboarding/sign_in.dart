@@ -2,9 +2,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import '../../services/authentication.dart';
-import '../../widgets/my_button.dart';
-import '../../widgets/my_textfield.dart';
+import '../../widgets/button_input.dart';
 import '../../widgets/square_tile.dart';
+import '../../widgets/text_input.dart';
 
 class SignIn extends StatefulWidget {
   const SignIn({super.key});
@@ -14,7 +14,7 @@ class SignIn extends StatefulWidget {
 }
 
 class _SignInState extends State<SignIn> {
-  final usernameController = TextEditingController();
+  final emailController = TextEditingController();
   final passwordController = TextEditingController();
 
   void signIn() async {
@@ -28,7 +28,7 @@ class _SignInState extends State<SignIn> {
     );
     try {
       await FirebaseAuth.instance.signInWithEmailAndPassword(
-        email: usernameController.text,
+        email: emailController.text,
         password: passwordController.text,
       ).then((value) => Navigator.pop(context));
     } on FirebaseAuthException catch (error) {
@@ -48,7 +48,7 @@ class _SignInState extends State<SignIn> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: Center(
+        child: SingleChildScrollView(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
@@ -58,21 +58,22 @@ class _SignInState extends State<SignIn> {
                 size: 100,
               ),
               const SizedBox(height: 40),
-              MyTextField(
-                controller: usernameController,
-                hintText: 'Email',
-                obscureText: false,
+              TextInput(
+                controller: emailController,
+                name: 'Email',
               ),
               const SizedBox(height: 10),
-              MyTextField(
+              TextInput(
                 controller: passwordController,
-                hintText: 'Password',
+                name: 'Password',
                 obscureText: true,
               ),
               const SizedBox(height: 10),
-              MyButton(
+              ButtonInput(
                 onTap: signIn,
+                icon: Icons.arrow_forward,
                 message: 'Sign In',
+                theme: ButtonInputTheme.primary,
               ),
               const SizedBox(height: 80),
               Padding(

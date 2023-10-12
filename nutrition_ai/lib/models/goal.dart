@@ -1,15 +1,16 @@
 enum GoalName {
-  lose,
-  maintain,
-  gain
+  loseWeight,
+  maintainWeight,
+  gainWeight,
+  gainMuscle,
 }
 
 class Goal {
-  final GoalName goal;
-  final double targetWeight;
+  final GoalName name;
+  final double? targetWeight;
 
   Goal({
-    required this.goal,
-    required this.targetWeight
+    required this.name,
+    this.targetWeight
   });
 }
