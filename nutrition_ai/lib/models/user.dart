@@ -35,4 +35,20 @@ class User {
     required this.approvedIngredients,
     required this.rejectedIngredients,
   });
+
+  Map<String, dynamic> toJson() {
+    return {
+      'name' : name,
+      'email' : email,
+      'birthday' : birthday,
+      'sex' : sex.toString().split('.').last,
+      'height' : height.toJson(),
+      'weight' : weight.toJson(),
+      'goal' : goal.toJson(),
+      'allergies': allergies.map((allergy) => allergy.toJson()).toList(),
+      'approvedIngredients': approvedIngredients.map((ingredient) => ingredient.toJson()).toList(),
+      'rejectedIngredients': rejectedIngredients.map((ingredient) => ingredient.toJson()).toList(),
+    };
+  }
+
 }

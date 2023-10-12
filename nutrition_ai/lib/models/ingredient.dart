@@ -11,4 +11,13 @@ class Ingredient {
     required this.amount,
     required this.parts,
   });
+
+  Map<String, dynamic> toJson() {
+    return {
+      'name': name,
+      'amount': amount.toJson(),
+      'parts': parts.map((part) => part.toJson()).toList(),
+    };
+  }
+  
 }
