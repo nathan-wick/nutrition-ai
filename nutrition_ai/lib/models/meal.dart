@@ -10,4 +10,13 @@ class Meal {
     required this.instruction,
     required this.ingredients,
   });
+
+  Map<String, dynamic> toJson() {
+    return {
+      'name': name,
+      'instruction': instruction,
+      'ingredients': ingredients.map((ingredient) => ingredient.toJson()).toList(),
+    };
+  }
+  
 }
