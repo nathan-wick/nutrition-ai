@@ -15,15 +15,15 @@ class User {
   final String name;
   final String email;
   final String photo;
-  final DateTime? birthday;
-  final UserSex? sex;
-  final Measurement? height;
-  final Measurement? weight;
-  final List<Habit>? habits;
-  final Goal? goal;
-  final List<Allergy>? allergies;
-  final List<Ingredient>? approvedIngredients;
-  final List<Ingredient>? rejectedIngredients;
+  DateTime? birthday;
+  UserSex? sex;
+  Measurement? height;
+  Measurement? weight;
+  List<Habit>? habits;
+  Goal? goal;
+  List<Allergy>? allergies;
+  List<Ingredient>? approvedIngredients;
+  List<Ingredient>? rejectedIngredients;
 
   User({
     required this.name,
