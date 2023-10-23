@@ -3,12 +3,14 @@ import 'package:flutter/material.dart';
 class TextInput extends StatelessWidget {
   final TextEditingController controller;
   final String name;
+  final String? defaultValue;
   final bool? obscureText;
 
   const TextInput({
     super.key,
     required this.controller,
     required this.name,
+    this.defaultValue,
     this.obscureText,
   });
 
@@ -30,7 +32,7 @@ class TextInput extends StatelessWidget {
           ),
           const SizedBox(height: 6),
           TextField(
-            controller: controller,
+            controller: controller..text = defaultValue ?? '',
             obscureText: obscureText ?? false,
             decoration: InputDecoration(
                 enabledBorder: const OutlineInputBorder(
