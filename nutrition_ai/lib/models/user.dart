@@ -57,8 +57,23 @@ class User {
     };
   }
 
-  User.fromDocumentSnapshot(DocumentSnapshot snapshot)
-    : name = snapshot['name'],
+// factory User.fromDocumentSnapshot(DocumentSnapshot snapshot) {
+//     return User(
+// //ame = snapshot['name'],
+//       email = snapshot['email'],      
+//       photo = snapshot['photo'],
+//       birthday = snapshot['birthday'],
+//       sex = snapshot['sex'],
+//       height = snapshot['height'],
+//       weight = snapshot['weight'],
+//       habits = snapshot['habits'],
+//       goal = snapshot['goal'],
+//       allergies = snapshot['allergies'],
+//       approvedIngredients = snapshot['approvedIngredients'],
+//       rejectedIngredients = snapshot['rejectedIngredients'];
+//   ;
+    User.fromDocumentSnapshot(DocumentSnapshot snapshot) 
+     :name = snapshot['name'],
       email = snapshot['email'],
       photo = snapshot['photo'],
       birthday = snapshot['birthday'],
