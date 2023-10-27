@@ -10,9 +10,24 @@ enum UserSex {
   xx,
   xy,
 }
+extension UserSexExtension on UserSex {
+  String get stringValue {
+    return toString().split('.').last;
+  }
 
+  static UserSex fromString(String value) {
+    switch (value.toLowerCase()) {
+      case 'xx':
+        return UserSex.xx;
+      case 'xy':
+        return UserSex.xy;
+      default:
+        return UserSex.xy; // Use a default value or handle this differently
+    }
+  }
+}
 class User {
-  final String name;
+  String name;
   final String email;
   final String photo;
   DateTime? birthday;

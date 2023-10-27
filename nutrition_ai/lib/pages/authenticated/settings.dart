@@ -1,7 +1,9 @@
-import 'package:firebase_auth/firebase_auth.dart';
+// import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:nutrition_ai/services/database.dart';
+import 'package:nutrition_ai/models/measurement.dart';
+import 'package:nutrition_ai/models/goal.dart';
+import 'package:nutrition_ai/models/user.dart';
+import '../../services/database.dart';
 import '../../widgets/select_input.dart';
 import '../../contexts/authentication.dart';
 import '../../widgets/button_input.dart';
@@ -15,13 +17,9 @@ class Settings extends StatefulWidget {
   
 }
 
-class DatabaseService {
-  static Future<void> updateUserData(String uid, Map<String, dynamic> data) async {
-    await FirebaseFirestore.instance.collection('users').doc(uid).update(data);
-  }
-}
+
 class _SettingsState extends State<Settings> {
-  final user = FirebaseAuth.instance.currentUser!;
+  late Future<User> user;
   late final nameController = TextEditingController();
   late final weightController = TextEditingController();
   late final heightController = TextEditingController();
@@ -30,23 +28,26 @@ class _SettingsState extends State<Settings> {
   late final exerciseController = TextEditingController();
   late final goalController = TextEditingController();
 
-
-  saveUserData() async {
+  @override
+  void save() async {
     final newUser = await user;
-    if (newUser != null){
-      Map<String, dynamic> userData = {
-        'name': nameController.text,
-        'weight': weightController.text,
-        'height': heightController.text,
-        'birthday': birthdayController.text,
-        'sex': sexController.text,
-        'exerciseFrequency': exerciseController.text,
-        'goal': goalController.text,
-      };
+    if (newUser != null) {
+      newUser.name = nameController.text;
+      newUser.weight = Measurement(amount: double.parse(weightController.text), unit: MeasurementUnit.kg);
+      newUser.height = Measurement(amount: double.parse(heightController.text), unit: MeasurementUnit.kg);
+      newUser.birthday = DateTime.parse(birthdayController.text);
+      newUser.sex = UserSexExtension.fromString(sexController.text);
+      final goalNameString = goalController.text;
+      final goalName = GoalName.values.firstWhere(
+        (e) => e.toString().split('.').last == goalNameString,
+        orElse: () => GoalName.loseWeight, // Set a default value if necessary
+      );
 
-      await DatabaseService.updateUserData(newUser.uid, userData);
-    } 
+      newUser.goal = Goal(name: goalName);  
+      await DatabaseService().updateUser(newUser);
+    }
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -62,7 +63,7 @@ class _SettingsState extends State<Settings> {
               const SizedBox(height: 40),
               ButtonInput(
                 onTap: () {
-                  saveUserData();
+                  save();
                   Navigator.push(
                     context,
                     MaterialPageRoute(builder: (context) => const Authentication()),
