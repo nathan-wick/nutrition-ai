@@ -34,7 +34,7 @@ class _SettingsState extends State<Settings> {
     if (newUser != null) {
       newUser.name = nameController.text;
       newUser.weight = Measurement(amount: double.parse(weightController.text), unit: MeasurementUnit.kg);
-      newUser.height = Measurement(amount: double.parse(heightController.text), unit: MeasurementUnit.kg);
+      newUser.height = Measurement(amount: double.parse(heightController.text), unit: MeasurementUnit.ft);
       newUser.birthday = DateTime.parse(birthdayController.text);
       newUser.sex = UserSexExtension.fromString(sexController.text);
       final goalNameString = goalController.text;
