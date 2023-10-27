@@ -3,21 +3,20 @@ import 'part.dart';
 
 class Ingredient {
   final String name;
-  final Measurement amount;
-  final List<Part> parts;
+  final String amount;
+  final List<Part>? parts;
 
   Ingredient({
     required this.name,
     required this.amount,
-    required this.parts,
+    this.parts,
   });
 
   Map<String, dynamic> toJson() {
     return {
       'name': name,
-      'amount': amount.toJson(),
-      'parts': parts.map((part) => part.toJson()).toList(),
+      'amount': amount,
+      'parts': parts?.map((part) => part.toJson()).toList(),
     };
   }
-  
 }
