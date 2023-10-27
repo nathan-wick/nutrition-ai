@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:nutrition_ai/services/database.dart';
 import '../../widgets/select_input.dart';
 import '../../contexts/authentication.dart';
 import '../../widgets/button_input.dart';
@@ -11,8 +12,14 @@ class Settings extends StatefulWidget {
 
   @override
   State<Settings> createState() => _SettingsState();
+  
 }
 
+class DatabaseService {
+  static Future<void> updateUserData(String uid, Map<String, dynamic> data) async {
+    await FirebaseFirestore.instance.collection('users').doc(uid).update(data);
+  }
+}
 class _SettingsState extends State<Settings> {
   final user = FirebaseAuth.instance.currentUser!;
   late final nameController = TextEditingController();
@@ -23,6 +30,23 @@ class _SettingsState extends State<Settings> {
   late final exerciseController = TextEditingController();
   late final goalController = TextEditingController();
 
+
+  saveUserData() async {
+    final newUser = await user;
+    if (newUser != null){
+      Map<String, dynamic> userData = {
+        'name': nameController.text,
+        'weight': weightController.text,
+        'height': heightController.text,
+        'birthday': birthdayController.text,
+        'sex': sexController.text,
+        'exerciseFrequency': exerciseController.text,
+        'goal': goalController.text,
+      };
+
+      await DatabaseService.updateUserData(newUser.uid, userData);
+    } 
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -38,6 +62,7 @@ class _SettingsState extends State<Settings> {
               const SizedBox(height: 40),
               ButtonInput(
                 onTap: () {
+                  saveUserData();
                   Navigator.push(
                     context,
                     MaterialPageRoute(builder: (context) => const Authentication()),

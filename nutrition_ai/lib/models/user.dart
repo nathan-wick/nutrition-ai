@@ -56,9 +56,9 @@ class User {
       'rejectedIngredients': rejectedIngredients?.map((ingredient) => ingredient.toJson()).toList(),
     };
   }
-
-  User.fromDocumentSnapshot(DocumentSnapshot snapshot)
-    : name = snapshot['name'],
+  
+    User.fromDocumentSnapshot(DocumentSnapshot snapshot) 
+     :name = snapshot['name'],
       email = snapshot['email'],
       photo = snapshot['photo'],
       birthday = snapshot['birthday'],
