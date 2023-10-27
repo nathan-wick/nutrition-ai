@@ -1,15 +1,4 @@
-enum MeasurementUnit {
-  g,
-  kcal,
-  mg,
-  ug,
-  lbs,
-  min,
-  hr,
-  kg,
-  cm,
-  ft
-}
+enum MeasurementUnit { g, kcal, mg, ug, lbs, min, hr, kg, cm, ft }
 
 class Measurement {
   final double amount;
@@ -20,7 +9,7 @@ class Measurement {
     required this.unit,
   });
 
-    Map<String, dynamic> toJson() {
+  Map<String, dynamic> toJson() {
     return {
       'amount': amount,
       'unit': unit.toString().split('.').last,
@@ -48,5 +37,4 @@ class Measurement {
       return this;
     }
   }
-
 }
