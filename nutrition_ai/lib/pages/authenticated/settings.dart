@@ -35,8 +35,8 @@ class _SettingsState extends State<Settings> {
   void save() async {
     final newUser = await user;
     newUser.name = nameController.text;
-    newUser.weight = double.parse(weightController.text);
-    newUser.height = double.parse(heightController.text);
+    newUser.weightPounds = double.parse(weightController.text);
+    newUser.heightInches = double.parse(heightController.text);
     newUser.birthday = DateTime.parse(birthdayController.text);
     newUser.sex = sexController.text;
     newUser.exerciseFrequency = exerciseFrequencyController.text;
@@ -84,15 +84,15 @@ class _SettingsState extends State<Settings> {
                     // TODO: Update TextInput with option to be numbers only
                     TextInput(
                       controller: weightController,
-                      defaultValue: snapshot.data?.weight.toString(),
-                      name: 'Weight (lbs)',
+                      defaultValue: snapshot.data?.weightPounds.toString(),
+                      name: 'Weight (pounds)',
                     ),
                     const SizedBox(height: 20),
                     // TODO: Update TextInput with option to be numbers only
                     TextInput(
                       controller: heightController,
-                      defaultValue: snapshot.data?.height.toString(),
-                      name: 'Height (in)',
+                      defaultValue: snapshot.data?.heightInches.toString(),
+                      name: 'Height (inches)',
                     ),
                     const SizedBox(height: 20),
                     // TODO: Create a new widget for date input

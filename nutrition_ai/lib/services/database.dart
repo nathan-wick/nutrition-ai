@@ -17,11 +17,12 @@ class DatabaseService {
     final userAuthentication = firebase_auth.FirebaseAuth.instance.currentUser;
     final user = User(
       email: userAuthentication?.email ?? '',
-      photo: userAuthentication?.photoURL ?? '',
+      name: userAuthentication?.displayName,
+      photo: userAuthentication?.photoURL,
       birthday: DateTime.now().subtract(const Duration(days: 7305)),
       sex: 'xy',
-      height: 67,
-      weight: 150,
+      heightInches: 67,
+      weightPounds: 150,
       exerciseFrequency: 'moderate',
       goal: 'maintainWeight',
     );
