@@ -1,10 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-
+import 'package:animate_do/animate_do.dart';
 import '../../services/authentication.dart';
-import '../../widgets/button_input.dart';
 import '../../widgets/square_tile.dart';
-import '../../widgets/text_input.dart';
 
 class SignIn extends StatefulWidget {
   const SignIn({super.key});
@@ -43,83 +41,163 @@ class _SignInState extends State<SignIn> {
       );
     }
   }
-
+ 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
-        child: SingleChildScrollView(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              const SizedBox(height: 80),
-              const Icon(
-                Icons.lock,
-                size: 100,
-              ),
-              const SizedBox(height: 40),
-              TextInput(
-                controller: emailController,
-                name: 'Email',
-              ),
-              const SizedBox(height: 10),
-              TextInput(
-                controller: passwordController,
-                name: 'Password',
-                obscureText: true,
-              ),
-              const SizedBox(height: 10),
-              ButtonInput(
-                onTap: signIn,
-                icon: Icons.arrow_forward,
-                message: 'Sign In',
-                theme: ButtonInputTheme.primary,
-              ),
-              const SizedBox(height: 80),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: Row(
-                  children: const [
-                    Expanded(
-                      child: Divider(
-                        thickness: 0.4,
-                        color: Colors.grey,
-                      ),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 10),
-                      child: Text(
-                        'Or Continue With',
-                        style: TextStyle(color: Colors.black),
-                      ),
-                    ),
-                    Expanded(
-                      child: Divider(
-                        thickness: 0.4,
-                        color: Colors.grey,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              const SizedBox(height: 40),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  SquareTile(
-                    onTap: () => AuthenticationService().signInWithGoogle(),
-                    imagePath: 'assets/images/logos/google.png',
-                  ),
-                  const SizedBox(width: 20),
-                  SquareTile(
-                    onTap: () {},
-                    imagePath: 'assets/images/logos/apple.png',
-                  )
+      body: Container(
+        width: double.infinity,
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            colors: [
+              Color.fromARGB(255, 235, 255, 202),
+              Color.fromARGB(255, 235, 255, 202),
+              Color.fromARGB(10, 255, 150, 300)
+            ]
+          )
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            SizedBox(height: 80,),
+            Padding(
+              padding: EdgeInsets.all(20),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  FadeInUp(duration: Duration(milliseconds: 1000), child: Text("Login", style: TextStyle(color: Color.fromARGB(255, 28, 77, 0), fontSize: 50, fontWeight: FontWeight.w600),)),
+                  SizedBox(height: 5,),
+                  FadeInUp(duration: Duration(milliseconds: 1300), child: Text("Welcome Back", style: TextStyle(color: Color.fromARGB(255, 2, 123, 0), fontSize: 18),)),
                 ],
               ),
-            ],
-          ),
-        ),
+            ),
+            SizedBox(height: 50),
+            Expanded(
+              child: Container(
+                decoration: const BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.only(topLeft: Radius.circular(60), topRight: Radius.circular(60))
+                ),
+                child: Padding(
+                    padding: EdgeInsets.all(30),
+                    child: Column(
+                      children: <Widget>[
+                        const SizedBox(height: 10,),
+                        FadeInUp(duration: Duration(milliseconds: 1400), child: Container(
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(10),
+                            boxShadow: const [BoxShadow(
+                              color: Color.fromRGBO(13, 131, 78, 0.298),
+                              blurRadius: 20,
+                              offset: Offset(0, 10)
+                            )]
+                          ),
+                          child: SingleChildScrollView(
+                            child:Column(
+                            children: <Widget>[
+                              Container(
+                                padding: EdgeInsets.all(10),
+                                decoration: BoxDecoration(
+                                  border: Border(bottom: BorderSide(color: Colors.grey.shade200))
+                                ),
+                                child: TextField(
+                                  controller: emailController, 
+                                  decoration: const InputDecoration(
+                                    hintText: "Email ",
+                                    hintStyle: TextStyle(color: Colors.grey),
+                                    border: InputBorder.none
+                                  ),
+                                ),
+                              ),
+                              Container(
+                                padding: EdgeInsets.all(10),
+                                decoration: BoxDecoration(
+                                  border: Border(bottom: BorderSide(color: Colors.grey.shade200))
+                                ),
+                                child: TextField(
+                                  controller: passwordController,
+                                  obscureText: true,
+                                  decoration: const InputDecoration(
+                                    hintText: "Password",
+                                    hintStyle: TextStyle(color: Colors.grey),
+                                    border: InputBorder.none
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          ),
+                        )),
+                        SizedBox(height: 30,),
+                        FadeInUp(duration: Duration(milliseconds: 1500), child: Text("Forgot Password?", style: TextStyle(color: Colors.grey),)),
+                        SizedBox(height: 30,),
+                      FadeInUp(
+                          duration: Duration(milliseconds: 1600),
+                          child: MaterialButton(
+                            onPressed: signIn,
+                            height: 50,
+                            // margin: EdgeInsets.symmetric(horizontal: 50),
+                            color: Color.fromARGB(255, 28, 77, 0),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(50),
+                            ),
+                            // decoration: BoxDecoration(
+                            // ),
+                            child: const Center(
+                              child: Text(
+                                "Login",
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                            ),
+                          )),
+                      const SizedBox(
+                        height: 50,
+                      ),
+                      FadeInUp(
+                          duration: Duration(milliseconds: 1700),
+                          child: const Text(
+                            "Sign in with ",
+                            style: TextStyle(color: Colors.grey),
+                          )),
+                      const SizedBox(
+                        height: 15,
+                      ),
+                      Center(
+                  child: Row(
+                          mainAxisAlignment: MainAxisAlignment
+                              .center, // Align the Row's children to the center
+                          children: <Widget>[
+                            const SizedBox(height: 40),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                SquareTile(
+                                  onTap: () => AuthenticationService()
+                                      .signInWithGoogle(),
+                                  imagePath: 'assets/images/logos/google.png',
+                                ),
+                                const SizedBox(width: 20),
+                                SquareTile(
+                                  onTap: () {},
+                                  imagePath: 'assets/images/logos/apple.png',
+                                )
+                              ],
+                            ),
+                          ],
+                        ),
+                      )
+
+                    ],
+                  ),
+                ),
+              ),
+            )
+          ],
+        ), //closing column
       ),
     );
   }
