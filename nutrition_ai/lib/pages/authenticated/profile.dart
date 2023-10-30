@@ -91,8 +91,7 @@ class _ProfileState extends State<Profile> {
                   ],
                 );
               } else if (snapshot.hasError) {
-                print('Error: ${snapshot.error}');
-                // signOut();
+                signOut();
               } else {
                 return const CircularProgressIndicator();
               }

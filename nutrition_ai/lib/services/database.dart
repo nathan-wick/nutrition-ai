@@ -16,9 +16,14 @@ class DatabaseService {
   Future<User> createUser() async {
     final userAuthentication = firebase_auth.FirebaseAuth.instance.currentUser;
     final user = User(
-      name: userAuthentication?.displayName ?? '',
       email: userAuthentication?.email ?? '',
       photo: userAuthentication?.photoURL ?? '',
+      birthday: DateTime.now().subtract(const Duration(days: 7305)),
+      sex: 'xy',
+      height: 67,
+      weight: 150,
+      exerciseFrequency: 'moderate',
+      goal: 'maintainWeight',
     );
 
     await updateUser(user);
