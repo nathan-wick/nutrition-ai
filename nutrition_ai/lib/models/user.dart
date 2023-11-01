@@ -1,40 +1,32 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'allergy.dart';
-import 'habit.dart';
 import 'ingredient.dart';
-import 'measurement.dart';
-import 'goal.dart';
-
-enum UserSex {
-  xx,
-  xy,
-}
 
 class User {
-  final String name;
   final String email;
-  final String photo;
-  final DateTime? birthday;
-  final UserSex? sex;
-  final Measurement? height;
-  final Measurement? weight;
-  final List<Habit>? habits;
-  final Goal? goal;
-  final List<Allergy>? allergies;
-  final List<Ingredient>? approvedIngredients;
-  final List<Ingredient>? rejectedIngredients;
+  DateTime birthday;
+  String sex;
+  double heightInches;
+  double weightPounds;
+  String exerciseFrequency;
+  String goal;
+  String? name;
+  String? photo;
+  List<Allergy>? allergies;
+  List<Ingredient>? approvedIngredients;
+  List<Ingredient>? rejectedIngredients;
 
   User({
-    required this.name,
     required this.email,
-    required this.photo,
-    this.birthday,
-    this.sex,
-    this.height,
-    this.weight,
-    this.habits,
-    this.goal,
+    required this.birthday,
+    required this.sex,
+    required this.heightInches,
+    required this.weightPounds,
+    required this.exerciseFrequency,
+    required this.goal,
+    this.name,
+    this.photo,
     this.allergies,
     this.approvedIngredients,
     this.rejectedIngredients,
@@ -46,26 +38,26 @@ class User {
       'email': email,
       'photo': photo,
       'birthday': birthday,
-      'sex': sex?.toString().split('.').last,
-      'height': height?.toJson(),
-      'weight': weight?.toJson(),
-      'habits': habits?.map((habit) => habit.toJson()).toList(),
-      'goal': goal?.toJson(),
+      'sex': sex,
+      'heightInches': heightInches,
+      'weightPounds': weightPounds,
+      'exerciseFrequency': exerciseFrequency,
+      'goal': goal,
       'allergies': allergies?.map((allergy) => allergy.toJson()).toList(),
       'approvedIngredients': approvedIngredients?.map((ingredient) => ingredient.toJson()).toList(),
       'rejectedIngredients': rejectedIngredients?.map((ingredient) => ingredient.toJson()).toList(),
     };
   }
-
+  
   User.fromDocumentSnapshot(DocumentSnapshot snapshot)
     : name = snapshot['name'],
       email = snapshot['email'],
       photo = snapshot['photo'],
-      birthday = snapshot['birthday'],
+      birthday = snapshot['birthday'].toDate(),
       sex = snapshot['sex'],
-      height = snapshot['height'],
-      weight = snapshot['weight'],
-      habits = snapshot['habits'],
+      heightInches = snapshot['heightInches'],
+      weightPounds = snapshot['weightPounds'],
+      exerciseFrequency = snapshot['exerciseFrequency'],
       goal = snapshot['goal'],
       allergies = snapshot['allergies'],
       approvedIngredients = snapshot['approvedIngredients'],

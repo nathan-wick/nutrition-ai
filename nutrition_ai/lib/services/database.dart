@@ -6,15 +6,28 @@ import '../models/user.dart';
 class DatabaseService {
   final database = FirebaseFirestore.instance;
 
-  Future<User> createUser(firebase_auth.User userAuthentication) async {
+  Future<void> updateUser(User user) async {
+    final userAuthentication = firebase_auth.FirebaseAuth.instance.currentUser;
     final userReference = database.collection("users").doc(userAuthentication?.uid);
-    final user = User(
-      name: userAuthentication.displayName ?? '',
-      email: userAuthentication.email ?? '',
-      photo: userAuthentication.photoURL ?? '',
-    );
 
     await userReference.set(user.toJson(), SetOptions(merge: true));
+  }
+
+  Future<User> createUser() async {
+    final userAuthentication = firebase_auth.FirebaseAuth.instance.currentUser;
+    final user = User(
+      email: userAuthentication?.email ?? '',
+      name: userAuthentication?.displayName,
+      photo: userAuthentication?.photoURL,
+      birthday: DateTime.now().subtract(const Duration(days: 7305)),
+      sex: 'xy',
+      heightInches: 67,
+      weightPounds: 150,
+      exerciseFrequency: 'moderate',
+      goal: 'maintainWeight',
+    );
+
+    await updateUser(user);
 
     return user;
   }
@@ -27,7 +40,7 @@ class DatabaseService {
     if (userSnapshot.exists) {
       return User.fromDocumentSnapshot(userSnapshot);
     } else {
-      return await createUser(userAuthentication!);
+      return await createUser();
     }
   }
 }

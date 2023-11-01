@@ -4,12 +4,14 @@ class SelectInput extends StatefulWidget {
   final TextEditingController controller;
   final String name;
   final List<DropdownMenuItem<String>> items;
+  final String? defaultValue;
 
   const SelectInput({
     super.key,
     required this.controller,
     required this.name,
     required this.items,
+    this.defaultValue,
   });
 
   @override
@@ -17,7 +19,14 @@ class SelectInput extends StatefulWidget {
 }
 
 class _SelectInputState extends State<SelectInput> {
-  String? _dropdownValue;
+  late String _dropdownValue;
+
+  @override
+  void initState() {
+    super.initState();
+    _dropdownValue = widget.defaultValue ?? widget.items.first.value ?? '';
+    widget.controller.text = _dropdownValue;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -38,11 +47,11 @@ class _SelectInputState extends State<SelectInput> {
           ),
           const SizedBox(height: 6),
           DropdownButton<String>(
-            value: _dropdownValue ?? widget.items.first.value,
+            value: _dropdownValue,
             items: widget.items,
             onChanged: (String? value) {
               setState(() {
-                _dropdownValue = value;
+                _dropdownValue = value ?? '';
                 widget.controller.text = value ?? '';
               });
             },
