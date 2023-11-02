@@ -13,9 +13,9 @@ class Navigation extends StatefulWidget {
 
 class _NavigationState extends State<Navigation> {
   int currentIndex = 0;
-  static const pages = [
+  static final pages = [
     Recommendations(),
-    Preferences(),
+    Preferences(key: ValueKey('preferences')),
     Profile(),
   ];
 
