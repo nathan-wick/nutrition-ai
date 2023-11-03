@@ -1,8 +1,8 @@
-class Nutrient {
+class NutrientModel {
   final String name;
   final String code;
 
-  Nutrient({
+  NutrientModel({
     required this.name,
     required this.code,
   });

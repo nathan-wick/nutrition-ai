@@ -1,10 +1,10 @@
-enum MeasurementUnit { g, kcal, mg, ug, lbs, min, hr, kg, cm, ft }
+enum MeasurementModelUnit { g, kcal, mg, ug, lbs, min, hr, kg, cm, ft }
 
-class Measurement {
+class MeasurementModel {
   final double amount;
-  final MeasurementUnit unit;
+  final MeasurementModelUnit unit;
 
-  Measurement({
+  MeasurementModel({
     required this.amount,
     required this.unit,
   });
@@ -16,22 +16,22 @@ class Measurement {
     };
   }
 
-  Measurement toKg() {
-    if (unit == MeasurementUnit.lbs) {
-      return Measurement(
+  MeasurementModel toKg() {
+    if (unit == MeasurementModelUnit.lbs) {
+      return MeasurementModel(
         amount: amount * 0.453592,
-        unit: MeasurementUnit.kg,
+        unit: MeasurementModelUnit.kg,
       );
     } else {
       return this;
     }
   }
 
-  Measurement toCm() {
-    if (unit == MeasurementUnit.ft) {
-      return Measurement(
+  MeasurementModel toCm() {
+    if (unit == MeasurementModelUnit.ft) {
+      return MeasurementModel(
         amount: amount * 30.48,
-        unit: MeasurementUnit.cm,
+        unit: MeasurementModelUnit.cm,
       );
     } else {
       return this;

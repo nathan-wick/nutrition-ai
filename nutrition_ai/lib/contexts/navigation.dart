@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-import '../pages/authenticated/recommendations.dart';
-import '../pages/authenticated/preferences.dart';
-import '../pages/authenticated/profile.dart';
+import '../screens/authenticated/recommendations.dart';
+import '../screens/authenticated/preferences.dart';
+import '../screens/authenticated/profile.dart';
 
 class Navigation extends StatefulWidget {
   const Navigation({super.key});
@@ -14,15 +14,14 @@ class Navigation extends StatefulWidget {
 class _NavigationState extends State<Navigation> {
   int currentIndex = 0;
   static const pages = [
-    Recommendations(),
-    Preferences(),
-    Profile(),
+    RecommendationsScreen(),
+    PreferencesScreen(),
+    ProfileScreen(),
   ];
 
   @override
   Widget build(BuildContext context) {
     final pageController = PageController(initialPage: currentIndex);
-
     return Scaffold(
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: currentIndex,

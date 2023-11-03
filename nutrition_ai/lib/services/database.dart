@@ -6,16 +6,16 @@ import '../models/user.dart';
 class DatabaseService {
   final database = FirebaseFirestore.instance;
 
-  Future<void> updateUser(User user) async {
+  Future<void> updateUser(UserModel user) async {
     final userAuthentication = firebase_auth.FirebaseAuth.instance.currentUser;
     final userReference = database.collection("users").doc(userAuthentication?.uid);
 
     await userReference.set(user.toJson(), SetOptions(merge: true));
   }
 
-  Future<User> createUser() async {
+  Future<UserModel> createUser() async {
     final userAuthentication = firebase_auth.FirebaseAuth.instance.currentUser;
-    final user = User(
+    final user = UserModel(
       email: userAuthentication?.email ?? '',
       name: userAuthentication?.displayName,
       photo: userAuthentication?.photoURL,
@@ -32,13 +32,13 @@ class DatabaseService {
     return user;
   }
 
-  Future<User> getUser() async {
+  Future<UserModel> getUser() async {
     final userAuthentication = firebase_auth.FirebaseAuth.instance.currentUser;
     final userReference = database.collection("users").doc(userAuthentication?.uid);
     final userSnapshot = await userReference.get();
 
     if (userSnapshot.exists) {
-      return User.fromDocumentSnapshot(userSnapshot);
+      return UserModel.fromDocumentSnapshot(userSnapshot);
     } else {
       return await createUser();
     }

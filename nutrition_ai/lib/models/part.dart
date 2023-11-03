@@ -1,11 +1,11 @@
 import 'measurement.dart';
 import 'nutrient.dart';
 
-class Part {
-  final Nutrient nutrient;
-  final Measurement amount;
+class PartModel {
+  final NutrientModel nutrient;
+  final MeasurementModel amount;
 
-  Part({
+  PartModel({
     required this.nutrient,
     required this.amount,
   });

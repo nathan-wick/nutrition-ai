@@ -1,12 +1,12 @@
 import 'ingredient.dart';
 
-class Meal {
+class MealModel {
   final String name;
   final String photo;
   String? instruction;
-  List<Ingredient>? ingredients;
+  List<IngredientModel>? ingredients;
 
-  Meal({
+  MealModel({
     required this.name,
     required this.photo,
     this.instruction,
