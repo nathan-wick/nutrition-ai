@@ -1,6 +1,8 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:nutrition_ai/models/user.dart';
+import 'package:intl/intl.dart';
 
+import '../../services/database.dart';
 import '../../widgets/select_input.dart';
 import '../../contexts/authentication.dart';
 import '../../widgets/button_input.dart';
@@ -14,14 +16,40 @@ class Settings extends StatefulWidget {
 }
 
 class _SettingsState extends State<Settings> {
-  final user = FirebaseAuth.instance.currentUser!;
+  late Future<User> user;
   late final nameController = TextEditingController();
   late final weightController = TextEditingController();
   late final heightController = TextEditingController();
   late final birthdayController = TextEditingController();
   late final sexController = TextEditingController();
-  late final exerciseController = TextEditingController();
+  late final exerciseFrequencyController = TextEditingController();
   late final goalController = TextEditingController();
+
+  void exit() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => const Authentication()),
+    );
+  }
+
+  void save() async {
+    final newUser = await user;
+    newUser.name = nameController.text;
+    newUser.weightPounds = double.parse(weightController.text);
+    newUser.heightInches = double.parse(heightController.text);
+    newUser.birthday = DateTime.parse(birthdayController.text);
+    newUser.sex = sexController.text;
+    newUser.exerciseFrequency = exerciseFrequencyController.text;
+    newUser.goal = goalController.text;
+    await DatabaseService().updateUser(newUser);
+    exit();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    user = DatabaseService().getUser();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -32,109 +60,124 @@ class _SettingsState extends State<Settings> {
       ),
       body: SafeArea(
         child: SingleChildScrollView(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              const SizedBox(height: 40),
-              ButtonInput(
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => const Authentication()),
-                  );
-                },
-                icon: Icons.arrow_back,
-                message: 'Save and Exit',
-                theme: ButtonInputTheme.primary,
-              ),
-              const SizedBox(height: 40),
-              TextInput(
-                controller: nameController,
-                name: 'Name',
-              ),
-              const SizedBox(height: 20),
-              // TODO: Update TextInput with option to be numbers only
-              TextInput(
-                controller: weightController,
-                name: 'Weight (lbs)',
-              ),
-              const SizedBox(height: 20),
-              TextInput(
-                controller: heightController,
-                name: 'Height (in)',
-              ),
-              const SizedBox(height: 20),
-              // TODO: Create a new widget for date input
-              TextInput(
-                controller: birthdayController,
-                name: 'Birthday',
-              ),
-              const SizedBox(height: 20),
-              SelectInput(
-                controller: sexController,
-                name: 'Sex',
-                items: const [
-                  DropdownMenuItem(
-                    value: 'xy',
-                    child: Text('Male'),
-                  ),
-                  DropdownMenuItem(
-                    value: 'xx',
-                    child: Text('Female'),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 20),
-              SelectInput(
-                controller: exerciseController,
-                name: 'Exercise Frequency',
-                items: const [
-                  DropdownMenuItem(
-                    value: 'none',
-                    child: Text('Never'),
-                  ),
-                  DropdownMenuItem(
-                    value: 'light',
-                    child: Text('1-2 Times Per Week'),
-                  ),
-                  DropdownMenuItem(
-                    value: 'moderate',
-                    child: Text('3-6 Times Per Week'),
-                  ),
-                  DropdownMenuItem(
-                    value: 'very',
-                    child: Text('1 Time Per Day'),
-                  ),
-                  DropdownMenuItem(
-                    value: 'extra',
-                    child: Text('2+ Times Per Day'),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 20),
-              SelectInput(
-                controller: exerciseController,
-                name: 'Goal',
-                items: const [
-                  DropdownMenuItem(
-                    value: 'loseWeight',
-                    child: Text('Lose Weight'),
-                  ),
-                  DropdownMenuItem(
-                    value: 'maintainWeight',
-                    child: Text('Maintain Weight'),
-                  ),
-                  DropdownMenuItem(
-                    value: 'gainWeight',
-                    child: Text('Gain Weight'),
-                  ),
-                  DropdownMenuItem(
-                    value: 'gainMuscle',
-                    child: Text('Gain Muscle'),
-                  ),
-                ],
-              ),
-            ],
+          child: FutureBuilder<User>(
+            future: user,
+            builder: (BuildContext context, AsyncSnapshot<User> snapshot) {
+              if (snapshot.hasData) {
+                return Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    const SizedBox(height: 40),
+                    ButtonInput(
+                      onTap: save,
+                      icon: Icons.arrow_back,
+                      message: 'Save and Exit',
+                      theme: ButtonInputTheme.primary,
+                    ),
+                    const SizedBox(height: 40),
+                    TextInput(
+                      controller: nameController,
+                      defaultValue: snapshot.data?.name,
+                      name: 'Name',
+                    ),
+                    const SizedBox(height: 20),
+                    // TODO: Update TextInput with option to be numbers only
+                    TextInput(
+                      controller: weightController,
+                      defaultValue: snapshot.data?.weightPounds.toString(),
+                      name: 'Weight (pounds)',
+                    ),
+                    const SizedBox(height: 20),
+                    // TODO: Update TextInput with option to be numbers only
+                    TextInput(
+                      controller: heightController,
+                      defaultValue: snapshot.data?.heightInches.toString(),
+                      name: 'Height (inches)',
+                    ),
+                    const SizedBox(height: 20),
+                    // TODO: Create a new widget for date input
+                    TextInput(
+                      controller: birthdayController,
+                      defaultValue: DateFormat('yyyy-mm-dd').format(snapshot.data?.birthday ?? DateTime.now()),
+                      name: 'Birthday (yyyy-mm-dd)',
+                    ),
+                    const SizedBox(height: 20),
+                    SelectInput(
+                      controller: sexController,
+                      defaultValue: snapshot.data?.sex.toString(),
+                      name: 'Sex',
+                      items: const [
+                        DropdownMenuItem(
+                          value: 'xy',
+                          child: Text('Male'),
+                        ),
+                        DropdownMenuItem(
+                          value: 'xx',
+                          child: Text('Female'),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 20),
+                    SelectInput(
+                      controller: exerciseFrequencyController,
+                      defaultValue: snapshot.data?.exerciseFrequency.toString(),
+                      name: 'Exercise Frequency',
+                      items: const [
+                        DropdownMenuItem(
+                          value: 'none',
+                          child: Text('Never'),
+                        ),
+                        DropdownMenuItem(
+                          value: 'light',
+                          child: Text('1-2 Times Per Week'),
+                        ),
+                        DropdownMenuItem(
+                          value: 'moderate',
+                          child: Text('3-6 Times Per Week'),
+                        ),
+                        DropdownMenuItem(
+                          value: 'very',
+                          child: Text('1 Time Per Day'),
+                        ),
+                        DropdownMenuItem(
+                          value: 'extra',
+                          child: Text('2+ Times Per Day'),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 20),
+                    SelectInput(
+                      controller: goalController,
+                      defaultValue: snapshot.data?.goal.toString(),
+                      name: 'Goal',
+                      items: const [
+                        DropdownMenuItem(
+                          value: 'loseWeight',
+                          child: Text('Lose Weight'),
+                        ),
+                        DropdownMenuItem(
+                          value: 'maintainWeight',
+                          child: Text('Maintain Weight'),
+                        ),
+                        DropdownMenuItem(
+                          value: 'gainWeight',
+                          child: Text('Gain Weight'),
+                        ),
+                        DropdownMenuItem(
+                          value: 'gainMuscle',
+                          child: Text('Gain Muscle'),
+                        ),
+                      ],
+                    ),
+                  ],
+                );
+              } else if (snapshot.hasError) {
+                exit();
+              } else {
+                return const CircularProgressIndicator();
+              }
+              return Container();
+            },
           ),
         ),
       ),
