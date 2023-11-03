@@ -75,6 +75,7 @@ Socials: [LinkedIn](https://www.linkedin.com/in/emilee-schweitzer-864a00194/), [
     * Press `Enter` to run the command
     * Type the command `git push`
     * Press `Enter` to run the command
+
 2. Create a pull request
     * Open [Pull Requests](https://github.com/nathan-wick/nutrition-ai/pulls)
     * Press `New pull request`
@@ -84,6 +85,7 @@ Socials: [LinkedIn](https://www.linkedin.com/in/emilee-schweitzer-864a00194/), [
     * Request review from at least one other teammate
     * Assign yourself to the pull request
     * Submit the pull request
+
 3. Update the Project Board
     * Open [Project Board](https://github.com/users/nathan-wick/projects/3/views/1)
     * Find the issue you worked on from the `In progress` column
