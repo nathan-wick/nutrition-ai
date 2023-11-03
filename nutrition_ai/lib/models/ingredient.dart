@@ -1,12 +1,12 @@
 import 'measurement.dart';
 import 'part.dart';
 
-class Ingredient {
+class IngredientModel {
   final String name;
   final String amount;
-  final List<Part>? parts;
+  final List<PartModel>? parts;
 
-  Ingredient({
+  IngredientModel({
     required this.name,
     required this.amount,
     this.parts,

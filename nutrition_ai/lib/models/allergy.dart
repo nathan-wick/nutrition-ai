@@ -1,10 +1,10 @@
 import 'ingredient.dart';
 
-class Allergy {
+class AllergyModel {
   final String name;
-  final List<Ingredient> relatedIngredients;
+  final List<IngredientModel> relatedIngredients;
 
-  Allergy({
+  AllergyModel({
     required this.name,
     required this.relatedIngredients,
   });
