@@ -70,7 +70,7 @@ class _SignInScreenState extends State<SignInScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     FadeInUp(
-                      duration: const Duration(milliseconds: 1000),
+                      duration: const Duration(milliseconds: 400),
                       child: const Text(
                         "Login",
                         style: TextStyle(
@@ -83,7 +83,7 @@ class _SignInScreenState extends State<SignInScreen> {
                       height: 5,
                     ),
                     FadeInUp(
-                      duration: const Duration(milliseconds: 1300),
+                      duration: const Duration(milliseconds: 800),
                       child: const Text(
                         "Welcome Back",
                         style: TextStyle(
@@ -109,7 +109,7 @@ class _SignInScreenState extends State<SignInScreen> {
                         height: 10,
                       ),
                       FadeInUp(
-                          duration: const Duration(milliseconds: 1400),
+                          duration: const Duration(milliseconds: 1000),
                           child: Container(
                             decoration: BoxDecoration(
                                 color: Colors.white,
@@ -162,7 +162,7 @@ class _SignInScreenState extends State<SignInScreen> {
                         height: 30,
                       ),
                       FadeInUp(
-                          duration: const Duration(milliseconds: 1500),
+                          duration: const Duration(milliseconds: 1000),
                           child: const Text(
                             "Forgot Password?",
                             style: TextStyle(color: Colors.grey),
@@ -171,7 +171,7 @@ class _SignInScreenState extends State<SignInScreen> {
                         height: 30,
                       ),
                       FadeInUp(
-                          duration: const Duration(milliseconds: 1600),
+                          duration: const Duration(milliseconds: 1000),
                           child: MaterialButton(
                             onPressed: signIn,
                             height: 50,
@@ -192,7 +192,7 @@ class _SignInScreenState extends State<SignInScreen> {
                         height: 50,
                       ),
                       FadeInUp(
-                          duration: const Duration(milliseconds: 1700),
+                          duration: const Duration(milliseconds: 1000),
                           child: const Text(
                             "Sign in with ",
                             style: TextStyle(color: Colors.grey),
@@ -217,12 +217,12 @@ class _SignInScreenState extends State<SignInScreen> {
                                 SquareTile(
                                   onTap: () {},
                                   imagePath: 'assets/images/logos/apple.png',
-                                )
+                                ),
                               ],
                             ),
                           ],
                         ),
-                      )
+                      ),
                     ],
                   ),
                 ),
