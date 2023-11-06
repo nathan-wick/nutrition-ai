@@ -90,15 +90,19 @@ class _SettingsScreenState extends State<SettingsScreen> {
               // TODO: Create a new widget for date input
               TextInput(
                 controller: birthdayController,
-                defaultValue: DateFormat('yyyy-mm-dd').format(user.birthday),
+                defaultValue: DateFormat('yyyy-M-dd').format(user.birthday),
                 name: 'Birthday (yyyy-mm-dd)',
               ),
               const SizedBox(height: 20),
               SelectInput(
                 controller: sexController,
-                defaultValue: user.sex.toString(),
+                defaultValue: (user.sex ?? '').isNotEmpty ? user.sex : 'none',
                 name: 'Sex',
                 items: const [
+                  DropdownMenuItem(
+                    value: 'none',
+                    child: Text('N/A'),
+                  ),
                   DropdownMenuItem(
                     value: 'xy',
                     child: Text('Male'),
@@ -112,7 +116,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               const SizedBox(height: 20),
               SelectInput(
                 controller: exerciseFrequencyController,
-                defaultValue: user.exerciseFrequency.toString(),
+                defaultValue: (user.exerciseFrequency).isNotEmpty ? user.exerciseFrequency : 'none',
                 name: 'Exercise Frequency',
                 items: const [
                   DropdownMenuItem(
@@ -140,9 +144,13 @@ class _SettingsScreenState extends State<SettingsScreen> {
               const SizedBox(height: 20),
               SelectInput(
                 controller: goalController,
-                defaultValue: user.goal.toString(),
+                defaultValue: (user.goal).isNotEmpty ? user.goal : 'none',
                 name: 'Goal',
                 items: const [
+                  DropdownMenuItem(
+                    value: 'none',
+                    child: Text('No Goal'),
+                  ),
                   DropdownMenuItem(
                     value: 'loseWeight',
                     child: Text('Lose Weight'),
