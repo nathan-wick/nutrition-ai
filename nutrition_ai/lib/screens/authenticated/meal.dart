@@ -78,7 +78,7 @@ class MealScreen extends StatelessWidget {
                                   if (meal.ingredients != null)
                                     for (var ingredient in meal.ingredients!)
                                       Text(
-                                          "• ${ingredient.name} - ${ingredient.amount}"),
+                                          "• ${ingredient.amount} - ${ingredient.name}"),
                                 ],
                               ),
                             ],
@@ -97,12 +97,10 @@ class MealScreen extends StatelessWidget {
                               const Text(
                                 "Instructions:",
                                 style: TextStyle(
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.bold),
+                                    fontSize: 20, fontWeight: FontWeight.bold),
                               ),
                               const SizedBox(height: 8.0),
-                              Text(meal.instruction ??
-                                  "No instructions found"),
+                              Text(meal.instruction ?? "No instructions found"),
                             ],
                           ),
                         ),
