@@ -96,20 +96,16 @@ class _SettingsScreenState extends State<SettingsScreen> {
               const SizedBox(height: 20),
               SelectInput(
                 controller: sexController,
-                defaultValue: (user.sex ?? '').isNotEmpty ? user.sex : 'none',
+                defaultValue: (user.sex ?? '').isNotEmpty ? user.sex : 'XX',
                 name: 'Sex',
                 items: const [
                   DropdownMenuItem(
-                    value: 'none',
-                    child: Text('N/A'),
-                  ),
-                  DropdownMenuItem(
-                    value: 'xy',
-                    child: Text('Male'),
-                  ),
-                  DropdownMenuItem(
-                    value: 'xx',
+                    value: 'XX',
                     child: Text('Female'),
+                  ),
+                  DropdownMenuItem(
+                    value: 'XY',
+                    child: Text('Male'),
                   ),
                 ],
               ),
