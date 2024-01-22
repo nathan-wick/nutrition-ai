@@ -17,6 +17,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
     final UserModel user = Provider.of<UserModel>(context);
+    var gridTexts=['${user.weightPounds}','${user.heightInches}','${user.exerciseFrequency}','${user.sex}','${user.birthday}','${user.goal}'];
+    // var gridTexts=['50kg','6ft','highly active','Male','1990-12-20','Lose Weight'];
     return Scaffold(
       body: SingleChildScrollView(
         child: Container(
@@ -26,7 +28,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               begin: Alignment.topCenter,
               colors: [
                 Color.fromARGB(255, 189, 226, 130),
-                Color.fromARGB(255, 220, 236, 195),
+                Color.fromARGB(255, 192, 208, 168),
                 Color.fromARGB(9, 227, 222, 79),
               ],
             ),
@@ -35,7 +37,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               const SizedBox(
-                height: 80,
+                height: 30,
               ),
               Padding(
                 padding: const EdgeInsets.all(20),
@@ -44,12 +46,38 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   children: <Widget>[
                     FadeInUp(
                       duration: const Duration(milliseconds: 400),
-                      child: const Text(
-                        "My Profile",
-                        style: TextStyle(
-                            color: Color.fromARGB(255, 28, 77, 0),
-                            fontSize: 30,
-                            fontWeight: FontWeight.w500),
+                      child: Column(
+                        children: [
+                          Row(
+                            // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              IconButton(
+                                onPressed: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          const SettingsScreen(),
+                                    ),
+                                  );
+                                },
+                                icon: Icon(Icons.settings),
+                                tooltip: 'Settings',
+                              ),
+                            ],
+                          ),
+                          const Align(
+                            alignment: Alignment.centerLeft,
+                            child: Text(
+                              " My Profile",
+                              style: TextStyle(
+                                color: Color.fromARGB(255, 28, 77, 0),
+                                fontSize: 30,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
                     ),
                     const SizedBox(
@@ -59,11 +87,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       children: [
                         SizedBox(height: 20),
                         Container(
-                          decoration: BoxDecoration(
+                          decoration: const BoxDecoration(
                               color: Colors.white,
                               borderRadius:
                                   BorderRadius.all(Radius.circular(20)),
-                              boxShadow: const [
+                              boxShadow: [
                                 BoxShadow(
                                     color: Color.fromRGBO(13, 131, 78, 0.298),
                                     blurRadius: 20,
@@ -71,8 +99,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               ]),
                           child: Column(
                             children: [
-                              SizedBox(
-                                  height: 20), // Adjust the height as needed
+                              const SizedBox(height: 20), // Adjust the height as needed
                               Center(
                                 child: Image.network(
                                   user.photo ?? '',
@@ -88,7 +115,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   },
                                 ),
                               ),
-                              SizedBox(height: 10),
+                              const SizedBox(height: 10),
                               Center(
                                 child: Text(
                                   "Welcome ${user.name?.split(' ')[0] ?? ''}",
@@ -99,8 +126,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   ),
                                 ),
                               ),
-                              SizedBox(
-                                  height: 20), // Adjust the height as needed
+                              const SizedBox(height: 2),
+                               Center(
+                                child: Text(
+                                  "${user.email}",
+                                  style: const TextStyle(
+                                    color: Color.fromARGB(255, 100, 100, 100),
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.w400,
+                                  ),
+                                ),
+                              ),
+                               const SizedBox(height:20),
                             ],
                           ),
                         ),
@@ -110,75 +147,73 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 ),
               ),
               SingleChildScrollView(
-  child: Column(
-    children: <Widget>[
-      const SizedBox(height: 5),
-      Container(
-        // decoration: const BoxDecoration(
-        //   color: Color.fromARGB(255, 255, 255, 255),
-        //   borderRadius: BorderRadius.only(
-        //     topLeft: Radius.circular(60),
-        //     topRight: Radius.circular(60),
-        //   ),
-        //   boxShadow: [
-        //     BoxShadow(
-        //       color: Color.fromRGBO(13, 131, 78, 0.298),
-        //       blurRadius: 20,
-        //       offset: Offset(0, 10),
-        //     ),
-        //   ],
-        // ),
-        child: Padding(
-          padding: const EdgeInsets.symmetric(
-            horizontal: 15, // Adjust horizontal padding
-            vertical: 10,   // Adjust vertical padding
-          ),
-          child: Column(
-            children: <Widget>[
-              const SizedBox(
-                height: 5,
-              ),
-              FadeInUp(
-                duration: const Duration(milliseconds: 1000),
-                child: Container(
-                  child: GridView.builder(
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 3,
-                      crossAxisSpacing: 8.0, // Adjust the spacing between columns
-                      mainAxisSpacing: 8.0, // Adjust the spacing between rows
-                    ),
-                    shrinkWrap: true, // Ensure the GridView takes only the required space
-                    physics: NeverScrollableScrollPhysics(),
-                    itemCount: 6,
-                    itemBuilder: (BuildContext context, int index) {
-                      return Container(
-                        decoration: BoxDecoration(
-                          color: Color.fromARGB(255, 243, 242, 242), // Set the color of grid items
-                          borderRadius: BorderRadius.circular(10), // Set border radius
-                           boxShadow: [
-                            BoxShadow(
-                              color: Color.fromRGBO(13, 131, 78, 0.298),
-                              blurRadius: 20,
-                              offset: Offset(0, 10),
+                child: Column(
+                  children: <Widget>[
+                    Container(
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 10, // Adjust horizontal padding
+                          vertical: 15, // Adjust vertical padding
+                        ),
+                        child: Column(
+                          children: <Widget>[
+                            const SizedBox(height:1),
+                            FadeInUp(
+                              duration: const Duration(milliseconds: 1000),
+                              child: GridView.builder(
+                                gridDelegate:
+                                    const SliverGridDelegateWithFixedCrossAxisCount(
+                                  crossAxisCount: 3,
+                                  crossAxisSpacing:8.0, // Adjust the spacing between columns
+                                  mainAxisSpacing: 8.0, // Adjust the spacing between rows
+                                ),
+                                shrinkWrap:true, // Ensure the GridView takes only the required space
+                                physics: NeverScrollableScrollPhysics(),
+                                itemCount: 6,
+                                itemBuilder: (BuildContext context, int index) {
+                                  return Container(
+                                    decoration: BoxDecoration(
+                                      color: const Color.fromARGB(255, 243, 242,242), // Set the color of grid items
+                                      borderRadius: BorderRadius.circular(10), // Set border radius
+                                      boxShadow: const [
+                                        BoxShadow(
+                                          color: Color.fromRGBO(13, 131, 78, 0.298),
+                                          blurRadius: 20,
+                                          offset: Offset(0, 10),
+                                        ),
+                                      ],
+                                    ),
+                                    child: Center(
+                                      child: Text(
+                                       gridTexts[index], // Replace this with your text content
+                                        style: const TextStyle(
+                                          color: Color.fromARGB(255, 38, 58, 43),
+                                        ),
+                                      ),
+                                    ),
+                                  );
+                                },
+                                
+                              ),
                             ),
+                            // ),
+                            const SizedBox(height: 30),
+                                       ButtonInput(
+                                         onTap: () {
+                                           FirebaseAuth.instance.signOut();
+                                         },
+                                         icon: Icons.arrow_back,
+                                         message: 'Sign Out',
+                                         theme: ButtonInputTheme.secondary,
+                                       ),
+                            const SizedBox(height: 5),
                           ],
                         ),
-                        child: Center(
-                          child: Text('$index', style: TextStyle(color: Color.fromARGB(255, 38, 58, 43))),
-                        ),
-                      );
-                    },
-                  ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
-            ],
-          ),
-        ),
-      ),
-    ],
-  ),
-),
-
             ],
           ),
         ),
