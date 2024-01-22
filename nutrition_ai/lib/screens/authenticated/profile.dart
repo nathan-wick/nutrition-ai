@@ -213,7 +213,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                           fontWeight: FontWeight
                                               .bold, // or FontWeight.bold for bold
                                           fontSize:
-                                              16, // Adjust the font size as needed
+                                              14, // Adjust the font size as needed
                                         ),
                                         textAlign:
                                             TextAlign.center, // Center the text
