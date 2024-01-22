@@ -24,7 +24,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       '${user.sex}\nsex',
       '${user.allergies}\nallergies',
       '${user.goal}\ngoal',
-    ]; // var gridTexts=['50kg','6ft','highly active','Male','1990-12-20','Lose Weight'];
+    ];
     return Scaffold(
       body: SingleChildScrollView(
         child: Container(
@@ -33,9 +33,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
             gradient: LinearGradient(
               begin: Alignment.topCenter,
               colors: [
-                Color.fromARGB(255, 189, 226, 130),
-                Color.fromARGB(255, 192, 208, 168),
-                Color.fromARGB(9, 227, 222, 79),
+                Color.fromARGB(255, 90, 60, 212),
+                Color.fromARGB(255, 189, 173, 254),
+                Color.fromARGB(8, 229, 182, 245),
               ],
             ),
           ),
@@ -54,32 +54,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       duration: const Duration(milliseconds: 400),
                       child: Column(
                         children: [
-                          Row(
-                            // mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              IconButton(
-                                onPressed: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) =>
-                                          const SettingsScreen(),
-                                    ),
-                                  );
-                                },
-                                icon: Icon(Icons.settings),
-                                tooltip: 'Settings',
-                              ),
-                            ],
-                          ),
+                          const SizedBox(height: 30),
                           const Align(
                             alignment: Alignment.centerLeft,
                             child: Text(
                               " My Profile",
                               style: TextStyle(
-                                color: Color.fromARGB(255, 28, 77, 0),
+                                color: Color.fromARGB(255, 253, 255, 252),
                                 fontSize: 30,
-                                fontWeight: FontWeight.w500,
+                                fontFamily:'Poppins',
+                                fontWeight: FontWeight.w600,
                               ),
                             ),
                           ),
@@ -94,15 +78,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         SizedBox(height: 20),
                         Container(
                           decoration: const BoxDecoration(
-                              color: Colors.white,
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(20)),
-                              boxShadow: [
-                                BoxShadow(
-                                    color: Color.fromRGBO(13, 131, 78, 0.298),
-                                    blurRadius: 20,
-                                    offset: Offset(0, 10))
-                              ]),
+                            color: Colors.white,
+                            borderRadius: BorderRadius.all(Radius.circular(20)),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Color.fromRGBO(13, 131, 78, 0.298),
+                                blurRadius: 20,
+                                offset: Offset(0, 10),
+                              ),
+                            ],
+                          ),
                           child: Column(
                             children: [
                               const SizedBox(
@@ -123,28 +108,49 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 ),
                               ),
                               const SizedBox(height: 10),
-                              Center(
-                                child: Text(
-                                  "Welcome ${user.name?.split(' ')[0] ?? ''}",
-                                  style: const TextStyle(
-                                    color: Color.fromARGB(255, 28, 77, 0),
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.w400,
-                                  ),
-                                ),
-                              ),
-                              const SizedBox(height: 2),
-                              Center(
-                                child: Text(
-                                  "${user.email}",
-                                  style: const TextStyle(
-                                    color: Color.fromARGB(255, 100, 100, 100),
-                                    fontSize: 15,
-                                    fontWeight: FontWeight.w400,
-                                  ),
+                              Align(
+                                alignment: Alignment.center,
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      "Welcome ${user.name?.split(' ')[0] ?? ''}",
+                                      style: const TextStyle(
+                                        color: Color.fromARGB(255, 90, 60, 212),
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.w400,
+                                      ),
+                                    ),
+                                    const SizedBox(height: 2),
+                                    Text(
+                                      "${user.email}",
+                                      style: const TextStyle(
+                                        color:
+                                            Color.fromARGB(255, 100, 100, 100),
+                                        fontSize: 15,
+                                        fontWeight: FontWeight.w400,
+                                      ),
+                                    ),
+                                  ],
                                 ),
                               ),
                               const SizedBox(height: 20),
+                              Align(
+                                alignment: Alignment.centerLeft,
+                                child: IconButton(
+                                  onPressed: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            const SettingsScreen(),
+                                      ),
+                                    );
+                                  },
+                                  icon: const Icon(Icons.settings),
+                                  tooltip: 'Settings',
+                                ),
+                              ),
                             ],
                           ),
                         ),
@@ -160,7 +166,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       child: Padding(
                         padding: const EdgeInsets.symmetric(
                           horizontal: 10, // Adjust horizontal padding
-                          vertical: 15, // Adjust vertical padding
+                          vertical: 0, // Adjust vertical padding
                         ),
                         child: Column(
                           children: <Widget>[
@@ -189,8 +195,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                           10), // Set border radius
                                       boxShadow: const [
                                         BoxShadow(
-                                          color: Color.fromRGBO(
-                                              13, 131, 78, 0.298),
+                                          color: Color.fromARGB(
+                                              255, 216, 207, 255),
                                           blurRadius: 20,
                                           offset: Offset(0, 10),
                                         ),
@@ -200,10 +206,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                       child: Text(
                                         gridTexts[
                                             index], // Replace this with your text content
-                                        style: const TextStyle(
+                                        style: TextStyle(
                                           color:
                                               Color.fromARGB(255, 38, 58, 43),
+                                          fontFamily:
+                                              'Poppins', // Use the Poppins font
+                                          fontWeight: FontWeight
+                                              .normal, // or FontWeight.bold for bold
+                                          fontSize:
+                                              16, // Adjust the font size as needed
                                         ),
+                                        textAlign:
+                                            TextAlign.center, // Center the text
                                       ),
                                     ),
                                   );
@@ -218,7 +232,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               },
                               icon: Icons.arrow_back,
                               message: 'Sign Out',
-                              theme: ButtonInputTheme.secondary,
+                              theme: ButtonInputTheme.primary,
                             ),
                             const SizedBox(height: 5),
                           ],
