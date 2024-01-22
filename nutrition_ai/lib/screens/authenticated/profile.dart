@@ -33,9 +33,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
             gradient: LinearGradient(
               begin: Alignment.topCenter,
               colors: [
-                Color.fromARGB(255, 90, 60, 212),
-                Color.fromARGB(255, 189, 173, 254),
-                Color.fromARGB(8, 229, 182, 245),
+                Color.fromARGB(255, 235, 255, 202),
+               Color.fromARGB(255, 235, 255, 202),
+                Color.fromARGB(10, 255, 150, 300),
               ],
             ),
           ),
@@ -60,7 +60,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             child: Text(
                               " My Profile",
                               style: TextStyle(
-                                color: Color.fromARGB(255, 253, 255, 252),
+                                color: const Color.fromARGB(255, 28, 77, 0),
                                 fontSize: 30,
                                 fontFamily:'Poppins',
                                 fontWeight: FontWeight.w600,
@@ -116,9 +116,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     Text(
                                       "Welcome ${user.name?.split(' ')[0] ?? ''}",
                                       style: const TextStyle(
-                                        color: Color.fromARGB(255, 90, 60, 212),
+                                        color: const Color.fromARGB(255, 28, 77, 0),
                                         fontSize: 18,
-                                        fontWeight: FontWeight.w400,
+                                        fontWeight: FontWeight.w600,
                                       ),
                                     ),
                                     const SizedBox(height: 2),
@@ -195,8 +195,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                           10), // Set border radius
                                       boxShadow: const [
                                         BoxShadow(
-                                          color: Color.fromARGB(
-                                              255, 216, 207, 255),
+                                          color: Color.fromRGBO(13, 131, 78, 0.298),
                                           blurRadius: 20,
                                           offset: Offset(0, 10),
                                         ),
@@ -232,7 +231,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               },
                               icon: Icons.arrow_back,
                               message: 'Sign Out',
-                              theme: ButtonInputTheme.primary,
+                              theme: ButtonInputTheme.secondary,
                             ),
                             const SizedBox(height: 5),
                           ],
