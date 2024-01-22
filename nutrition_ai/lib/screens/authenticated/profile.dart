@@ -211,7 +211,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                           fontFamily:
                                               'Poppins', // Use the Poppins font
                                           fontWeight: FontWeight
-                                              .normal, // or FontWeight.bold for bold
+                                              .bold, // or FontWeight.bold for bold
                                           fontSize:
                                               16, // Adjust the font size as needed
                                         ),
