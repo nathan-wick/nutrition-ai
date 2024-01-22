@@ -17,8 +17,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
     final UserModel user = Provider.of<UserModel>(context);
-    var gridTexts=['${user.weightPounds}','${user.heightInches}','${user.exerciseFrequency}','${user.sex}','${user.birthday}','${user.goal}'];
-    // var gridTexts=['50kg','6ft','highly active','Male','1990-12-20','Lose Weight'];
+    var gridTexts = [
+      '${user.weightPounds}\nweight',
+      '${user.heightInches}\nheight',
+      '${user.exerciseFrequency}\nactive',
+      '${user.sex}\nsex',
+      '${user.allergies}\nallergies',
+      '${user.goal}\ngoal',
+    ]; // var gridTexts=['50kg','6ft','highly active','Male','1990-12-20','Lose Weight'];
     return Scaffold(
       body: SingleChildScrollView(
         child: Container(
@@ -99,7 +105,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               ]),
                           child: Column(
                             children: [
-                              const SizedBox(height: 20), // Adjust the height as needed
+                              const SizedBox(
+                                  height: 20), // Adjust the height as needed
                               Center(
                                 child: Image.network(
                                   user.photo ?? '',
@@ -127,7 +134,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 ),
                               ),
                               const SizedBox(height: 2),
-                               Center(
+                              Center(
                                 child: Text(
                                   "${user.email}",
                                   style: const TextStyle(
@@ -137,7 +144,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   ),
                                 ),
                               ),
-                               const SizedBox(height:20),
+                              const SizedBox(height: 20),
                             ],
                           ),
                         ),
@@ -157,27 +164,33 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         ),
                         child: Column(
                           children: <Widget>[
-                            const SizedBox(height:1),
+                            const SizedBox(height: 1),
                             FadeInUp(
                               duration: const Duration(milliseconds: 1000),
                               child: GridView.builder(
                                 gridDelegate:
                                     const SliverGridDelegateWithFixedCrossAxisCount(
                                   crossAxisCount: 3,
-                                  crossAxisSpacing:8.0, // Adjust the spacing between columns
-                                  mainAxisSpacing: 8.0, // Adjust the spacing between rows
+                                  crossAxisSpacing:
+                                      8.0, // Adjust the spacing between columns
+                                  mainAxisSpacing:
+                                      8.0, // Adjust the spacing between rows
                                 ),
-                                shrinkWrap:true, // Ensure the GridView takes only the required space
+                                shrinkWrap:
+                                    true, // Ensure the GridView takes only the required space
                                 physics: NeverScrollableScrollPhysics(),
                                 itemCount: 6,
                                 itemBuilder: (BuildContext context, int index) {
                                   return Container(
                                     decoration: BoxDecoration(
-                                      color: const Color.fromARGB(255, 243, 242,242), // Set the color of grid items
-                                      borderRadius: BorderRadius.circular(10), // Set border radius
+                                      color: const Color.fromARGB(255, 243, 242,
+                                          242), // Set the color of grid items
+                                      borderRadius: BorderRadius.circular(
+                                          10), // Set border radius
                                       boxShadow: const [
                                         BoxShadow(
-                                          color: Color.fromRGBO(13, 131, 78, 0.298),
+                                          color: Color.fromRGBO(
+                                              13, 131, 78, 0.298),
                                           blurRadius: 20,
                                           offset: Offset(0, 10),
                                         ),
@@ -185,27 +198,28 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     ),
                                     child: Center(
                                       child: Text(
-                                       gridTexts[index], // Replace this with your text content
+                                        gridTexts[
+                                            index], // Replace this with your text content
                                         style: const TextStyle(
-                                          color: Color.fromARGB(255, 38, 58, 43),
+                                          color:
+                                              Color.fromARGB(255, 38, 58, 43),
                                         ),
                                       ),
                                     ),
                                   );
                                 },
-                                
                               ),
                             ),
                             // ),
                             const SizedBox(height: 30),
-                                       ButtonInput(
-                                         onTap: () {
-                                           FirebaseAuth.instance.signOut();
-                                         },
-                                         icon: Icons.arrow_back,
-                                         message: 'Sign Out',
-                                         theme: ButtonInputTheme.secondary,
-                                       ),
+                            ButtonInput(
+                              onTap: () {
+                                FirebaseAuth.instance.signOut();
+                              },
+                              icon: Icons.arrow_back,
+                              message: 'Sign Out',
+                              theme: ButtonInputTheme.secondary,
+                            ),
                             const SizedBox(height: 5),
                           ],
                         ),
