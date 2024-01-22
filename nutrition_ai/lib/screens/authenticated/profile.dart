@@ -55,99 +55,130 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     const SizedBox(
                       height: 5,
                     ),
-                    const SizedBox(height: 40),
-                    Center(
-                    child: Image.network(
-                      user.photo ?? '',
-                      width: 100,
-                      height: 100,
-                      errorBuilder: (BuildContext context, Object exception,
-                          StackTrace? stackTrace) {
-                        return const Icon(
-                          Icons.account_circle,
-                          size: 100,
-                        );
-                      },
-                    ),
-                ),
-                    const SizedBox(height: 10),
-                    Center(
-                    child:Text(
-                       "Welcome ${user.name?.split(' ')[0] ?? ''}",
-                      style: const TextStyle(
-                        color: Color.fromARGB(255, 28, 77, 0),
-                        fontSize: 18,
-                        fontWeight: FontWeight.w400,
-                      ),
-                    ),
+                    Column(
+                      children: [
+                        SizedBox(height: 20),
+                        Container(
+                          decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(20)),
+                              boxShadow: const [
+                                BoxShadow(
+                                    color: Color.fromRGBO(13, 131, 78, 0.298),
+                                    blurRadius: 20,
+                                    offset: Offset(0, 10))
+                              ]),
+                          child: Column(
+                            children: [
+                              SizedBox(
+                                  height: 20), // Adjust the height as needed
+                              Center(
+                                child: Image.network(
+                                  user.photo ?? '',
+                                  width: 100,
+                                  height: 100,
+                                  errorBuilder: (BuildContext context,
+                                      Object exception,
+                                      StackTrace? stackTrace) {
+                                    return const Icon(
+                                      Icons.account_circle,
+                                      size: 100,
+                                    );
+                                  },
+                                ),
+                              ),
+                              SizedBox(height: 10),
+                              Center(
+                                child: Text(
+                                  "Welcome ${user.name?.split(' ')[0] ?? ''}",
+                                  style: const TextStyle(
+                                    color: Color.fromARGB(255, 28, 77, 0),
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.w400,
+                                  ),
+                                ),
+                              ),
+                              SizedBox(
+                                  height: 20), // Adjust the height as needed
+                            ],
+                          ),
+                        ),
+                      ],
                     ),
                   ],
                 ),
               ),
-              const SizedBox(height: 50),
-              Container(
-                decoration: const BoxDecoration(
-                    color: Color.fromARGB(255, 255, 255, 255),
-                    borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(60),
-                        topRight: Radius.circular(60))),
-                child: Padding(
-                  padding: const EdgeInsets.all(30),
-                  child: Column(
-                    children: <Widget>[
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      FadeInUp(
-                        duration: const Duration(milliseconds: 1000),
-                        child: Container(
-                          child: SingleChildScrollView(
-                            child: Column(
-                              children: <Widget>[
-                                Container(
-                                  padding: const EdgeInsets.all(10),
-                                  child: Center(
-                                    child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      children: [
-                                        const SizedBox(height: 20),
-                                        ButtonInput(
-                                          onTap: () {
-                                            Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                builder: (context) =>
-                                                    const SettingsScreen(),
-                                              ),
-                                            );
-                                          },
-                                          icon: Icons.settings,
-                                          message: 'Settings',
-                                          theme: ButtonInputTheme.primary,
-                                        ),
-                                        const SizedBox(height: 20),
-                                        ButtonInput(
-                                          onTap: () {
-                                            FirebaseAuth.instance.signOut();
-                                          },
-                                          icon: Icons.arrow_back,
-                                          message: 'Sign Out',
-                                          theme: ButtonInputTheme.secondary,
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              ],
+              SingleChildScrollView(
+  child: Column(
+    children: <Widget>[
+      const SizedBox(height: 5),
+      Container(
+        // decoration: const BoxDecoration(
+        //   color: Color.fromARGB(255, 255, 255, 255),
+        //   borderRadius: BorderRadius.only(
+        //     topLeft: Radius.circular(60),
+        //     topRight: Radius.circular(60),
+        //   ),
+        //   boxShadow: [
+        //     BoxShadow(
+        //       color: Color.fromRGBO(13, 131, 78, 0.298),
+        //       blurRadius: 20,
+        //       offset: Offset(0, 10),
+        //     ),
+        //   ],
+        // ),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(
+            horizontal: 15, // Adjust horizontal padding
+            vertical: 10,   // Adjust vertical padding
+          ),
+          child: Column(
+            children: <Widget>[
+              const SizedBox(
+                height: 5,
+              ),
+              FadeInUp(
+                duration: const Duration(milliseconds: 1000),
+                child: Container(
+                  child: GridView.builder(
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 3,
+                      crossAxisSpacing: 8.0, // Adjust the spacing between columns
+                      mainAxisSpacing: 8.0, // Adjust the spacing between rows
+                    ),
+                    shrinkWrap: true, // Ensure the GridView takes only the required space
+                    physics: NeverScrollableScrollPhysics(),
+                    itemCount: 6,
+                    itemBuilder: (BuildContext context, int index) {
+                      return Container(
+                        decoration: BoxDecoration(
+                          color: Color.fromARGB(255, 243, 242, 242), // Set the color of grid items
+                          borderRadius: BorderRadius.circular(10), // Set border radius
+                           boxShadow: [
+                            BoxShadow(
+                              color: Color.fromRGBO(13, 131, 78, 0.298),
+                              blurRadius: 20,
+                              offset: Offset(0, 10),
                             ),
-                          ),
+                          ],
                         ),
-                      ),
-                    ],
+                        child: Center(
+                          child: Text('$index', style: TextStyle(color: Color.fromARGB(255, 38, 58, 43))),
+                        ),
+                      );
+                    },
                   ),
                 ),
               ),
+            ],
+          ),
+        ),
+      ),
+    ],
+  ),
+),
+
             ],
           ),
         ),
