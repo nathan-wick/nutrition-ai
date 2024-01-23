@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:animate_do/animate_do.dart';
 import '../../models/user.dart';
 import '../../widgets/button_input.dart';
+import '../../widgets/main_navigation_bar.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({Key? key}) : super(key: key);
@@ -34,7 +35,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               begin: Alignment.topCenter,
               colors: [
                 Color.fromARGB(255, 235, 255, 202),
-               Color.fromARGB(255, 235, 255, 202),
+                Color.fromARGB(255, 235, 255, 202),
                 Color.fromARGB(10, 255, 150, 300),
               ],
             ),
@@ -53,16 +54,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     FadeInUp(
                       duration: const Duration(milliseconds: 400),
                       child: Column(
-                        children: [
-                          const SizedBox(height: 30),
-                          const Align(
+                        children: const [
+                          SizedBox(height: 30),
+                          Align(
                             alignment: Alignment.centerLeft,
                             child: Text(
                               " My Profile",
                               style: TextStyle(
-                                color: const Color.fromARGB(255, 28, 77, 0),
+                                color: Color.fromARGB(255, 28, 77, 0),
                                 fontSize: 30,
-                                fontFamily:'Poppins',
+                                fontFamily: 'Poppins',
                                 fontWeight: FontWeight.w600,
                               ),
                             ),
@@ -75,7 +76,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     ),
                     Column(
                       children: [
-                        SizedBox(height: 20),
+                        const SizedBox(height: 20),
                         Container(
                           decoration: const BoxDecoration(
                             color: Colors.white,
@@ -116,14 +117,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     Text(
                                       "Welcome ${user.name?.split(' ')[0] ?? ''}",
                                       style: const TextStyle(
-                                        color: const Color.fromARGB(255, 28, 77, 0),
+                                        color: Color.fromARGB(255, 28, 77, 0),
                                         fontSize: 18,
                                         fontWeight: FontWeight.w600,
                                       ),
                                     ),
                                     const SizedBox(height: 2),
                                     Text(
-                                      "${user.email}",
+                                      user.email,
                                       style: const TextStyle(
                                         color:
                                             Color.fromARGB(255, 100, 100, 100),
@@ -162,80 +163,78 @@ class _ProfileScreenState extends State<ProfileScreen> {
               SingleChildScrollView(
                 child: Column(
                   children: <Widget>[
-                    Container(
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 10, // Adjust horizontal padding
-                          vertical: 0, // Adjust vertical padding
-                        ),
-                        child: Column(
-                          children: <Widget>[
-                            const SizedBox(height: 1),
-                            FadeInUp(
-                              duration: const Duration(milliseconds: 1000),
-                              child: GridView.builder(
-                                gridDelegate:
-                                    const SliverGridDelegateWithFixedCrossAxisCount(
-                                  crossAxisCount: 3,
-                                  crossAxisSpacing:
-                                      8.0, // Adjust the spacing between columns
-                                  mainAxisSpacing:
-                                      8.0, // Adjust the spacing between rows
-                                ),
-                                shrinkWrap:
-                                    true, // Ensure the GridView takes only the required space
-                                physics: NeverScrollableScrollPhysics(),
-                                itemCount: 6,
-                                itemBuilder: (BuildContext context, int index) {
-                                  return Container(
-                                    decoration: BoxDecoration(
-                                      color: const Color.fromARGB(255, 243, 242,
-                                          242), // Set the color of grid items
-                                      borderRadius: BorderRadius.circular(
-                                          10), // Set border radius
-                                      boxShadow: const [
-                                        BoxShadow(
-                                          color: Color.fromRGBO(13, 131, 78, 0.298),
-                                          blurRadius: 20,
-                                          offset: Offset(0, 10),
-                                        ),
-                                      ],
-                                    ),
-                                    child: Center(
-                                      child: Text(
-                                        gridTexts[
-                                            index], // Replace this with your text content
-                                        style: TextStyle(
-                                          color:
-                                              Color.fromARGB(255, 38, 58, 43),
-                                          fontFamily:
-                                              'Poppins', // Use the Poppins font
-                                          fontWeight: FontWeight
-                                              .bold, // or FontWeight.bold for bold
-                                          fontSize:
-                                              14, // Adjust the font size as needed
-                                        ),
-                                        textAlign:
-                                            TextAlign.center, // Center the text
-                                      ),
-                                    ),
-                                  );
-                                },
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 10, // Adjust horizontal padding
+                        vertical: 0, // Adjust vertical padding
+                      ),
+                      child: Column(
+                        children: <Widget>[
+                          const SizedBox(height: 1),
+                          FadeInUp(
+                            duration: const Duration(milliseconds: 1000),
+                            child: GridView.builder(
+                              gridDelegate:
+                                  const SliverGridDelegateWithFixedCrossAxisCount(
+                                crossAxisCount: 3,
+                                crossAxisSpacing:
+                                    8.0, // Adjust the spacing between columns
+                                mainAxisSpacing:
+                                    8.0, // Adjust the spacing between rows
                               ),
-                            ),
-                            // ),
-                            const SizedBox(height: 30),
-                            ButtonInput(
-                              onTap: () {
-                                FirebaseAuth.instance.signOut();
+                              shrinkWrap:
+                                  true, // Ensure the GridView takes only the required space
+                              physics: NeverScrollableScrollPhysics(),
+                              itemCount: 6,
+                              itemBuilder: (BuildContext context, int index) {
+                                return Container(
+                                  decoration: BoxDecoration(
+                                    color: const Color.fromARGB(255, 243, 242,
+                                        242), // Set the color of grid items
+                                    borderRadius: BorderRadius.circular(
+                                        10), // Set border radius
+                                    boxShadow: const [
+                                      BoxShadow(
+                                        color:
+                                            Color.fromRGBO(13, 131, 78, 0.298),
+                                        blurRadius: 20,
+                                        offset: Offset(0, 10),
+                                      ),
+                                    ],
+                                  ),
+                                  child: Center(
+                                    child: Text(
+                                      gridTexts[
+                                          index], // Replace this with your text content
+                                      style: const TextStyle(
+                                        color: Color.fromARGB(255, 38, 58, 43),
+                                        fontFamily:
+                                            'Poppins', // Use the Poppins font
+                                        fontWeight: FontWeight
+                                            .bold, // or FontWeight.bold for bold
+                                        fontSize:
+                                            14, // Adjust the font size as needed
+                                      ),
+                                      textAlign:
+                                          TextAlign.center, // Center the text
+                                    ),
+                                  ),
+                                );
                               },
-                              icon: Icons.arrow_back,
-                              message: 'Sign Out',
-                              theme: ButtonInputTheme.secondary,
                             ),
-                            const SizedBox(height: 5),
-                          ],
-                        ),
+                          ),
+                          // ),
+                          const SizedBox(height: 30),
+                          ButtonInput(
+                            onTap: () {
+                              FirebaseAuth.instance.signOut();
+                            },
+                            icon: Icons.arrow_back,
+                            message: 'Sign Out',
+                            theme: ButtonInputTheme.secondary,
+                          ),
+                          const SizedBox(height: 5),
+                        ],
                       ),
                     ),
                   ],
@@ -244,6 +243,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
             ],
           ),
         ),
+      ),
+      bottomNavigationBar: const MainNavigationBar(
+        defaultIndex: 2,
       ),
     );
   }
