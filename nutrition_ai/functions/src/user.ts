@@ -1,3 +1,6 @@
+import { Ingredient } from "./types/new_data/Ingredient";
+import { Measurement } from "./types/new_data/Measurement";
+
 export enum UserSex {
   xx,
   xy,
@@ -18,15 +21,7 @@ export enum Goal {
     gainMuscle,
 }
 
-export class Measurement {
-  constructor(public value: number, public unit: string) {}
-}
-
 export class Allergy {
-  constructor(public name: string) {}
-}
-
-export class Ingredient {
   constructor(public name: string) {}
 }
 
