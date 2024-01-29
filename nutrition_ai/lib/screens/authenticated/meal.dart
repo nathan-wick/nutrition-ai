@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../../contexts/authentication.dart';
 import '../../models/meal.dart';
 
 class MealScreen extends StatelessWidget {
@@ -19,10 +18,7 @@ class MealScreen extends StatelessWidget {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => const Authentication()),
-            );
+            Navigator.popAndPushNamed(context, '/recommendations');
           },
         ),
         title: Text(
@@ -90,19 +86,17 @@ class MealScreen extends StatelessWidget {
                         margin: const EdgeInsets.only(left: 10, right: 10),
                         elevation: 3,
                         child: Padding(
-                          padding: EdgeInsets.all(16.0),
+                          padding: const EdgeInsets.all(16.0),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               const Text(
                                 "Instructions:",
                                 style: TextStyle(
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.bold),
+                                    fontSize: 20, fontWeight: FontWeight.bold),
                               ),
                               const SizedBox(height: 8.0),
-                              Text(meal.instruction ??
-                                  "No instructions found"),
+                              Text(meal.instruction ?? "No instructions found"),
                             ],
                           ),
                         ),

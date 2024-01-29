@@ -5,7 +5,6 @@ import 'package:provider/provider.dart';
 
 import '../../services/database.dart';
 import '../../widgets/select_input.dart';
-import '../../contexts/authentication.dart';
 import '../../widgets/button_input.dart';
 import '../../widgets/text_input.dart';
 
@@ -26,27 +25,26 @@ class _SettingsScreenState extends State<SettingsScreen> {
   late final goalController = TextEditingController();
 
   void exit() {
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => const Authentication()),
-    );
+    Navigator.popAndPushNamed(context, '/profile');
   }
 
-  void save(UserModel newUser) async {
-    newUser.name = nameController.text;
-    newUser.weightPounds = double.parse(weightController.text);
-    newUser.heightInches = double.parse(heightController.text);
-    newUser.birthday = DateTime.parse(birthdayController.text);
-    newUser.sex = sexController.text;
-    newUser.exerciseFrequency = exerciseFrequencyController.text;
-    newUser.goal = goalController.text;
-    await DatabaseService().updateUser(newUser);
+  void save(UserModel? newUser) async {
+    if (newUser != null) {
+      newUser.name = nameController.text;
+      newUser.weightPounds = double.parse(weightController.text);
+      newUser.heightInches = double.parse(heightController.text);
+      newUser.birthday = DateTime.parse(birthdayController.text);
+      newUser.sex = sexController.text;
+      newUser.exerciseFrequency = exerciseFrequencyController.text;
+      newUser.goal = goalController.text;
+      await DatabaseService().updateUser(newUser);
+    }
     exit();
   }
 
   @override
   Widget build(BuildContext context) {
-    final UserModel user = Provider.of<UserModel>(context);
+    final UserModel? user = context.watch<UserModel?>();
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
@@ -69,34 +67,35 @@ class _SettingsScreenState extends State<SettingsScreen> {
               const SizedBox(height: 40),
               TextInput(
                 controller: nameController,
-                defaultValue: user.name,
+                defaultValue: user?.name,
                 name: 'Name',
               ),
               const SizedBox(height: 20),
               // TODO: Update TextInput with option to be numbers only
               TextInput(
                 controller: weightController,
-                defaultValue: user.weightPounds.toString(),
+                defaultValue: user?.weightPounds.toString(),
                 name: 'Weight (pounds)',
               ),
               const SizedBox(height: 20),
               // TODO: Update TextInput with option to be numbers only
               TextInput(
                 controller: heightController,
-                defaultValue: user.heightInches.toString(),
+                defaultValue: user?.heightInches.toString(),
                 name: 'Height (inches)',
               ),
               const SizedBox(height: 20),
               // TODO: Create a new widget for date input
               TextInput(
                 controller: birthdayController,
-                defaultValue: DateFormat('yyyy-M-dd').format(user.birthday),
+                defaultValue: DateFormat('yyyy-M-dd')
+                    .format(user?.birthday ?? DateTime.now()),
                 name: 'Birthday (yyyy-mm-dd)',
               ),
               const SizedBox(height: 20),
               SelectInput(
                 controller: sexController,
-                defaultValue: (user.sex ?? '').isNotEmpty ? user.sex : 'XX',
+                defaultValue: user?.sex ?? 'XX',
                 name: 'Sex',
                 items: const [
                   DropdownMenuItem(
@@ -112,7 +111,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               const SizedBox(height: 20),
               SelectInput(
                 controller: exerciseFrequencyController,
-                defaultValue: (user.exerciseFrequency).isNotEmpty ? user.exerciseFrequency : 'none',
+                defaultValue: user?.exerciseFrequency ?? 'none',
                 name: 'Exercise Frequency',
                 items: const [
                   DropdownMenuItem(
@@ -140,7 +139,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               const SizedBox(height: 20),
               SelectInput(
                 controller: goalController,
-                defaultValue: (user.goal).isNotEmpty ? user.goal : 'none',
+                defaultValue: user?.goal ?? 'none',
                 name: 'Goal',
                 items: const [
                   DropdownMenuItem(
