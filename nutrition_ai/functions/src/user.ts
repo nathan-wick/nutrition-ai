@@ -1,5 +1,5 @@
-import { Ingredient } from "./types/new_data/Ingredient";
-import { Measurement } from "./types/new_data/Measurement";
+import { Ingredient } from "./types/Ingredient";
+import { Measurement } from "./types/Measurement";
 
 export enum UserSex {
   xx,

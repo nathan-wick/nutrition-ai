@@ -1,7 +1,67 @@
-import * as functions from "firebase-functions";
+import {initializeApp} from "firebase-admin/app";
+import {getFirestore} from "firebase-admin/firestore";
+import {onCall} from "firebase-functions/v2/https";
+import { Meal as OldMeal } from "./types/old/Meal";
+import { Food as OldFood } from "./types/old/Food";
+import { Ingredient as OldIngredient } from "./types/old/Ingredient";
+import { IngredientNutrients as OldIngredientNutrients } from "./types/old/IngredientNutrients";
 
-import {User, UserSex, Goal, HabitFrequency} from "./user";
+// import {User, UserSex, Goal, HabitFrequency} from "./user";
 
+initializeApp();
+
+const database = getFirestore();
+
+/*
+  After updating these cloud functions,
+  run the following command in the root terminal:
+  firebase deploy --only functions
+*/
+
+exports.formatOldData = onCall(async () => {
+  // TODO: Delete existing formatted data to prevent duplication
+
+  // Get old data
+  const oldMealsSnapshot = await database.collection('Meals').get();
+  const oldFoodsSnapshot = await database.collection('foods').get();
+  const oldIngredientsSnapshot = await database.collection('ingredients').get();
+  const oldIngredientNutrientsSnapshot = await database.collection('ingredient_nutrients').get();
+  const oldMeals: OldMeal[] = [];
+  const oldFoods: OldFood[] = [];
+  const oldIngredients: OldIngredient[] = [];
+  const oldIngredientNutrients: OldIngredientNutrients[] = [];
+
+  if (!oldMealsSnapshot.empty) {
+    oldMealsSnapshot.forEach(oldMealDocument => {
+      oldMeals.push(oldMealDocument.data() as OldMeal);
+    });
+  }
+
+  if (!oldFoodsSnapshot.empty) {
+    oldFoodsSnapshot.forEach(oldFoodDocument => {
+      oldFoods.push(oldFoodDocument.data() as OldFood);
+    });
+  }
+
+  if (!oldIngredientsSnapshot.empty) {
+    oldIngredientsSnapshot.forEach(oldIngredientDocument => {
+      oldIngredients.push(oldIngredientDocument.data() as OldIngredient);
+    });
+  }
+
+  if (!oldIngredientNutrientsSnapshot.empty) {
+    oldIngredientNutrientsSnapshot.forEach(oldIngredientNutrientsDocument => {
+      oldIngredientNutrients.push(oldIngredientNutrientsDocument.data() as OldIngredientNutrients);
+    });
+  }
+
+  // TODO: Format old data into new models
+
+  // TODO: Send the new data to the database
+  
+});
+
+/*
 export const recommendNutrients = functions.https.onRequest( async (req: any, res: any) => {
   try {
     const userData: User = req.body;
@@ -91,3 +151,4 @@ function calculateNutrients(user: User) {
 
   return nutrients;
 }
+*/

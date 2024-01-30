@@ -1,4 +1,4 @@
-export declare interface Food {
+export declare interface Ingredient {
     code: string,
     foodCategoryCode: string,
     foodCategoryName: string,

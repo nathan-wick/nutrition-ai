@@ -1,4 +1,4 @@
-export declare interface Food {
+export declare interface IngredientNutrients {
 derivationCode: string,
 fdcId: string,
 foundationYearAcuired: string,
