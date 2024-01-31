@@ -32,45 +32,35 @@ exports.formatOldData = onCall(async () => {
         oldIngredients: OldIngredient[] = [],
         oldIngredientNutrients: OldIngredientNutrients[] = [];
 
-    if (!oldMealsSnapshot.empty) {
+    if (oldMealsSnapshot.empty ||
+        oldFoodsSnapshot.empty ||
+        oldIngredientsSnapshot.empty ||
+        oldIngredientNutrientsSnapshot.empty) {
 
-        oldMealsSnapshot.forEach((oldMealDocument,) => {
-
-            oldMeals.push(oldMealDocument.data() as OldMeal,);
-
-        },);
-
-    }
-
-    if (!oldFoodsSnapshot.empty) {
-
-        oldFoodsSnapshot.forEach((oldFoodDocument,) => {
-
-            oldFoods.push(oldFoodDocument.data() as OldFood,);
-
-        },);
+        throw new Error(`Missing old data.`,);
 
     }
 
-    if (!oldIngredientsSnapshot.empty) {
+    oldMealsSnapshot.forEach((oldMealDocument,) => {
 
-        oldIngredientsSnapshot.forEach((oldIngredientDocument,) => {
+        oldMeals.push(oldMealDocument.data() as OldMeal,);
 
-            oldIngredients.push(oldIngredientDocument.data() as OldIngredient,);
+    },);
+    oldFoodsSnapshot.forEach((oldFoodDocument,) => {
 
-        },);
+        oldFoods.push(oldFoodDocument.data() as OldFood,);
 
-    }
+    },);
+    oldIngredientsSnapshot.forEach((oldIngredientDocument,) => {
 
-    if (!oldIngredientNutrientsSnapshot.empty) {
+        oldIngredients.push(oldIngredientDocument.data() as OldIngredient,);
 
-        oldIngredientNutrientsSnapshot.forEach((oldIngredientNutrientsDocument,) => {
+    },);
+    oldIngredientNutrientsSnapshot.forEach((oldIngredientNutrientsDocument,) => {
 
-            oldIngredientNutrients.push(oldIngredientNutrientsDocument.data() as OldIngredientNutrients,);
+        oldIngredientNutrients.push(oldIngredientNutrientsDocument.data() as OldIngredientNutrients,);
 
-        },);
-
-    }
+    },);
 
     // TODO: Format old data into new models
 
