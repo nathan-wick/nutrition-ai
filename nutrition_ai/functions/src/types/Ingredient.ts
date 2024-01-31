@@ -1,4 +1,4 @@
-import { Part } from "./Part";
+import {Part,} from "./Part";
 
 export declare interface Ingredient {
     name: string,

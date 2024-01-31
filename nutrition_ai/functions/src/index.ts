@@ -1,7 +1,8 @@
+import {Food,} from "./types/Food";
+import {Ingredient,} from "./types/Ingredient";
 import {Food as OldFood,} from "./types/old/Food";
 import {Ingredient as OldIngredient,} from "./types/old/Ingredient";
 import {IngredientNutrients as OldIngredientNutrients,} from "./types/old/IngredientNutrients";
-import {Meal as OldMeal,} from "./types/old/Meal";
 import {getFirestore,} from "firebase-admin/firestore";
 import {initializeApp,} from "firebase-admin/app";
 import {onCall,} from "firebase-functions/v2/https";
@@ -20,20 +21,19 @@ const database = getFirestore();
 
 exports.formatOldData = onCall(async () => {
 
-    // TODO: Delete existing formatted data to prevent duplication
+    // Delete existing formatted data to prevent duplication
 
     // Get old data
-    const oldMealsSnapshot = await database.collection(`Meals`,).get(),
-        oldFoodsSnapshot = await database.collection(`foods`,).get(),
+    const oldFoodsSnapshot = await database.collection(`foods`,).get(),
         oldIngredientsSnapshot = await database.collection(`ingredients`,).get(),
         oldIngredientNutrientsSnapshot = await database.collection(`ingredient_nutrients`,).get(),
-        oldMeals: OldMeal[] = [],
         oldFoods: OldFood[] = [],
         oldIngredients: OldIngredient[] = [],
-        oldIngredientNutrients: OldIngredientNutrients[] = [];
+        oldIngredientNutrients: OldIngredientNutrients[] = [],
+        newFoods: Food[] = [],
+        newIngredients: Ingredient[] = [];
 
-    if (oldMealsSnapshot.empty ||
-        oldFoodsSnapshot.empty ||
+    if (oldFoodsSnapshot.empty ||
         oldIngredientsSnapshot.empty ||
         oldIngredientNutrientsSnapshot.empty) {
 
@@ -41,11 +41,6 @@ exports.formatOldData = onCall(async () => {
 
     }
 
-    oldMealsSnapshot.forEach((oldMealDocument,) => {
-
-        oldMeals.push(oldMealDocument.data() as OldMeal,);
-
-    },);
     oldFoodsSnapshot.forEach((oldFoodDocument,) => {
 
         oldFoods.push(oldFoodDocument.data() as OldFood,);
@@ -62,9 +57,9 @@ exports.formatOldData = onCall(async () => {
 
     },);
 
-    // TODO: Format old data into new models
+    // Format old data into new models
 
-    // TODO: Send the new data to the database
+    // Send the new data to the database
 
 },);
 

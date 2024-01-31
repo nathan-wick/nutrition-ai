@@ -1,7 +1,6 @@
+import {Ingredient,} from "./Ingredient";
+
 export declare interface Food {
-    categoryCode: string
-    categoryName: string,
-    code: string,
-    description: string,
-    name: string
+    name: string,
+    ingredients: Ingredient[],
 }
