@@ -1,7 +1,7 @@
 import {Measurement,} from "./Measurement";
 
-
-export declare interface Part {
+export declare interface Nutrient {
     name: string,
+    // In grams
     amount: Measurement;
 }

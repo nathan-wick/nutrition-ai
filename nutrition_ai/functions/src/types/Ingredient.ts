@@ -1,7 +1,12 @@
-import {Part,} from "./Part";
+import {Measurement,} from "./Measurement";
+import {Nutrient,} from "./Nutrient";
 
 export declare interface Ingredient {
+    code: number,
     name: string,
-    amount: string,
-    parts?: Part[],
+    nutrients: Nutrient[],
+    moistureChange: string,
+    retentionCode: string,
+    // In grams
+    weight: Measurement,
 }

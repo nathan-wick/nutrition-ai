@@ -1,5 +1,6 @@
 import {Food,} from "./types/Food";
 import {Ingredient,} from "./types/Ingredient";
+import {Measurement,} from "./types/Measurement";
 import {Food as OldFood,} from "./types/old/Food";
 import {Ingredient as OldIngredient,} from "./types/old/Ingredient";
 import {IngredientNutrients as OldIngredientNutrients,} from "./types/old/IngredientNutrients";
@@ -30,8 +31,7 @@ exports.formatOldData = onCall(async () => {
         oldFoods: OldFood[] = [],
         oldIngredients: OldIngredient[] = [],
         oldIngredientNutrients: OldIngredientNutrients[] = [],
-        newFoods: Food[] = [],
-        newIngredients: Ingredient[] = [];
+        newFoods: Food[] = [];
 
     if (oldFoodsSnapshot.empty ||
         oldIngredientsSnapshot.empty ||
@@ -58,6 +58,44 @@ exports.formatOldData = onCall(async () => {
     },);
 
     // Format old data into new models
+    oldFoods.forEach((oldFood,) => {
+
+        const newFood: Food = {
+            "category": oldFood.categoryName,
+            "code": parseInt(
+                oldFood.code,
+                10,
+            ),
+            "description": oldFood.description,
+            "ingredients": [],
+            "name": oldFood.name,
+        };
+        newFoods.push(newFood,);
+
+    },);
+    oldIngredients.forEach((oldIngredient,) => {
+
+        const weight: Measurement = {
+            "amount": parseFloat(oldIngredient.weight,),
+            "unit": `g`,
+        },
+            newIngredient: Ingredient = {
+                "code": parseInt(
+                    oldIngredient.code,
+                    10,
+                ),
+                "moistureChange": oldIngredient.moistureChange,
+                "name": oldIngredient.name,
+                "nutrients": [],
+                "retentionCode": oldIngredient.retentionCode,
+                weight,
+            };
+        newFoods.find((newFood,) => newFood.code === parseInt(
+            oldIngredient.foodCode,
+            10,
+        ),)?.ingredients.push(newIngredient,);
+
+    },);
 
     // Send the new data to the database
 
