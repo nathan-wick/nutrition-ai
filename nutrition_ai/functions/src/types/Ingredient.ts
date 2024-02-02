@@ -6,7 +6,6 @@ export declare interface Ingredient {
     name: string,
     moistureChange: number,
     retentionCode: number,
-    // In grams
     amount: Measurement,
     nutrients: Nutrient[],
 }
