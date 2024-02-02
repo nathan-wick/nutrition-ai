@@ -1,9 +1,9 @@
 import {Food,} from "./types/Food";
 import {Ingredient,} from "./types/Ingredient";
 import {Measurement,} from "./types/Measurement";
-import {Food as OldFood,} from "./types/old/Food";
-import {Ingredient as OldIngredient,} from "./types/old/Ingredient";
-import {IngredientNutrients as OldIngredientNutrients,} from "./types/old/IngredientNutrients";
+import {Food as OldFood,} from "./types/usda/Food";
+import {Ingredient as OldIngredient,} from "./types/usda/Ingredient";
+import {IngredientNutrients as OldIngredientNutrients,} from "./types/usda/IngredientNutrients";
 import {getFirestore,} from "firebase-admin/firestore";
 import {initializeApp,} from "firebase-admin/app";
 import {onCall,} from "firebase-functions/v2/https";
@@ -20,7 +20,7 @@ const database = getFirestore();
  *firebase deploy --only functions
  */
 
-exports.formatOldData = onCall(async () => {
+exports.formatAndWriteUSDAData = onCall(async () => {
 
     // Delete existing formatted data to prevent duplication
 
@@ -96,8 +96,10 @@ exports.formatOldData = onCall(async () => {
         ),)?.ingredients.push(newIngredient,);
 
     },);
+    // Nutri
 
     // Send the new data to the database
+
 
 },);
 
