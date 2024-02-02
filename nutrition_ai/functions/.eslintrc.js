@@ -34,6 +34,7 @@ module.exports = {
         "no-ternary": 0,
         "no-undef-init": 0,
         "no-undefined": 0,
+        "no-warning-comments": 0,
         "quotes": [
             2,
             `backtick`,

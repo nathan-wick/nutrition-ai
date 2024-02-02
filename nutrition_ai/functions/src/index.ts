@@ -1,9 +1,12 @@
+import * as usdaFoodsJSON from "./information/usda/foods.json";
+import * as usdaIngredientNutrientsJSON from "./information/usda/ingredient_nutrients.json";
+import * as usdaIngredientsJSON from "./information/usda/ingredients.json";
 import {Food,} from "./types/Food";
 import {Ingredient,} from "./types/Ingredient";
-import {Measurement,} from "./types/Measurement";
-import {Food as OldFood,} from "./types/usda/Food";
-import {Ingredient as OldIngredient,} from "./types/usda/Ingredient";
-import {IngredientNutrients as OldIngredientNutrients,} from "./types/usda/IngredientNutrients";
+import {Nutrient,} from "./types/Nutrient";
+import {Food as USDAFood,} from "./types/usda/Food";
+import {Ingredient as USDAIngredient,} from "./types/usda/Ingredient";
+import {IngredientNutrients as USDAIngredientNutrients,} from "./types/usda/IngredientNutrients";
 import {getFirestore,} from "firebase-admin/firestore";
 import {initializeApp,} from "firebase-admin/app";
 import {onCall,} from "firebase-functions/v2/https";
@@ -20,85 +23,73 @@ const database = getFirestore();
  *firebase deploy --only functions
  */
 
-exports.formatAndWriteUSDAData = onCall(async () => {
+exports.formatAndWriteUSDAData = onCall(() => {
 
-    // Delete existing formatted data to prevent duplication
+    // TODO Delete existing formatted data to prevent duplication
 
-    // Get old data
-    const oldFoodsSnapshot = await database.collection(`foods`,).get(),
-        oldIngredientsSnapshot = await database.collection(`ingredients`,).get(),
-        oldIngredientNutrientsSnapshot = await database.collection(`ingredient_nutrients`,).get(),
-        oldFoods: OldFood[] = [],
-        oldIngredients: OldIngredient[] = [],
-        oldIngredientNutrients: OldIngredientNutrients[] = [],
+    // Get USDA data
+    const usdaFoods: USDAFood[] = usdaFoodsJSON,
+        // TODO Find a way to do this without casting (as)
+        usdaIngredients: USDAIngredient[] = usdaIngredientsJSON as USDAIngredient[],
+        usdaIngredientNutrients: USDAIngredientNutrients[] = usdaIngredientNutrientsJSON as USDAIngredientNutrients[],
         newFoods: Food[] = [];
 
-    if (oldFoodsSnapshot.empty ||
-        oldIngredientsSnapshot.empty ||
-        oldIngredientNutrientsSnapshot.empty) {
-
-        throw new Error(`Missing old data.`,);
-
-    }
-
-    oldFoodsSnapshot.forEach((oldFoodDocument,) => {
-
-        oldFoods.push(oldFoodDocument.data() as OldFood,);
-
-    },);
-    oldIngredientsSnapshot.forEach((oldIngredientDocument,) => {
-
-        oldIngredients.push(oldIngredientDocument.data() as OldIngredient,);
-
-    },);
-    oldIngredientNutrientsSnapshot.forEach((oldIngredientNutrientsDocument,) => {
-
-        oldIngredientNutrients.push(oldIngredientNutrientsDocument.data() as OldIngredientNutrients,);
-
-    },);
-
-    // Format old data into new models
-    oldFoods.forEach((oldFood,) => {
+    // Format USDA data into our models
+    usdaFoods.forEach((usdaFood,) => {
 
         const newFood: Food = {
-            "category": oldFood.categoryName,
-            "code": parseInt(
-                oldFood.code,
-                10,
-            ),
-            "description": oldFood.description,
+            "category": {
+                "code": Number(usdaFood.categoryCode,),
+                "name": usdaFood.categoryName,
+            },
+            "code": Number(usdaFood.code,),
+            "description": usdaFood.description,
             "ingredients": [],
-            "name": oldFood.name,
+            "name": usdaFood.name,
         };
         newFoods.push(newFood,);
 
     },);
-    oldIngredients.forEach((oldIngredient,) => {
+    usdaIngredients.forEach((usdaIngredient,) => {
 
-        const weight: Measurement = {
-            "amount": parseFloat(oldIngredient.weight,),
-            "unit": `g`,
-        },
-            newIngredient: Ingredient = {
-                "code": parseInt(
-                    oldIngredient.code,
-                    10,
-                ),
-                "moistureChange": oldIngredient.moistureChange,
-                "name": oldIngredient.name,
-                "nutrients": [],
-                "retentionCode": oldIngredient.retentionCode,
-                weight,
-            };
-        newFoods.find((newFood,) => newFood.code === parseInt(
-            oldIngredient.foodCode,
-            10,
-        ),)?.ingredients.push(newIngredient,);
+        const newIngredient: Ingredient = {
+            "amount": {
+                "amount": Number(usdaIngredient.weight,),
+                "unit": `g`,
+            },
+            "code": Number(usdaIngredient.code,),
+            "moistureChange": Number(usdaIngredient.moistureChange,),
+            "name": usdaIngredient.name,
+            "nutrients": [],
+            "retentionCode": Number(usdaIngredient.retentionCode,),
+        };
+        newFoods.find((newFood,) => newFood.code === Number(usdaIngredient.foodCode,),)?.
+            ingredients.push(newIngredient,);
 
     },);
-    // Nutri
+    usdaIngredientNutrients.forEach((usdaIngredientNutrient,) => {
 
-    // Send the new data to the database
+        const newNutrient: Nutrient = {
+            "amount": {
+                "amount": Number(usdaIngredientNutrient.nutrientValue,),
+                "unit": `g`,
+            },
+            "code": Number(usdaIngredientNutrient.nutrientCode,),
+            "name": usdaIngredientNutrient.nutrientName,
+        },
+            relatedUSDAIngredient = usdaIngredients.find((usdaIngredient,) => usdaIngredient.code === usdaIngredientNutrient.ingredientCode,);
+        if (relatedUSDAIngredient) {
+
+            newFoods.find((newFood,) => newFood.code === Number(relatedUSDAIngredient.foodCode,),)?.
+                ingredients.find((ingredient,) => ingredient.code === Number(usdaIngredientNutrient.ingredientCode,),)?.
+                nutrients.push(newNutrient,);
+
+        }
+
+
+    },);
+
+    // TODO Send the new data to the database
 
 
 },);

@@ -1,4 +1,4 @@
 export declare interface Category {
-    code: string,
+    code: number,
     name: string,
 }
