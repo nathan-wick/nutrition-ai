@@ -25,14 +25,13 @@ const database = getFirestore();
 
 exports.formatAndWriteUSDAData = onCall(() => {
 
-    // TODO Delete existing formatted data to prevent duplication
-
     // Get USDA data
     const usdaFoods: USDAFood[] = usdaFoodsJSON,
         // TODO Find a way to do this without casting (as)
         usdaIngredients: USDAIngredient[] = usdaIngredientsJSON as USDAIngredient[],
         usdaIngredientNutrients: USDAIngredientNutrients[] = usdaIngredientNutrientsJSON as USDAIngredientNutrients[],
-        newFoods: Food[] = [];
+        newFoods: Food[] = [],
+        usdaFoodsReference = database.collection(`usdaFoods`,);
 
     // Format USDA data into our models
     usdaFoods.forEach((usdaFood,) => {
@@ -86,11 +85,14 @@ exports.formatAndWriteUSDAData = onCall(() => {
 
         }
 
-
     },);
 
-    // TODO Send the new data to the database
+    // Send the new data to the database
+    newFoods.forEach(async (newFood,) => {
 
+        await usdaFoodsReference.doc(String(newFood.code,),).set(newFood,);
+
+    },);
 
 },);
 
