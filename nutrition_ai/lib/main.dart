@@ -1,16 +1,15 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:nutrition_ai/screens/authenticated/preferences.dart';
-import 'package:nutrition_ai/screens/authenticated/profile.dart';
-import 'package:nutrition_ai/screens/authenticated/recommendations.dart';
-import 'package:nutrition_ai/screens/authenticated/settings.dart';
-import 'package:nutrition_ai/screens/sign_in.dart';
 import 'package:provider/provider.dart';
 
-import 'services/database.dart';
+import 'screens/authenticated/preferences.dart';
+import 'screens/authenticated/profile.dart';
+import 'screens/authenticated/recommendations.dart';
+import 'screens/authenticated/settings.dart';
+import 'screens/sign_in.dart';
+import 'providers/user.dart';
 import 'information/firebase_options.dart';
-import 'models/user.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -23,23 +22,17 @@ void main() async {
 class App extends StatelessWidget {
   const App({super.key});
 
-  Widget checkAuthState(BuildContext context, Widget destination) {
-    return context.watch<User?>() == null ? const SignInScreen() : destination;
+  Widget checkAuthenticationState(BuildContext context, Widget destination) {
+    final userProvider = Provider.of<UserProvider>(context);
+    return userProvider.userAuthentication == null
+        ? const SignInScreen()
+        : destination;
   }
 
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
-      providers: [
-        StreamProvider<User?>(
-          create: (context) => FirebaseAuth.instance.authStateChanges(),
-          initialData: null,
-        ),
-        FutureProvider<UserModel?>(
-          create: (context) => DatabaseService().getUser(),
-          initialData: null,
-        ),
-      ],
+      providers: [ChangeNotifierProvider(create: (context) => UserProvider())],
       child: MaterialApp(
         title: 'NutriMind',
         theme: ThemeData(
@@ -47,17 +40,16 @@ class App extends StatelessWidget {
         ),
         routes: {
           '/': (context) =>
-              checkAuthState(context, const RecommendationsScreen()),
-          '/sign-in': (context) =>
-              checkAuthState(context, const SignInScreen()),
+              checkAuthenticationState(context, const RecommendationsScreen()),
+          '/sign-in': (context) => const SignInScreen(),
           '/recommendations': (context) =>
-              checkAuthState(context, const RecommendationsScreen()),
+              checkAuthenticationState(context, const RecommendationsScreen()),
           '/preferences': (context) =>
-              checkAuthState(context, const PreferencesScreen()),
+              checkAuthenticationState(context, const PreferencesScreen()),
           '/profile': (context) =>
-              checkAuthState(context, const ProfileScreen()),
+              checkAuthenticationState(context, const ProfileScreen()),
           '/settings': (context) =>
-              checkAuthState(context, const SettingsScreen()),
+              checkAuthenticationState(context, const SettingsScreen()),
         },
         debugShowCheckedModeBanner: false,
       ),

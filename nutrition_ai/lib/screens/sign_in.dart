@@ -1,8 +1,8 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:animate_do/animate_do.dart';
+import 'package:provider/provider.dart';
 
-import '../services/authentication.dart';
+import '../providers/user.dart';
 import '../widgets/square_tile.dart';
 
 class SignInScreen extends StatefulWidget {
@@ -16,34 +16,9 @@ class _SignInScreenState extends State<SignInScreen> {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
 
-  void signIn() async {
-    showDialog(
-      context: context,
-      builder: (context) {
-        return const Center(
-          child: CircularProgressIndicator(),
-        );
-      },
-    );
-    try {
-      await FirebaseAuth.instance
-          .signInWithEmailAndPassword(
-            email: emailController.text,
-            password: passwordController.text,
-          )
-          .then((value) => Navigator.pop(context));
-    } on FirebaseAuthException catch (error) {
-      Navigator.pop(context);
-      showDialog(
-          context: context,
-          builder: (context) {
-            return AlertDialog(title: Text('${error.code}: ${error.message}'));
-          });
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
+    final userProvider = Provider.of<UserProvider>(context);
     return Scaffold(
       body: SingleChildScrollView(
         child: Container(
@@ -173,7 +148,11 @@ class _SignInScreenState extends State<SignInScreen> {
                       FadeInUp(
                           duration: const Duration(milliseconds: 1000),
                           child: MaterialButton(
-                            onPressed: signIn,
+                            onPressed: () =>
+                                userProvider.signInWithEmailAndPassword(
+                                    emailController.text,
+                                    passwordController.text,
+                                    context),
                             height: 50,
                             color: const Color.fromARGB(255, 28, 77, 0),
                             shape: RoundedRectangleBorder(
@@ -209,8 +188,8 @@ class _SignInScreenState extends State<SignInScreen> {
                               mainAxisAlignment: MainAxisAlignment.end,
                               children: [
                                 SquareTile(
-                                  onTap: () => AuthenticationService()
-                                      .signInWithGoogle(),
+                                  onTap: () =>
+                                      userProvider.signInWithGoogle(context),
                                   imagePath: 'assets/images/logos/google.png',
                                 ),
                                 const SizedBox(width: 20),
