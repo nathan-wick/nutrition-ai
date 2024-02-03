@@ -9,92 +9,103 @@ import {Ingredient as USDAIngredient,} from "./types/usda/Ingredient";
 import {IngredientNutrients as USDAIngredientNutrients,} from "./types/usda/IngredientNutrients";
 import {getFirestore,} from "firebase-admin/firestore";
 import {initializeApp,} from "firebase-admin/app";
-import {onCall,} from "firebase-functions/v2/https";
+import {onSchedule,} from "firebase-functions/v2/scheduler";
 
-// Import {User, UserSex, Goal, HabitFrequency} from "./user";
 
 initializeApp();
 
 const database = getFirestore();
 
-/*
- *After updating these cloud functions,
- *run the following command in the root terminal:
- *firebase deploy --only functions
- */
+exports.getUSDAInformation = onSchedule(
+    {
+        "memory": `1GiB`,
+        "schedule": `0 0 * * *`,
+        "timeoutSeconds": 120,
+    },
+    async () => {
 
-exports.formatAndWriteUSDAData = onCall(() => {
+        const usdaFoods: USDAFood[] = usdaFoodsJSON,
+            // TODO Find a way to do this without casting (as)
+            usdaIngredients: USDAIngredient[] = usdaIngredientsJSON as USDAIngredient[],
+            usdaIngredientNutrients: USDAIngredientNutrients[] = usdaIngredientNutrientsJSON as USDAIngredientNutrients[],
+            newFoods: Food[] = [],
+            usdaFoodsReference = database.collection(`usdaFoods`,),
+            usdaFoodsCollectionExists = (await usdaFoodsReference.limit(1,).get()).size > 0,
+            formatUSDAInformation = () => {
 
-    // Get USDA data
-    const usdaFoods: USDAFood[] = usdaFoodsJSON,
-        // TODO Find a way to do this without casting (as)
-        usdaIngredients: USDAIngredient[] = usdaIngredientsJSON as USDAIngredient[],
-        usdaIngredientNutrients: USDAIngredientNutrients[] = usdaIngredientNutrientsJSON as USDAIngredientNutrients[],
-        newFoods: Food[] = [],
-        usdaFoodsReference = database.collection(`usdaFoods`,);
+                usdaFoods.forEach((usdaFood,) => {
 
-    // Format USDA data into our models
-    usdaFoods.forEach((usdaFood,) => {
+                    const newFood: Food = {
+                        "category": {
+                            "code": Number(usdaFood.categoryCode,),
+                            "name": usdaFood.categoryName,
+                        },
+                        "code": Number(usdaFood.code,),
+                        "description": usdaFood.description,
+                        "ingredients": [],
+                        "name": usdaFood.name,
+                    };
+                    newFoods.push(newFood,);
 
-        const newFood: Food = {
-            "category": {
-                "code": Number(usdaFood.categoryCode,),
-                "name": usdaFood.categoryName,
+                },);
+                usdaIngredients.forEach((usdaIngredient,) => {
+
+                    const newIngredient: Ingredient = {
+                        "amount": {
+                            "amount": Number(usdaIngredient.weight,),
+                            "unit": `g`,
+                        },
+                        "code": Number(usdaIngredient.code,),
+                        "moistureChange": Number(usdaIngredient.moistureChange,),
+                        "name": usdaIngredient.name,
+                        "nutrients": [],
+                        "retentionCode": Number(usdaIngredient.retentionCode,),
+                    };
+                    newFoods.find((newFood,) => newFood.code === Number(usdaIngredient.foodCode,),)?.
+                        ingredients.push(newIngredient,);
+
+                },);
+                usdaIngredientNutrients.forEach((usdaIngredientNutrient,) => {
+
+                    const newNutrient: Nutrient = {
+                        "amount": {
+                            "amount": Number(usdaIngredientNutrient.nutrientValue,),
+                            "unit": `g`,
+                        },
+                        "code": Number(usdaIngredientNutrient.nutrientCode,),
+                        "name": usdaIngredientNutrient.nutrientName,
+                    },
+                        relatedUSDAIngredient = usdaIngredients.find((usdaIngredient,) => usdaIngredient.code === usdaIngredientNutrient.ingredientCode,);
+                    if (relatedUSDAIngredient) {
+
+                        newFoods.find((newFood,) => newFood.code === Number(relatedUSDAIngredient.foodCode,),)?.
+                            ingredients.find((ingredient,) => ingredient.code === Number(usdaIngredientNutrient.ingredientCode,),)?.
+                            nutrients.push(newNutrient,);
+
+                    }
+
+                },);
+
             },
-            "code": Number(usdaFood.code,),
-            "description": usdaFood.description,
-            "ingredients": [],
-            "name": usdaFood.name,
-        };
-        newFoods.push(newFood,);
+            writeUSDAInformation = () => {
 
-    },);
-    usdaIngredients.forEach((usdaIngredient,) => {
+                newFoods.forEach(async (newFood,) => {
 
-        const newIngredient: Ingredient = {
-            "amount": {
-                "amount": Number(usdaIngredient.weight,),
-                "unit": `g`,
-            },
-            "code": Number(usdaIngredient.code,),
-            "moistureChange": Number(usdaIngredient.moistureChange,),
-            "name": usdaIngredient.name,
-            "nutrients": [],
-            "retentionCode": Number(usdaIngredient.retentionCode,),
-        };
-        newFoods.find((newFood,) => newFood.code === Number(usdaIngredient.foodCode,),)?.
-            ingredients.push(newIngredient,);
+                    await usdaFoodsReference.doc(String(newFood.code,),).set(newFood,);
 
-    },);
-    usdaIngredientNutrients.forEach((usdaIngredientNutrient,) => {
+                },);
 
-        const newNutrient: Nutrient = {
-            "amount": {
-                "amount": Number(usdaIngredientNutrient.nutrientValue,),
-                "unit": `g`,
-            },
-            "code": Number(usdaIngredientNutrient.nutrientCode,),
-            "name": usdaIngredientNutrient.nutrientName,
-        },
-            relatedUSDAIngredient = usdaIngredients.find((usdaIngredient,) => usdaIngredient.code === usdaIngredientNutrient.ingredientCode,);
-        if (relatedUSDAIngredient) {
+            };
 
-            newFoods.find((newFood,) => newFood.code === Number(relatedUSDAIngredient.foodCode,),)?.
-                ingredients.find((ingredient,) => ingredient.code === Number(usdaIngredientNutrient.ingredientCode,),)?.
-                nutrients.push(newNutrient,);
+        if (!usdaFoodsCollectionExists) {
+
+            formatUSDAInformation();
+            writeUSDAInformation();
 
         }
 
-    },);
-
-    // Send the new data to the database
-    newFoods.forEach(async (newFood,) => {
-
-        await usdaFoodsReference.doc(String(newFood.code,),).set(newFood,);
-
-    },);
-
-},);
+    },
+);
 
 /*
  *Export const recommendNutrients = functions.https.onRequest( async (req: any, res: any) => {
