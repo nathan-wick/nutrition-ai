@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
@@ -10,6 +12,8 @@ class UserProvider with ChangeNotifier {
   final authentication = FirebaseAuth.instance;
   final database = FirebaseFirestore.instance;
   User? userAuthentication;
+  StreamSubscription<DocumentSnapshot<Map<String, dynamic>>>?
+      userSnapshotSubscription;
   UserModel? user;
 
   UserProvider() {
@@ -52,7 +56,8 @@ class UserProvider with ChangeNotifier {
     } else {
       final userReference =
           database.collection("users").doc(userAuthentication!.uid);
-      userReference.snapshots().listen((userSnapshot) async {
+      userSnapshotSubscription =
+          userReference.snapshots().listen((userSnapshot) async {
         if (userSnapshot.exists) {
           user = UserModel.fromDocumentSnapshot(userSnapshot);
         } else {
@@ -78,8 +83,9 @@ class UserProvider with ChangeNotifier {
   }
 
   Future<void> signOut(BuildContext context) async {
+    await userSnapshotSubscription?.cancel();
+    userSnapshotSubscription = null;
     await authentication.signOut();
-    // TODO Stop listening to database when user signs out
     Navigator.popAndPushNamed(context, '/sign-in');
   }
 
