@@ -1,9 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:nutrition_ai/screens/authenticated/settings.dart';
 import 'package:provider/provider.dart';
 import 'package:animate_do/animate_do.dart';
-import '../../models/user.dart';
+
+import '../../screens/authenticated/settings.dart';
+import '../../providers/user.dart';
 import '../../widgets/button_input.dart';
 import '../../widgets/main_navigation_bar.dart';
 
@@ -17,14 +18,14 @@ class ProfileScreen extends StatefulWidget {
 class _ProfileScreenState extends State<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
-    final UserModel user = Provider.of<UserModel>(context);
+    final userProvider = Provider.of<UserProvider>(context);
     var gridTexts = [
-      '${user.weightPounds}\nweight',
-      '${user.heightInches}\nheight',
-      '${user.exerciseFrequency}\nactive',
-      '${user.sex}\nsex',
-      '${user.allergies}\nallergies',
-      '${user.goal}\ngoal',
+      '${userProvider.user?.weightPounds}\nweight',
+      '${userProvider.user?.heightInches}\nheight',
+      '${userProvider.user?.exerciseFrequency}\nactive',
+      '${userProvider.user?.sex}\nsex',
+      '${userProvider.user?.allergies}\nallergies',
+      '${userProvider.user?.goal}\ngoal',
     ];
     return Scaffold(
       body: SingleChildScrollView(
@@ -95,7 +96,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   height: 20), // Adjust the height as needed
                               Center(
                                 child: Image.network(
-                                  user.photo ?? '',
+                                  userProvider.user?.photo ?? '',
                                   width: 100,
                                   height: 100,
                                   errorBuilder: (BuildContext context,
@@ -115,7 +116,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      "Welcome ${user.name?.split(' ')[0] ?? ''}",
+                                      "Welcome ${userProvider.user?.name?.split(' ')[0] ?? ''}",
                                       style: const TextStyle(
                                         color: Color.fromARGB(255, 28, 77, 0),
                                         fontSize: 18,
@@ -124,7 +125,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     ),
                                     const SizedBox(height: 2),
                                     Text(
-                                      user.email,
+                                      userProvider.user?.email ?? '',
                                       style: const TextStyle(
                                         color:
                                             Color.fromARGB(255, 100, 100, 100),
@@ -184,7 +185,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               ),
                               shrinkWrap:
                                   true, // Ensure the GridView takes only the required space
-                              physics: NeverScrollableScrollPhysics(),
+                              physics: const NeverScrollableScrollPhysics(),
                               itemCount: 6,
                               itemBuilder: (BuildContext context, int index) {
                                 return Container(
@@ -226,9 +227,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           // ),
                           const SizedBox(height: 30),
                           ButtonInput(
-                            onTap: () {
-                              FirebaseAuth.instance.signOut();
-                            },
+                            onTap: () => userProvider.signOut(context),
                             icon: Icons.arrow_back,
                             message: 'Sign Out',
                             theme: ButtonInputTheme.secondary,
