@@ -1,13 +1,13 @@
-![Nutrition AI](https://user-images.githubusercontent.com/27981761/216168931-11b54b67-64ac-4e38-abf0-b1eef33d4161.png)
-# Nutrition AI
+![NutriMind](https://user-images.githubusercontent.com/27981761/216168931-11b54b67-64ac-4e38-abf0-b1eef33d4161.png)
+# NutriMind
 ### Problem
 A survey conducted by the Centers for Disease Control and Prevention found that at least 23% of adults in the United States were following a one-size-fits-all diet approach (CDC, 2018). The one-size-fits-all diet approach assumes that all individuals have the same nutritional needs and that a single diet can be universally applied to all people. A study published in the journal Nutrients found that personalized nutrition advice based on individual factors, including age, sex, body size, activity level, genetics, and underlying health conditions was more effective in promoting weight loss, muscle gain, and improving dietary quality than a one-size-fits-all approach (D'Alessandro et al., 2020).
 
 A survey conducted by the International Food Information Council Foundation found that 58% of respondents were interested in personalized nutrition advice based on their individual needs and preferences (IFIC, 2020). This suggests that there is a growing demand for more personalized nutrition guidance.
 ### Solution
-Nutrition AI, a mobile software application that uses machine learning to provide personalized nutrition recommendations based on a user's dietary preferences, health goals, and exercise habits. It aims to solve the one-size-fits-all diet approach problem by providing users with tailored nutrition advice.
+NutriMind, a mobile software application that uses machine learning to provide personalized nutrition recommendations based on a user's dietary preferences, health goals, and exercise habits. It aims to solve the one-size-fits-all diet approach problem by providing users with tailored nutrition advice.
 
-Nutrition AI enables users to:
+NutriMind enables users to:
 * Easily input their allergies, goals, and habits.
 * Enjoy swiping left (no) or right (yes) on meals to train the AI on their preferences.
 * Instantly receive tailored nutrition advice such as meal plans and grocery lists based on their input.
