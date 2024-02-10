@@ -1,11 +1,34 @@
+import {Profile,} from "./types/Profile";
 import {getFirestore,} from "firebase-admin/firestore";
 import getUSDAFoods from "./utilities/getUSDAFoods";
 import {initializeApp,} from "firebase-admin/app";
+import {onDocumentWritten,} from "firebase-functions/v2/firestore";
 import {onSchedule,} from "firebase-functions/v2/scheduler";
 
 initializeApp();
 
 const database = getFirestore();
+
+exports.userChanged = onDocumentWritten(
+    `users/{userId}`,
+    (event,) => {
+
+        const profileBefore: Profile | undefined = event.data?.before.data()?.profile,
+            profileAfter: Profile | undefined = event.data?.after.data()?.profile,
+            profileChanged = profileBefore !== profileAfter;
+
+        if (profileChanged && profileAfter) {
+
+            // TODO Calculate a user's minimum and maximum nutrients
+
+            // TODO Update the user document
+
+            // Example: data.after.ref.set({minimumNutrients, maximumNutrients}, {merge: true});
+
+        }
+
+    },
+);
 
 exports.getUSDAFoods = onSchedule(
     {

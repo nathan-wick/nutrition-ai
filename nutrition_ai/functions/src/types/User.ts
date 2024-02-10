@@ -1,4 +1,5 @@
 import {Food,} from "./Food";
+import {Nutrient,} from "./Nutrient";
 import {Profile,} from "./Profile";
 
 export declare interface User {
@@ -8,4 +9,6 @@ export declare interface User {
     profile: Profile,
     approvedFoods: Food[],
     rejectedFoods: Food[],
+    minimumNutrients: Nutrient[],
+    maximumNutrients: Nutrient[],
 }
