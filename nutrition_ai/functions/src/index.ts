@@ -1,5 +1,7 @@
 import {Profile,} from "./types/Profile";
 import {getFirestore,} from "firebase-admin/firestore";
+import getFoodsCategories from "./utilities/getFoodsCategories";
+import getFoodsNutrients from "./utilities/getFoodsNutrients";
 import getUSDAFoods from "./utilities/getUSDAFoods";
 import {initializeApp,} from "firebase-admin/app";
 import {onDocumentWritten,} from "firebase-functions/v2/firestore";
@@ -46,6 +48,50 @@ exports.getUSDAFoods = onSchedule(
         if (!usdaCollectionExists) {
 
             writeUSDAFoods();
+
+        }
+
+    },
+);
+
+exports.getUSDACategories = onSchedule(
+    {
+        "memory": `4GiB`,
+        "schedule": `every 5 minutes`,
+        "timeoutSeconds": 300,
+    },
+    async () => {
+
+        const usdaCollectionExists = (await database.collection(`usda_categories`,).limit(1,).
+                get()).size > 0,
+            writeUSDACategories = () => getFoodsCategories(getUSDAFoods(),).forEach(async (category,) => await database.collection(`usda_categories`,).doc(String(category.code,),).
+                set(category,),);
+
+        if (!usdaCollectionExists) {
+
+            writeUSDACategories();
+
+        }
+
+    },
+);
+
+exports.getUSDANutrients = onSchedule(
+    {
+        "memory": `4GiB`,
+        "schedule": `every 5 minutes`,
+        "timeoutSeconds": 300,
+    },
+    async () => {
+
+        const usdaCollectionExists = (await database.collection(`usda_nutrients`,).limit(1,).
+                get()).size > 0,
+            writeUSDANutrients = () => getFoodsNutrients(getUSDAFoods(),).forEach(async (nutrient,) => await database.collection(`usda_nutrients`,).doc(String(nutrient.code,),).
+                set(nutrient,),);
+
+        if (!usdaCollectionExists) {
+
+            writeUSDANutrients();
 
         }
 

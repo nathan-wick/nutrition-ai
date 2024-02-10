@@ -56,6 +56,7 @@ const getUSDAFoods = () => {
                         "unit": `g`,
                     },
                     "code": Number(usdaIngredientNutrient.nutrientCode,),
+                    "description": ``,
                     "name": usdaIngredientNutrient.nutrientName,
                 },
                     relatedUSDAIngredient = usdaIngredients.find((usdaIngredient,) => usdaIngredient.code === usdaIngredientNutrient.ingredientCode,);
