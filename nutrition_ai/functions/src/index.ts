@@ -1,8 +1,8 @@
 import {Profile,} from "./types/Profile";
 import {getFirestore,} from "firebase-admin/firestore";
-import getFoodsCategories from "./utilities/getFoodsCategories";
-import getFoodsNutrients from "./utilities/getFoodsNutrients";
+import getUSDACategories from "./utilities/getUSDACategories";
 import getUSDAFoods from "./utilities/getUSDAFoods";
+import getUSDANutrients from "./utilities/getUSDANutrients";
 import {initializeApp,} from "firebase-admin/app";
 import {onDocumentWritten,} from "firebase-functions/v2/firestore";
 import {onSchedule,} from "firebase-functions/v2/scheduler";
@@ -21,7 +21,7 @@ exports.userChanged = onDocumentWritten(
 
         if (profileChanged && profileAfter) {
 
-            // TODO Calculate a user's minimum and maximum nutrients
+            // TODO Calculate a user's recommended nutrients
 
             // TODO Update the user document
 
@@ -57,14 +57,14 @@ exports.getUSDAFoods = onSchedule(
 exports.getUSDACategories = onSchedule(
     {
         "memory": `4GiB`,
-        "schedule": `every 5 minutes`,
+        "schedule": `0 * * * *`,
         "timeoutSeconds": 300,
     },
     async () => {
 
         const usdaCollectionExists = (await database.collection(`usda_categories`,).limit(1,).
                 get()).size > 0,
-            writeUSDACategories = () => getFoodsCategories(getUSDAFoods(),).forEach(async (category,) => await database.collection(`usda_categories`,).doc(String(category.code,),).
+            writeUSDACategories = () => getUSDACategories().forEach(async (category,) => await database.collection(`usda_categories`,).doc(String(category.code,),).
                 set(category,),);
 
         if (!usdaCollectionExists) {
@@ -79,14 +79,14 @@ exports.getUSDACategories = onSchedule(
 exports.getUSDANutrients = onSchedule(
     {
         "memory": `4GiB`,
-        "schedule": `every 5 minutes`,
+        "schedule": `0 * * * *`,
         "timeoutSeconds": 300,
     },
     async () => {
 
         const usdaCollectionExists = (await database.collection(`usda_nutrients`,).limit(1,).
                 get()).size > 0,
-            writeUSDANutrients = () => getFoodsNutrients(getUSDAFoods(),).forEach(async (nutrient,) => await database.collection(`usda_nutrients`,).doc(String(nutrient.code,),).
+            writeUSDANutrients = () => getUSDANutrients().forEach(async (nutrient,) => await database.collection(`usda_nutrients`,).doc(String(nutrient.code,),).
                 set(nutrient,),);
 
         if (!usdaCollectionExists) {

@@ -9,6 +9,5 @@ export declare interface User {
     profile: Profile,
     approvedFoods: Food[],
     rejectedFoods: Food[],
-    minimumNutrients: Nutrient[],
-    maximumNutrients: Nutrient[],
+    recommendedNutrients: Nutrient[],
 }
