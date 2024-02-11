@@ -7,26 +7,21 @@ const getUSDACategories = () => {
     const usdaFoods: USDAFood[] = usdaFoodsJSON,
         seenCategoryCodes = new Set<number>(),
         uniqueCategories: Category[] = [];
-
     usdaFoods.forEach((usdaFood,) => {
 
         const categoryCode = Number(usdaFood.categoryCode,);
-
         if (!seenCategoryCodes.has(categoryCode,)) {
 
             seenCategoryCodes.add(categoryCode,);
-
             const category: Category = {
                 "code": categoryCode,
                 "name": usdaFood.categoryName,
             };
-
             uniqueCategories.push(category,);
 
         }
 
     },);
-
     return uniqueCategories;
 
 };

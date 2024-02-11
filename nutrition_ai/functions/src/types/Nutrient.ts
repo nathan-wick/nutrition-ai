@@ -5,4 +5,5 @@ export declare interface Nutrient {
     name: string,
     description: string,
     amount?: Measurement,
+    defaultMeasurementUnit?: string,
 }
