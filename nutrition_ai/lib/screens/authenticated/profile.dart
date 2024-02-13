@@ -113,7 +113,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               Align(
                                 alignment: Alignment.center,
                                 child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
                                     Text(
                                       "Welcome ${userProvider.user?.name?.split(' ')[0] ?? ''}",
