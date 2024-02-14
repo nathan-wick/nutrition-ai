@@ -7,6 +7,15 @@ const getNutrient = (code: number,) => {
     const nutrients: Nutrient[] = nutrientsJSON;
     switch (code) {
 
+    case 319:
+    case 322:
+    case 321:
+    case 334:
+        nutrientCode = 320;
+        break;
+    case 432:
+        nutrientCode = 417;
+        break;
     case 435:
         nutrientCode = 417;
         break;
