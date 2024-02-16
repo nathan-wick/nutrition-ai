@@ -1,6 +1,6 @@
 import {Profile,} from "../../types/Profile";
 
-export const calculate = (profile: Profile,) => {
+export const calculateIron = (profile: Profile,) => {
 
     const ironGoalMap = {
             "gain_fat": 12,

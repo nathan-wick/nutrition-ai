@@ -1,5 +1,4 @@
 import {Profile,} from "../../types/Profile";
-import {getTotalDailyEnergyExpenditure,} from "../getTotalDailyEnergyExpenditure";
 
 export const calculateZinc = (profile: Profile,) => {
 
@@ -20,7 +19,7 @@ export const calculateZinc = (profile: Profile,) => {
         break;
 
     }
-    zincAmount *= getTotalDailyEnergyExpenditure(profile,) / 2000;
+    zincAmount *= profile.totalDailyEnergyExpenditure ?? 2500 / 2500;
     return {
         "amount": zincAmount,
         "unit": `mg`,

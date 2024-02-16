@@ -1,11 +1,9 @@
 import {Profile,} from "../../types/Profile";
-import {getTotalDailyEnergyExpenditure,} from "../getTotalDailyEnergyExpenditure";
 
 export const calculateSaturatedFattyAcid = (profile: Profile,) => {
 
-    const tdee = getTotalDailyEnergyExpenditure(profile,),
-        saturatedFatPercentage = 0.07,
-        saturatedFatCalories = tdee * saturatedFatPercentage,
+    const saturatedFatPercentage = 0.07,
+        saturatedFatCalories = profile.totalDailyEnergyExpenditure ?? 2500 * saturatedFatPercentage,
         saturatedFatGrams = saturatedFatCalories / 9;
     return {
         "amount": saturatedFatGrams,

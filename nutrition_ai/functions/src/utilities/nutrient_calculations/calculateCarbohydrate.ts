@@ -1,5 +1,4 @@
 import {Profile,} from "../../types/Profile";
-import {getTotalDailyEnergyExpenditure,} from "../getTotalDailyEnergyExpenditure";
 
 export const calculateCarbohydrate = (profile: Profile,) => {
 
@@ -7,25 +6,23 @@ export const calculateCarbohydrate = (profile: Profile,) => {
     switch (profile.goal) {
 
     case `maintain`:
-        carbPercentage = 0.5;
+        carbPercentage = 0.45;
         break;
     case `lose_fat`:
-        carbPercentage = 0.4;
+        carbPercentage = 0.3;
         break;
     case `gain_fat`:
-        carbPercentage = 0.6;
-        break;
-    case `gain_muscle`:
         carbPercentage = 0.55;
         break;
-    default:
+    case `gain_muscle`:
         carbPercentage = 0.5;
+        break;
+    default:
+        carbPercentage = 0.45;
 
     }
-    const tdee = getTotalDailyEnergyExpenditure(profile,),
-        carbGrams = tdee * carbPercentage / 4;
     return {
-        "amount": carbGrams,
+        "amount": Math.round(profile.totalDailyEnergyExpenditure ?? 2500 * carbPercentage / 4,),
         "unit": `g`,
     };
 

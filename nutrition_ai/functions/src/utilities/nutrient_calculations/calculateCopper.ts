@@ -1,33 +1,36 @@
 import {Profile,} from "../../types/Profile";
-import {getTotalDailyEnergyExpenditure,} from "../getTotalDailyEnergyExpenditure";
 
 export const calculateCopper = (profile: Profile,) => {
 
-    const COPPER_GOAL_MAINTAIN = 1.0,
-        COPPER_GOAL_LOSE_FAT = 1.2,
-        COPPER_GOAL_GAIN_FAT = 0.8,
-        COPPER_GOAL_GAIN_MUSCLE = 1.5;
-    let copperRequirement = 0,
-        copperAmount = 0;
-    switch (profile.goal) {
+    const COPPER_RDA_ADULTS = 0.9,
+        ADJUSTMENT_SEX = {
+            "female": 1.1,
+            "male": 1.0,
+        },
+        ADJUSTMENT_EXERCISE = {
+            "never": 0.95,
+            "often": 1.1,
+            "sometimes": 1.0,
+        },
 
-    case `lose_fat`:
-        copperRequirement = COPPER_GOAL_LOSE_FAT;
-        break;
-    case `gain_fat`:
-        copperRequirement = COPPER_GOAL_GAIN_FAT;
-        break;
-    case `gain_muscle`:
-        copperRequirement = COPPER_GOAL_GAIN_MUSCLE;
-        break;
-    default:
-        copperRequirement = COPPER_GOAL_MAINTAIN;
-        break;
+        ADJUSTMENT_GOAL = {
+            "gain_fat": 0.95,
+            "gain_muscle": 1.2,
+            "lose_fat": 1.05,
+            "maintain": 1.0,
+        };
+    let copperRequirement = COPPER_RDA_ADULTS;
+    copperRequirement *= ADJUSTMENT_SEX[profile.sex];
+    copperRequirement *= ADJUSTMENT_EXERCISE[profile.exerciseFrequency];
+    copperRequirement *= ADJUSTMENT_GOAL[profile.goal];
+    if (profile.totalDailyEnergyExpenditure) {
+
+        const COPPER_PER_CALORIE = 0.00035;
+        copperRequirement += profile.totalDailyEnergyExpenditure * COPPER_PER_CALORIE;
 
     }
-    copperAmount = copperRequirement * getTotalDailyEnergyExpenditure(profile,);
     return {
-        "amount": copperAmount,
+        "amount": copperRequirement,
         "unit": `mg`,
     };
 

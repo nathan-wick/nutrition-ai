@@ -1,28 +1,49 @@
 import {Profile,} from "../../types/Profile";
 
-export const calculate = (profile: Profile,) => {
+export const calculateDocosahexaenoicAcid = (profile: Profile,) => {
 
-    const baseRecommendations = {
-        "adultFemale": 0.25,
-        "adultMale": 0.25,
-        "breastfeeding": 0.3,
-        "pregnant": 0.3,
-    };
-    let baseDHA = profile.sex === `male`
-        ? baseRecommendations.adultMale
-        : baseRecommendations.adultFemale;
-    if (profile.exerciseFrequency === `often`) {
+    const MIN_DHA_GRAMS = 0.25,
+        DHA_PER_KG_MUSCLE_GAIN = 0.05;
+    let targetDHA = MIN_DHA_GRAMS;
+    if (profile.age && profile.age >= 50) {
 
-        baseDHA += 0.1;
+        targetDHA += 0.1;
+
+    }
+    if (profile.sex === `female`) {
+
+        targetDHA += 0.05;
+
+    }
+    switch (profile.exerciseFrequency) {
+
+    case `often`:
+        targetDHA += 0.2;
+        break;
+    case `sometimes`:
+        targetDHA += 0.1;
+        break;
+    default:
+        break;
 
     }
     if (profile.goal === `gain_muscle`) {
 
-        baseDHA += 0.15;
+        // eslint-disable-next-line no-mixed-operators
+        const desiredMuscleGainKg = (profile.totalDailyEnergyExpenditure ?? 2500 - profile.weight.amount * 10) / 7000;
+        targetDHA += desiredMuscleGainKg * DHA_PER_KG_MUSCLE_GAIN;
 
     }
+    targetDHA = Math.max(
+        targetDHA,
+        MIN_DHA_GRAMS,
+    );
+    targetDHA = Math.min(
+        targetDHA,
+        2,
+    );
     return {
-        "amount": baseDHA,
+        "amount": targetDHA,
         "unit": `g`,
     };
 

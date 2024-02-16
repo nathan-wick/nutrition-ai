@@ -1,23 +1,21 @@
 import {Profile,} from "../../types/Profile";
-import {getAge,} from "../getAge";
 
 export const calculateVitaminK = (profile: Profile,) => {
 
     let requirement = 0;
-    const age = getAge(profile.birthday,);
-    if (age >= 1 && age <= 3) {
+    if (profile.age && profile.age >= 1 && profile.age <= 3) {
 
         requirement = 30;
 
-    } else if (age >= 4 && age <= 8) {
+    } else if (profile.age && profile.age >= 4 && profile.age <= 8) {
 
         requirement = 55;
 
-    } else if (age >= 9 && age <= 13) {
+    } else if (profile.age && profile.age >= 9 && profile.age <= 13) {
 
         requirement = 60;
 
-    } else if (age >= 14 && age <= 18) {
+    } else if (profile.age && profile.age >= 14 && profile.age <= 18) {
 
         requirement = 75;
 

@@ -2,20 +2,43 @@ import {Profile,} from "../../types/Profile";
 
 export const calculateCalcium = (profile: Profile,) => {
 
-    const calciumRequirements = {
-            "gain_fat": 800,
-            "gain_muscle": 1200,
-            "lose_fat": 1200,
-            "maintain": 1000,
-        },
-        sexFactor = profile.sex === `female`
+    const sexFactor = profile.sex === `female`
             ? 1.2
             : 1.0,
-        adjustedCalciumRequirement = calciumRequirements[profile.goal] * sexFactor,
-        calciumFactor = (profile.height.amount + profile.weight.amount) / 100,
-        finalCalciumRequirement = adjustedCalciumRequirement * calciumFactor;
+        activityFactor = {
+            "never": 1.0,
+            "often": 1.2,
+            "sometimes": 1.1,
+        }[profile.exerciseFrequency];
+    let calciumRDA = 1000,
+        goalFactor = 1;
+    if (profile.age && profile.age <= 50) {
+
+        calciumRDA = 1000;
+
+    } else if (profile.age && profile.age <= 70) {
+
+        calciumRDA = 1200;
+
+    } else {
+
+        calciumRDA = 1300;
+
+    }
+    switch (profile.goal) {
+
+    case `gain_muscle`:
+        goalFactor = 1.2;
+        break;
+    case `lose_fat`:
+        goalFactor = 1.1;
+        break;
+    default:
+        goalFactor = 1;
+
+    }
     return {
-        "amount": finalCalciumRequirement,
+        "amount": calciumRDA * sexFactor * goalFactor * activityFactor,
         "unit": `mg`,
     };
 

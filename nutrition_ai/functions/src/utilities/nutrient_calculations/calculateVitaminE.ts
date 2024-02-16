@@ -1,31 +1,29 @@
 import {Profile,} from "../../types/Profile";
-import {getAge,} from "../getAge";
 
 export const calculateVitaminE = (profile: Profile,) => {
 
-    const age = getAge(profile.birthday,);
     let requirement = 0;
-    if (age >= 0 && age < 6) {
+    if (profile.age && profile.age >= 0 && profile.age < 6) {
 
         requirement = 4;
 
-    } else if (age >= 6 && age < 12) {
+    } else if (profile.age && profile.age >= 6 && profile.age < 12) {
 
         requirement = 5;
 
-    } else if (age >= 12 && age < 48) {
+    } else if (profile.age && profile.age >= 12 && profile.age < 48) {
 
         requirement = 6;
 
-    } else if (age >= 48 && age < 96) {
+    } else if (profile.age && profile.age >= 48 && profile.age < 96) {
 
         requirement = 7;
 
-    } else if (age >= 96 && age < 156) {
+    } else if (profile.age && profile.age >= 96 && profile.age < 156) {
 
         requirement = 11;
 
-    } else if (age >= 156 && age < 228) {
+    } else if (profile.age && profile.age >= 156 && profile.age < 228) {
 
         requirement = 15;
 

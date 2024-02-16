@@ -1,6 +1,6 @@
 import {Profile,} from "../../types/Profile";
 
-export const calculate = (profile: Profile,) => {
+export const calculateSelenium = (profile: Profile,) => {
 
     const SELENIUM_PER_KG_MALE = 0.055,
         SELENIUM_PER_KG_FEMALE = 0.055,

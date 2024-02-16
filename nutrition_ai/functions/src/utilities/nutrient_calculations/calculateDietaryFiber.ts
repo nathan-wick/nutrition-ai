@@ -1,35 +1,43 @@
 import {Profile,} from "../../types/Profile";
-import {getAge,} from "../getAge";
 
 export const calculateDietaryFiber = (profile: Profile,) => {
 
-    let baseFiberRequirement = 0;
-    if (profile.sex === `female`) {
+    const fiberPer1000Calories = 14;
+    let dailyFiberRecommendation = 0;
+    if (profile.age && profile.age <= 50) {
 
-        baseFiberRequirement = 25;
+        dailyFiberRecommendation = profile.sex === `female`
+            ? 25
+            : 38;
 
     } else {
 
-        baseFiberRequirement = 38;
+        dailyFiberRecommendation = profile.sex === `female`
+            ? 21
+            : 30;
 
     }
-    if (getAge(profile.birthday,) > 50) {
+    if (profile.bmi && profile.bmi >= 25 && profile.bmi < 30) {
 
-        baseFiberRequirement -= 5;
+        dailyFiberRecommendation += 5;
 
-    }
-    if (profile.exerciseFrequency === `often`) {
+    } else if (profile.bmi && profile.bmi >= 30) {
 
-        baseFiberRequirement += 5;
-
-    }
-    if (profile.goal === `lose_fat`) {
-
-        baseFiberRequirement += 5;
+        dailyFiberRecommendation += 10;
 
     }
+    if (profile.exerciseFrequency === `sometimes`) {
+
+        dailyFiberRecommendation += 3;
+
+    } else if (profile.exerciseFrequency === `often`) {
+
+        dailyFiberRecommendation += 6;
+
+    }
+    dailyFiberRecommendation += Math.round(profile.totalDailyEnergyExpenditure ?? 2500 / 1000 * fiberPer1000Calories,);
     return {
-        "amount": baseFiberRequirement,
+        "amount": dailyFiberRecommendation,
         "unit": `g`,
     };
 

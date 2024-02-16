@@ -1,13 +1,11 @@
 import {Profile,} from "../../types/Profile";
 import {getAge,} from "../getAge";
-import {getTotalDailyEnergyExpenditure,} from "../getTotalDailyEnergyExpenditure";
 
-export const calculate = (profile: Profile,) => {
+export const calculateEicosapentaenoicAcid = (profile: Profile,) => {
 
     let adjustmentFactor = 1.0,
         dailyEPA = 0;
-    const tdee = getTotalDailyEnergyExpenditure(profile,),
-        baseRecommendations = {
+    const baseRecommendations = {
             "gain_fat": 0.25,
             "gain_muscle": 0.75,
             "lose_fat": 0.5,
@@ -30,7 +28,7 @@ export const calculate = (profile: Profile,) => {
 
     }
     dailyEPA = baseRecommendations[profile.goal] * adjustmentFactor;
-    if (tdee > 2500) {
+    if (profile.totalDailyEnergyExpenditure && profile.totalDailyEnergyExpenditure > 2500) {
 
         dailyEPA *= 1.25;
 

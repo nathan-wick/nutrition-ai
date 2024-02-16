@@ -1,11 +1,9 @@
 import {Profile,} from "../../types/Profile";
-import {getTotalDailyEnergyExpenditure,} from "../getTotalDailyEnergyExpenditure";
 
 export const calculatePolyunsaturatedFattyAcid = (profile: Profile,) => {
 
-    const tdee = getTotalDailyEnergyExpenditure(profile,),
-        pufaPercentage = 0.07,
-        pufaCalories = tdee * pufaPercentage,
+    const pufaPercentage = 0.07,
+        pufaCalories = profile.totalDailyEnergyExpenditure ?? 2500 * pufaPercentage,
         pufaGrams = pufaCalories / 9;
     return {
         "amount": pufaGrams,

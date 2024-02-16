@@ -1,5 +1,4 @@
 import {Profile,} from "../../types/Profile";
-import {getTotalDailyEnergyExpenditure,} from "../getTotalDailyEnergyExpenditure";
 
 export const calculateFat = (profile: Profile,) => {
 
@@ -16,8 +15,7 @@ export const calculateFat = (profile: Profile,) => {
         targetFatPercentage = 0.3;
 
     }
-    const tdee = getTotalDailyEnergyExpenditure(profile,),
-        dailyFatCalories = tdee * targetFatPercentage,
+    const dailyFatCalories = profile.totalDailyEnergyExpenditure ?? 2500 * targetFatPercentage,
         dailyFatGrams = dailyFatCalories / 9;
     return {
         "amount": dailyFatGrams,
