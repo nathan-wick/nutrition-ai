@@ -18,29 +18,31 @@ const database = getFirestore();
 
 exports.userChanged = onDocumentWritten(
     `users/{userId}`,
+    // eslint-disable-next-line consistent-return
     (event,) => {
 
         if (event.data) {
 
             const profileBefore: Profile | undefined = event.data.before.data()?.profile,
-                userAfter = event.data.after.data() as User,
-                profileAfter: Profile | undefined = userAfter.profile,
-                profileChanged = profileBefore !== profileAfter;
+                profileAfter: Profile | undefined = event.data.after.data()?.profile,
+                profileChanged = profileBefore?.sex !== profileAfter?.sex ||
+                    profileBefore?.height.amount !== profileAfter?.height.amount ||
+                    profileBefore?.weight.amount !== profileAfter?.weight.amount ||
+                    profileBefore?.exerciseFrequency !== profileAfter?.exerciseFrequency ||
+                    profileBefore?.goal !== profileAfter?.goal;
             if (profileChanged && profileAfter) {
 
+                const userAfter = event.data.after.data() as User;
                 profileAfter.age = getAge(profileAfter.birthday,);
                 profileAfter.bodyMassIndex = getBodyMassIndex(profileAfter,);
                 profileAfter.totalDailyEnergyExpenditure = getTotalDailyEnergyExpenditure(profileAfter,);
                 userAfter.recommendedNutrients = calculateRecommendedNutrients(profileAfter,);
+                database.collection(`users`,).doc(event.params.userId,).
+                    set(userAfter,);
 
             }
-            return event.data.after.data()?.after.ref.set(
-                userAfter,
-                {"merge": true,},
-            );
 
         }
-        return undefined;
 
     },
 );
