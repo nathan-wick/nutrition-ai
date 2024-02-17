@@ -17,11 +17,11 @@ export const calculateDietaryFiber = (profile: Profile,) => {
             : 30;
 
     }
-    if (profile.bmi && profile.bmi >= 25 && profile.bmi < 30) {
+    if (profile.bodyMassIndex && profile.bodyMassIndex >= 25 && profile.bodyMassIndex < 30) {
 
         dailyFiberRecommendation += 5;
 
-    } else if (profile.bmi && profile.bmi >= 30) {
+    } else if (profile.bodyMassIndex && profile.bodyMassIndex >= 30) {
 
         dailyFiberRecommendation += 10;
 
@@ -35,7 +35,7 @@ export const calculateDietaryFiber = (profile: Profile,) => {
         dailyFiberRecommendation += 6;
 
     }
-    dailyFiberRecommendation += Math.round(profile.totalDailyEnergyExpenditure ?? 2500 / 1000 * fiberPer1000Calories,);
+    dailyFiberRecommendation += profile.totalDailyEnergyExpenditure ?? 2500 / 1000 * fiberPer1000Calories;
     return {
         "amount": dailyFiberRecommendation,
         "unit": `g`,

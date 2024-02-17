@@ -20,7 +20,7 @@ export const calculateVitaminA = (profile: Profile,) => {
 
     }
     vitaminARequirement /= VITAMIN_A_CONVERSION_FACTOR;
-    vitaminARequirement = Math.round(vitaminARequirement * 100,) / 100;
+    vitaminARequirement = vitaminARequirement * 100 / 100;
     return {
         "amount": vitaminARequirement,
         "unit": `mcg`,

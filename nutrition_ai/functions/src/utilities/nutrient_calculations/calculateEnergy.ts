@@ -22,7 +22,7 @@ export const calculateEnergy = (profile: Profile,) => {
 
     }
     return {
-        "amount": Math.round(energyNeeds,),
+        "amount": energyNeeds,
         "unit": `kcal`,
     };
 

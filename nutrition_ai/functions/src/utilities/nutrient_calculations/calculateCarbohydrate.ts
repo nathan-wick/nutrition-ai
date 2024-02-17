@@ -22,7 +22,7 @@ export const calculateCarbohydrate = (profile: Profile,) => {
 
     }
     return {
-        "amount": Math.round(profile.totalDailyEnergyExpenditure ?? 2500 * carbPercentage / 4,),
+        "amount": profile.totalDailyEnergyExpenditure ?? 2500 * carbPercentage / 4,
         "unit": `g`,
     };
 

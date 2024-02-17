@@ -33,7 +33,7 @@ export const calculateCholine = (profile: Profile,) => {
 
     }
     return {
-        "amount": Math.round(cholineRequirement,),
+        "amount": cholineRequirement,
         "unit": `mg`,
     };
 

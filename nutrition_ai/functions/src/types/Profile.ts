@@ -8,6 +8,6 @@ export declare interface Profile {
     exerciseFrequency: `never` | `sometimes` | `often`,
     goal: `maintain` | `lose_fat` | `gain_fat` | `gain_muscle`,
     age?: number,
-    bmi?: number,
+    bodyMassIndex?: number,
     totalDailyEnergyExpenditure?: number,
 }

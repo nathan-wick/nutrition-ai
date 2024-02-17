@@ -28,7 +28,7 @@ export const calculateProtein = (profile: Profile,) => {
         proteinFactor = proteinPerKg[profile.goal][profile.exerciseFrequency],
         proteinGoalGrams = weightInKilograms * proteinFactor;
     return {
-        "amount": Math.round(proteinGoalGrams,),
+        "amount": proteinGoalGrams,
         "unit": `g`,
     };
 
