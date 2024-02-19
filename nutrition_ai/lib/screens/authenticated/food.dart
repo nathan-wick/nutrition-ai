@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
-import '../../models/meal.dart';
+import '../../models/food.dart';
 
-class MealScreen extends StatelessWidget {
-  final MealModel meal;
+class FoodScreen extends StatelessWidget {
+  final FoodModel food;
 
-  const MealScreen({
+  const FoodScreen({
     super.key,
-    required this.meal,
+    required this.food,
   });
 
   @override
@@ -22,7 +22,7 @@ class MealScreen extends StatelessWidget {
           },
         ),
         title: Text(
-          meal.name,
+          food.name,
           style: const TextStyle(fontWeight: FontWeight.bold),
         ),
       ),
@@ -33,17 +33,19 @@ class MealScreen extends StatelessWidget {
               padding: const EdgeInsets.only(top: 50),
               child: Column(
                 children: [
-                  Align(
-                    alignment: Alignment.center,
-                    child: Image.network(
-                      meal.photo,
-                      height: 300,
-                      width: 500,
-                    ),
-                  ),
+                  food.image != null
+                      ? Align(
+                          alignment: Alignment.center,
+                          child: Image.network(
+                            food.image ?? '',
+                            height: 300,
+                            width: 500,
+                          ),
+                        )
+                      : const SizedBox(height: 20),
                   const SizedBox(height: 20),
                   Text(
-                    meal.name,
+                    food.name,
                     style: const TextStyle(
                       fontSize: 24,
                       fontWeight: FontWeight.bold,
@@ -71,32 +73,12 @@ class MealScreen extends StatelessWidget {
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  if (meal.ingredients != null)
-                                    for (var ingredient in meal.ingredients!)
+                                  if (food.ingredients != null)
+                                    for (var ingredient in food.ingredients!)
                                       Text(
-                                          "• ${ingredient.name} - ${ingredient.amount}"),
+                                          "• ${ingredient.name} - ${ingredient.amount.amount} ${ingredient.amount.unit}"),
                                 ],
                               ),
-                            ],
-                          ),
-                        ),
-                      ),
-                      const SizedBox(height: 16.0),
-                      Card(
-                        margin: const EdgeInsets.only(left: 10, right: 10),
-                        elevation: 3,
-                        child: Padding(
-                          padding: const EdgeInsets.all(16.0),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              const Text(
-                                "Instructions:",
-                                style: TextStyle(
-                                    fontSize: 20, fontWeight: FontWeight.bold),
-                              ),
-                              const SizedBox(height: 8.0),
-                              Text(meal.instruction ?? "No instructions found"),
                             ],
                           ),
                         ),

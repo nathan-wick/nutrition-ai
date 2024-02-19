@@ -1,35 +1,25 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-
-import 'allergy.dart';
-import 'ingredient.dart';
+import 'food.dart';
+import 'nutrient.dart';
+import 'profile.dart';
 
 class UserModel {
+  final String name;
   final String email;
-  DateTime birthday;
-  String sex;
-  double heightInches;
-  double weightPounds;
-  String exerciseFrequency;
-  String goal;
-  String? name;
-  String? photo;
-  List<AllergyModel>? allergies;
-  List<IngredientModel>? approvedIngredients;
-  List<IngredientModel>? rejectedIngredients;
+  final String photo;
+  final ProfileModel profile;
+  final List<FoodModel> approvedFoods;
+  final List<FoodModel> rejectedFoods;
+  final List<NutrientModel> recommendedNutrients;
 
   UserModel({
+    required this.name,
     required this.email,
-    required this.birthday,
-    required this.sex,
-    required this.heightInches,
-    required this.weightPounds,
-    required this.exerciseFrequency,
-    required this.goal,
-    this.name,
-    this.photo,
-    this.allergies,
-    this.approvedIngredients,
-    this.rejectedIngredients,
+    required this.photo,
+    required this.profile,
+    required this.approvedFoods,
+    required this.rejectedFoods,
+    required this.recommendedNutrients,
   });
 
   Map<String, dynamic> toJson() {
@@ -37,29 +27,23 @@ class UserModel {
       'name': name,
       'email': email,
       'photo': photo,
-      'birthday': birthday,
-      'sex': sex,
-      'heightInches': heightInches,
-      'weightPounds': weightPounds,
-      'exerciseFrequency': exerciseFrequency,
-      'goal': goal,
-      'allergies': allergies?.map((allergy) => allergy.toJson()).toList(),
-      'approvedIngredients': approvedIngredients?.map((ingredient) => ingredient.toJson()).toList(),
-      'rejectedIngredients': rejectedIngredients?.map((ingredient) => ingredient.toJson()).toList(),
+      'profile': profile.toJson(),
+      'approvedFoods':
+          approvedFoods.map((approvedFood) => approvedFood.toJson()).toList(),
+      'rejectedFoods':
+          rejectedFoods.map((rejectedFood) => rejectedFood.toJson()).toList(),
+      'recommendedNutrients': recommendedNutrients
+          .map((recommendedNutrient) => recommendedNutrient.toJson())
+          .toList(),
     };
   }
-  
-  UserModel.fromDocumentSnapshot(DocumentSnapshot snapshot) :
-    name = snapshot['name'],
-    email = snapshot['email'],
-    photo = snapshot['photo'],
-    birthday = snapshot['birthday'].toDate(),
-    sex = snapshot['sex'],
-    heightInches = snapshot['heightInches'],
-    weightPounds = snapshot['weightPounds'],
-    exerciseFrequency = snapshot['exerciseFrequency'],
-    goal = snapshot['goal'],
-    allergies = snapshot['allergies'],
-    approvedIngredients = snapshot['approvedIngredients'],
-    rejectedIngredients = snapshot['rejectedIngredients'];
+
+  UserModel.fromDocumentSnapshot(DocumentSnapshot snapshot)
+      : name = snapshot['name'],
+        email = snapshot['email'],
+        photo = snapshot['photo'],
+        profile = snapshot['profile'],
+        approvedFoods = snapshot['approvedFoods'],
+        rejectedFoods = snapshot['rejectedFoods'],
+        recommendedNutrients = snapshot['recommendedNutrients'];
 }
