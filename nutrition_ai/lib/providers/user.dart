@@ -6,6 +6,8 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
+import '../models/measurement.dart';
+import '../models/profile.dart';
 import '../models/user.dart';
 
 class UserProvider with ChangeNotifier {
@@ -32,20 +34,32 @@ class UserProvider with ChangeNotifier {
   }
 
   Future<UserModel?> createUser() async {
+    final defaultUser = UserModel(
+      name: userAuthentication?.displayName ?? 'Anonymous User',
+      email: userAuthentication?.email ?? '',
+      photo: userAuthentication?.photoURL ?? '',
+      profile: ProfileModel(
+        birthday: DateTime.now().subtract(const Duration(days: 7305)),
+        sex: 'xy',
+        height: MeasurementModel(
+          amount: 67,
+          unit: 'inches',
+        ),
+        weight: MeasurementModel(
+          amount: 150,
+          unit: 'pounds',
+        ),
+        exerciseFrequency: 'sometimes',
+        goal: 'maintain',
+      ),
+      approvedFoods: [],
+      rejectedFoods: [],
+      recommendedNutrients: [],
+    );
     if (userAuthentication?.uid == null) {
       return null;
     } else {
-      final newUser = UserModel(
-        email: userAuthentication?.email ?? '',
-        name: userAuthentication?.displayName,
-        photo: userAuthentication?.photoURL,
-        birthday: DateTime.now().subtract(const Duration(days: 7305)),
-        sex: 'xy',
-        heightInches: 67,
-        weightPounds: 150,
-        exerciseFrequency: 'moderate',
-        goal: 'maintainWeight',
-      );
+      final newUser = defaultUser;
       return updateUser(newUser);
     }
   }

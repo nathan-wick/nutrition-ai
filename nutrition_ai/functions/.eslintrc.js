@@ -24,6 +24,7 @@ module.exports = {
         ],
         "complexity": 0,
         "implicit-arrow-linebreak": 0,
+        "linebreak-style": 0,
         "max-len": 0,
         "max-lines": 0,
         "max-lines-per-function": 0,

@@ -1,16 +1,13 @@
 import {Food,} from "./Food";
-import {Measurement,} from "./Measurement";
+import {Nutrient,} from "./Nutrient";
+import {Profile,} from "./Profile";
 
 export declare interface User {
     name: string,
     email: string,
     photo: string,
-    birthday: Date,
-    sex: `male` | `female`,
-    height: Measurement,
-    weight: Measurement,
-    exerciseFrequency: `never` | `sometimes` | `often`,
-    goal: `maintain` | `lose_fat` | `gain_fat` | `gain_muscle`,
+    profile: Profile,
     approvedFoods: Food[],
     rejectedFoods: Food[],
+    recommendedNutrients: Nutrient[],
 }

@@ -7,6 +7,7 @@ import {Nutrient,} from "../types/Nutrient";
 import {Food as USDAFood,} from "../types/usda/Food";
 import {Ingredient as USDAIngredient,} from "../types/usda/Ingredient";
 import {IngredientNutrients as USDAIngredientNutrients,} from "../types/usda/IngredientNutrients";
+import getNutrient from "./getNutrient";
 
 const getUSDAFoods = () => {
 
@@ -31,7 +32,7 @@ const getUSDAFoods = () => {
         },),
         getIngredients = () => usdaIngredients.forEach((usdaIngredient,) => {
 
-            const newIngredient: Ingredient = {
+            const ingredient: Ingredient = {
                 "amount": {
                     "amount": Number(usdaIngredient.weight,),
                     "unit": `g`,
@@ -43,27 +44,28 @@ const getUSDAFoods = () => {
                 "retentionCode": Number(usdaIngredient.retentionCode,),
             };
             foods.find((food,) => food.code === Number(usdaIngredient.foodCode,),)?.
-                ingredients.push(newIngredient,);
+                ingredients.push(ingredient,);
 
         },),
         getNutrients = () => usdaIngredientNutrients.forEach((usdaIngredientNutrient,) => {
 
             if (Number(usdaIngredientNutrient.nutrientValue,) > 0) {
 
-                const newNutrient: Nutrient = {
-                    "amount": {
-                        "amount": Number(usdaIngredientNutrient.nutrientValue,),
-                        "unit": `g`,
-                    },
-                    "code": Number(usdaIngredientNutrient.nutrientCode,),
-                    "name": usdaIngredientNutrient.nutrientName,
-                },
-                    relatedUSDAIngredient = usdaIngredients.find((usdaIngredient,) => usdaIngredient.code === usdaIngredientNutrient.ingredientCode,);
+                const relatedUSDAIngredient = usdaIngredients.find((usdaIngredient,) => usdaIngredient.code === usdaIngredientNutrient.ingredientCode,);
                 if (relatedUSDAIngredient) {
 
-                    foods.find((food,) => food.code === Number(relatedUSDAIngredient.foodCode,),)?.
-                        ingredients.find((ingredient,) => ingredient.code === Number(usdaIngredientNutrient.ingredientCode,),)?.
-                        nutrients.push(newNutrient,);
+                    const nutrient = getNutrient(Number(usdaIngredientNutrient.nutrientCode,),);
+                    if (nutrient) {
+
+                        nutrient.amount = {
+                            "amount": Number(usdaIngredientNutrient.nutrientValue,),
+                            "unit": nutrient.defaultMeasurementUnit ?? `g`,
+                        };
+                        foods.find((food,) => food.code === Number(relatedUSDAIngredient.foodCode,),)?.
+                            ingredients.find((ingredient,) => ingredient.code === Number(usdaIngredientNutrient.ingredientCode,),)?.
+                            nutrients.push(nutrient,);
+
+                    }
 
                 }
 
@@ -81,12 +83,10 @@ const getUSDAFoods = () => {
             },);
 
         };
-
     getFoods();
     getIngredients();
     getNutrients();
     filterFoodsWithNutrients();
-
     return foods;
 
 };

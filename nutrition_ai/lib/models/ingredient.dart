@@ -1,22 +1,31 @@
 import 'measurement.dart';
-import 'part.dart';
+import 'nutrient.dart';
 
 class IngredientModel {
+  final int code;
   final String name;
-  final String amount;
-  final List<PartModel>? parts;
+  final double moistureChange;
+  final double retentionCode;
+  final MeasurementModel amount;
+  final List<NutrientModel> nutrients;
 
   IngredientModel({
+    required this.code,
     required this.name,
+    required this.moistureChange,
+    required this.retentionCode,
     required this.amount,
-    this.parts,
+    required this.nutrients,
   });
 
   Map<String, dynamic> toJson() {
     return {
+      'code': code,
       'name': name,
+      'moistureChange': moistureChange,
+      'retentionCode': retentionCode,
       'amount': amount,
-      'parts': parts?.map((part) => part.toJson()).toList(),
+      'nutrients': nutrients.map((nutrient) => nutrient.toJson()).toList(),
     };
   }
 }
