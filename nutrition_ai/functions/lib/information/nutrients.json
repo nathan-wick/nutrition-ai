@@ -189,36 +189,12 @@
         "code": 320,
         "name": "Vitamin A",
         "description": "Vitamin A is essential for maintaining healthy vision, skin, and immune function. It comes in two forms: retinol (found in animal products) and provitamin A carotenoids (like beta-carotene in fruits and vegetables), both crucial for overall health.",
-        "defaultMeasurementUnit": "mg"
-    },
-    {
-        "code": 319,
-        "name": "Retinol",
-        "description": "Retinol, a form of vitamin A, is vital for vision, skin health, and immune function. Found in animal products, it contributes to maintaining the integrity of tissues and supporting overall well-being.",
-        "defaultMeasurementUnit": "mg"
-    },
-    {
-        "code": 322,
-        "name": "Carotene Alpha",
-        "description": "Alpha-carotene, a precursor to vitamin A, is found in various fruits and vegetables. While not directly essential, it can be converted to active vitamin A in the body, supporting vision and immune health.",
-        "defaultMeasurementUnit": "mg"
-    },
-    {
-        "code": 321,
-        "name": "Carotene Beta",
-        "description": "Beta-carotene, a provitamin A carotenoid abundant in orange and dark green vegetables, is converted into vitamin A. It plays a crucial role in maintaining skin health and supporting the immune system.",
-        "defaultMeasurementUnit": "mg"
-    },
-    {
-        "code": 334,
-        "name": "Cryptoxanthin Beta",
-        "description": "Another provitamin A carotenoid, beta-cryptoxanthin, is found in fruits like oranges and peppers. While not essential, its conversion to vitamin A contributes to overall eye and skin health.",
-        "defaultMeasurementUnit": "mg"
+        "defaultMeasurementUnit": "mcg"
     },
     {
         "code": 337,
         "name": "Lycopene",
-        "description": "Lycopene, a carotenoid in tomatoes and watermelon, is not a precursor to vitamin A but has antioxidant properties linked to reducing the risk of certain chronic diseases, making it a valuable dietary component.",
+        "description": "Lycopene, a carotenoid in tomatoes and watermelon, has antioxidant properties linked to reducing the risk of certain chronic diseases, making it a valuable dietary component.",
         "defaultMeasurementUnit": "mg"
     },
     {
@@ -285,12 +261,6 @@
         "code": 431,
         "name": "Folic Acid",
         "description": "Folic acid is a synthetic form of folate, often used in supplements and fortified foods. It serves the same functions as natural folate and is important for overall health.",
-        "defaultMeasurementUnit": "mg"
-    },
-    {
-        "code": 432,
-        "name": "Food Folate",
-        "description": "Food folate refers to naturally occurring folate in food. It is essential for various bodily functions, including DNA synthesis and cell division.",
         "defaultMeasurementUnit": "mg"
     },
     {

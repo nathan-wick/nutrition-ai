@@ -1,15 +1,15 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:animate_do/animate_do.dart';
 
+import '../../models/user.dart';
 import '../../screens/authenticated/settings.dart';
 import '../../providers/user.dart';
 import '../../widgets/button_input.dart';
 import '../../widgets/main_navigation_bar.dart';
 
 class ProfileScreen extends StatefulWidget {
-  const ProfileScreen({Key? key}) : super(key: key);
+  const ProfileScreen({super.key});
 
   @override
   State<ProfileScreen> createState() => _ProfileScreenState();
@@ -19,13 +19,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
     final userProvider = Provider.of<UserProvider>(context);
+    final UserModel? user = userProvider.user;
     var gridTexts = [
-      '${userProvider.user?.weightPounds}\nweight',
-      '${userProvider.user?.heightInches}\nheight',
-      '${userProvider.user?.exerciseFrequency}\nactive',
-      '${userProvider.user?.sex}\nsex',
-      '${userProvider.user?.allergies}\nallergies',
-      '${userProvider.user?.goal}\ngoal',
+      '${user?.profile.bodyMassIndex}\nBody Mass Index',
+      '${user?.profile.totalDailyEnergyExpenditure}\nTotal Daily Energy Expenditure',
     ];
     return Scaffold(
       body: SingleChildScrollView(
@@ -35,9 +32,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
             gradient: LinearGradient(
               begin: Alignment.topCenter,
               colors: [
-                Color.fromARGB(255, 235, 255, 202),
-                Color.fromARGB(255, 235, 255, 202),
-                Color.fromARGB(10, 255, 150, 300),
+                Colors.green,
+                Colors.green,
+                Colors.white,
               ],
             ),
           ),
@@ -52,26 +49,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    FadeInUp(
-                      duration: const Duration(milliseconds: 400),
-                      child: Column(
-                        children: const [
-                          SizedBox(height: 30),
-                          Align(
-                            alignment: Alignment.centerLeft,
-                            child: Text(
-                              " My Profile",
-                              style: TextStyle(
-                                color: Color.fromARGB(255, 28, 77, 0),
-                                fontSize: 30,
-                                fontFamily: 'Poppins',
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
                     const SizedBox(
                       height: 5,
                     ),
@@ -96,7 +73,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   height: 20), // Adjust the height as needed
                               Center(
                                 child: Image.network(
-                                  userProvider.user?.photo ?? '',
+                                  user?.photo ?? '',
                                   width: 100,
                                   height: 100,
                                   errorBuilder: (BuildContext context,
@@ -116,7 +93,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
                                     Text(
-                                      "Welcome ${userProvider.user?.name?.split(' ')[0] ?? ''}",
+                                      "Welcome ${user?.name.split(' ')[0] ?? ''}",
                                       style: const TextStyle(
                                         color: Color.fromARGB(255, 28, 77, 0),
                                         fontSize: 18,
@@ -125,7 +102,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     ),
                                     const SizedBox(height: 2),
                                     Text(
-                                      userProvider.user?.email ?? '',
+                                      user?.email ?? '',
                                       style: const TextStyle(
                                         color:
                                             Color.fromARGB(255, 100, 100, 100),
@@ -186,7 +163,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               shrinkWrap:
                                   true, // Ensure the GridView takes only the required space
                               physics: const NeverScrollableScrollPhysics(),
-                              itemCount: 6,
+                              itemCount: gridTexts.length,
                               itemBuilder: (BuildContext context, int index) {
                                 return Container(
                                   decoration: BoxDecoration(

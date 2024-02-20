@@ -5,6 +5,7 @@ class SelectInput extends StatefulWidget {
   final String name;
   final List<DropdownMenuItem<String>> items;
   final String? defaultValue;
+  final void Function(String)? onChanged;
 
   const SelectInput({
     super.key,
@@ -12,6 +13,7 @@ class SelectInput extends StatefulWidget {
     required this.name,
     required this.items,
     this.defaultValue,
+    this.onChanged,
   });
 
   @override
@@ -54,6 +56,9 @@ class _SelectInputState extends State<SelectInput> {
                 _dropdownValue = value ?? '';
                 widget.controller.text = value ?? '';
               });
+              if (widget.onChanged != null) {
+                widget.onChanged!(value ?? '');
+              }
             },
             isExpanded: true,
           ),

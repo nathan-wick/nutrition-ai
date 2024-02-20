@@ -34,33 +34,32 @@ class UserProvider with ChangeNotifier {
   }
 
   Future<UserModel?> createUser() async {
-    final defaultUser = UserModel(
-      name: userAuthentication?.displayName ?? 'Anonymous User',
-      email: userAuthentication?.email ?? '',
-      photo: userAuthentication?.photoURL ?? '',
-      profile: ProfileModel(
-        birthday: DateTime.now().subtract(const Duration(days: 7305)),
-        sex: 'xy',
-        height: MeasurementModel(
-          amount: 67,
-          unit: 'inches',
-        ),
-        weight: MeasurementModel(
-          amount: 150,
-          unit: 'pounds',
-        ),
-        exerciseFrequency: 'sometimes',
-        goal: 'maintain',
-      ),
-      approvedFoods: [],
-      rejectedFoods: [],
-      recommendedNutrients: [],
-    );
     if (userAuthentication?.uid == null) {
       return null;
     } else {
-      final newUser = defaultUser;
-      return updateUser(newUser);
+      final defaultUser = UserModel(
+        name: userAuthentication?.displayName ?? 'Anonymous User',
+        email: userAuthentication?.email ?? '',
+        photo: userAuthentication?.photoURL ?? '',
+        profile: ProfileModel(
+          birthday: DateTime.now().subtract(const Duration(days: 7305)),
+          sex: 'XX',
+          height: MeasurementModel(
+            amount: 67,
+            unit: 'inches',
+          ),
+          weight: MeasurementModel(
+            amount: 150,
+            unit: 'pounds',
+          ),
+          exerciseFrequency: 'sometimes',
+          goal: 'maintain',
+        ),
+        approvedFoods: [],
+        rejectedFoods: [],
+        recommendedNutrients: [],
+      );
+      return updateUser(defaultUser);
     }
   }
 

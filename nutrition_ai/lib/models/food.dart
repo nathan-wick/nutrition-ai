@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 import 'category.dart';
 import 'ingredient.dart';
 
@@ -29,4 +31,15 @@ class FoodModel {
           ingredients?.map((ingredient) => ingredient.toJson()).toList(),
     };
   }
+
+  FoodModel.fromDocumentSnapshot(DocumentSnapshot snapshot)
+      : code = snapshot['code'],
+        name = snapshot['name'],
+        description = snapshot['description'],
+        image = snapshot['image'],
+        category = CategoryModel.fromMap(snapshot['category']),
+        ingredients = snapshot['ingredients']
+            .map<IngredientModel>((ingredient) =>
+                IngredientModel.fromDocumentSnapshot(ingredient))
+            .toList();
 }
