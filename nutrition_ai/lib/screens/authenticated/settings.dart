@@ -17,13 +17,13 @@ class SettingsScreen extends StatefulWidget {
 }
 
 class _SettingsScreenState extends State<SettingsScreen> {
-  late final nameController = TextEditingController();
-  late final birthdayController = TextEditingController();
-  late final sexController = TextEditingController();
-  late final heightController = TextEditingController();
-  late final weightController = TextEditingController();
-  late final exerciseFrequencyController = TextEditingController();
-  late final goalController = TextEditingController();
+  final nameController = TextEditingController();
+  DateTime birthday = DateTime.now();
+  final sexController = TextEditingController();
+  final heightController = TextEditingController();
+  final weightController = TextEditingController();
+  final exerciseFrequencyController = TextEditingController();
+  final goalController = TextEditingController();
 
   void exit() {
     Navigator.popAndPushNamed(context, '/profile');
@@ -32,7 +32,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
   void save(UserProvider userProvider, UserModel? user) async {
     if (user != null) {
       user.name = nameController.text;
-      user.profile.birthday = DateTime.parse(birthdayController.text);
+      user.profile.birthday = birthday;
       user.profile.sex = sexController.text;
       user.profile.height = MeasurementModel(
           amount: double.parse(heightController.text), unit: 'inches');
@@ -49,6 +49,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
   Widget build(BuildContext context) {
     final userProvider = Provider.of<UserProvider>(context);
     final UserModel? user = userProvider.user;
+    birthday = user?.profile.birthday ?? DateTime.now();
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
@@ -77,7 +78,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               const SizedBox(height: 20),
               DateInput(
                   onSelectedDateChanged: (DateTime selectedDate) =>
-                      {birthdayController.text = selectedDate.toString()},
+                      birthday = selectedDate,
                   defaultValue: user?.profile.birthday,
                   name: 'Birthday'),
               const SizedBox(height: 20),
