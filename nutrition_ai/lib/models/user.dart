@@ -42,8 +42,17 @@ class UserModel {
       : name = snapshot['name'],
         email = snapshot['email'],
         photo = snapshot['photo'],
-        profile = snapshot['profile'],
-        approvedFoods = snapshot['approvedFoods'],
-        rejectedFoods = snapshot['rejectedFoods'],
-        recommendedNutrients = snapshot['recommendedNutrients'];
+        profile = ProfileModel.fromMap(snapshot['profile']),
+        approvedFoods = snapshot['approvedFoods']
+            .map<FoodModel>(
+                (approvedFood) => FoodModel.fromDocumentSnapshot(approvedFood))
+            .toList(),
+        rejectedFoods = snapshot['rejectedFoods']
+            .map<FoodModel>(
+                (rejectedFood) => FoodModel.fromDocumentSnapshot(rejectedFood))
+            .toList(),
+        recommendedNutrients = snapshot['recommendedNutrients']
+            .map<NutrientModel>((recommendedNutrient) =>
+                NutrientModel.fromMap(recommendedNutrient))
+            .toList();
 }

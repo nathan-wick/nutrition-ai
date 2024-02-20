@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class MeasurementModel {
   final double amount;
   final String unit;
@@ -13,4 +15,15 @@ class MeasurementModel {
       'unit': unit,
     };
   }
+
+  factory MeasurementModel.fromMap(Map<String, dynamic> map) {
+    return MeasurementModel(
+      amount: map['amount'].toDouble(),
+      unit: map['unit'],
+    );
+  }
+
+  MeasurementModel.fromDocumentSnapshot(DocumentSnapshot snapshot)
+      : amount = snapshot['amount'],
+        unit = snapshot['unit'];
 }

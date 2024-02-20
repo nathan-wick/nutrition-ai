@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 import 'measurement.dart';
 import 'nutrient.dart';
 
@@ -28,4 +30,15 @@ class IngredientModel {
       'nutrients': nutrients.map((nutrient) => nutrient.toJson()).toList(),
     };
   }
+
+  IngredientModel.fromDocumentSnapshot(DocumentSnapshot snapshot)
+      : code = snapshot['code'],
+        name = snapshot['name'],
+        moistureChange = snapshot['moistureChange'],
+        retentionCode = snapshot['retentionCode'],
+        amount = snapshot['amount'],
+        nutrients = snapshot['nutrients']
+            .map<NutrientModel>(
+                (nutrient) => NutrientModel.fromDocumentSnapshot(nutrient))
+            .toList();
 }
