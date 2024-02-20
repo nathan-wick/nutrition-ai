@@ -4,7 +4,7 @@ import 'nutrient.dart';
 import 'profile.dart';
 
 class UserModel {
-  final String name;
+  String name;
   final String email;
   final String photo;
   final ProfileModel profile;

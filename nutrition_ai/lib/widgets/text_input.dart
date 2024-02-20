@@ -1,19 +1,28 @@
 import 'package:flutter/material.dart';
 
-class TextInput extends StatelessWidget {
+class TextInput extends StatefulWidget {
   final TextEditingController controller;
   final String name;
   final String? defaultValue;
-  final bool? obscureText;
+  final void Function(String)? onChanged;
+  final bool obscureText;
+  final bool multipleLines;
 
   const TextInput({
     super.key,
     required this.controller,
     required this.name,
     this.defaultValue,
-    this.obscureText,
+    this.onChanged,
+    this.obscureText = false,
+    this.multipleLines = false,
   });
 
+  @override
+  State<TextInput> createState() => _TextInputState();
+}
+
+class _TextInputState extends State<TextInput> {
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -24,7 +33,7 @@ class TextInput extends StatelessWidget {
           Align(
             alignment: Alignment.centerLeft,
             child: Text(
-              name,
+              widget.name,
               style: const TextStyle(
                 fontSize: 16,
               ),
@@ -32,8 +41,16 @@ class TextInput extends StatelessWidget {
           ),
           const SizedBox(height: 6),
           TextField(
-            controller: controller..text = defaultValue ?? '',
-            obscureText: obscureText ?? false,
+            controller: widget.controller..text = widget.defaultValue ?? '',
+            onSubmitted: (String value) {
+              if (widget.onChanged != null) {
+                widget.onChanged!(value);
+              }
+            },
+            obscureText: widget.obscureText,
+            keyboardType: widget.multipleLines ? TextInputType.text : TextInputType.text,
+            maxLines: widget.multipleLines ? null : 1,
+            minLines: widget.multipleLines ? 3 : 1,
             decoration: InputDecoration(
                 enabledBorder: const OutlineInputBorder(
                   borderSide: BorderSide(color: Colors.grey),
@@ -43,7 +60,7 @@ class TextInput extends StatelessWidget {
                 ),
                 fillColor: Colors.white,
                 filled: true,
-                hintText: 'Enter $name',
+                hintText: 'Enter ${widget.name}',
                 hintStyle: const TextStyle(color: Colors.grey)),
           ),
         ],

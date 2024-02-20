@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:nutrition_ai/models/user.dart';
-import 'package:intl/intl.dart';
-import 'package:nutrition_ai/providers/user.dart';
+import 'package:nutrition_ai/widgets/date_input.dart';
 import 'package:provider/provider.dart';
 
+import '../../models/measurement.dart';
+import '../../models/user.dart';
+import '../../providers/user.dart';
 import '../../widgets/select_input.dart';
 import '../../widgets/button_input.dart';
 import '../../widgets/text_input.dart';
@@ -17,10 +18,10 @@ class SettingsScreen extends StatefulWidget {
 
 class _SettingsScreenState extends State<SettingsScreen> {
   late final nameController = TextEditingController();
-  late final weightController = TextEditingController();
-  late final heightController = TextEditingController();
   late final birthdayController = TextEditingController();
   late final sexController = TextEditingController();
+  late final heightController = TextEditingController();
+  late final weightController = TextEditingController();
   late final exerciseFrequencyController = TextEditingController();
   late final goalController = TextEditingController();
 
@@ -28,16 +29,18 @@ class _SettingsScreenState extends State<SettingsScreen> {
     Navigator.popAndPushNamed(context, '/profile');
   }
 
-  void save(UserProvider userProvider, UserModel? newUser) async {
-    if (newUser != null) {
-      newUser.name = nameController.text;
-      newUser.weightPounds = double.parse(weightController.text);
-      newUser.heightInches = double.parse(heightController.text);
-      newUser.birthday = DateTime.parse(birthdayController.text);
-      newUser.sex = sexController.text;
-      newUser.exerciseFrequency = exerciseFrequencyController.text;
-      newUser.goal = goalController.text;
-      await userProvider.updateUser(newUser);
+  void save(UserProvider userProvider, UserModel? user) async {
+    if (user != null) {
+      user.name = nameController.text;
+      user.profile.birthday = DateTime.parse(birthdayController.text);
+      user.profile.sex = sexController.text;
+      user.profile.height = MeasurementModel(
+          amount: double.parse(heightController.text), unit: 'inches');
+      user.profile.weight = MeasurementModel(
+          amount: double.parse(weightController.text), unit: 'pounds');
+      user.profile.exerciseFrequency = exerciseFrequencyController.text;
+      user.profile.goal = goalController.text;
+      await userProvider.updateUser(user);
     }
     exit();
   }
@@ -45,7 +48,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
   @override
   Widget build(BuildContext context) {
     final userProvider = Provider.of<UserProvider>(context);
-    final UserModel? newUser = userProvider.user;
+    final UserModel? user = userProvider.user;
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
@@ -59,7 +62,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               const SizedBox(height: 40),
               ButtonInput(
                 onTap: () {
-                  save(userProvider, newUser);
+                  save(userProvider, user);
                 },
                 icon: Icons.arrow_back,
                 message: 'Save and Exit',
@@ -68,35 +71,19 @@ class _SettingsScreenState extends State<SettingsScreen> {
               const SizedBox(height: 40),
               TextInput(
                 controller: nameController,
-                defaultValue: newUser?.name,
+                defaultValue: user?.name,
                 name: 'Name',
               ),
               const SizedBox(height: 20),
-              // TODO: Update TextInput with option to be numbers only
-              TextInput(
-                controller: weightController,
-                defaultValue: newUser?.weightPounds.toString(),
-                name: 'Weight (pounds)',
-              ),
-              const SizedBox(height: 20),
-              // TODO: Update TextInput with option to be numbers only
-              TextInput(
-                controller: heightController,
-                defaultValue: newUser?.heightInches.toString(),
-                name: 'Height (inches)',
-              ),
-              const SizedBox(height: 20),
-              // TODO: Create a new widget for date input
-              TextInput(
-                controller: birthdayController,
-                defaultValue: DateFormat('yyyy-M-dd')
-                    .format(newUser?.birthday ?? DateTime.now()),
-                name: 'Birthday (yyyy-mm-dd)',
-              ),
+              DateInput(
+                  onSelectedDateChanged: (DateTime selectedDate) =>
+                      {birthdayController.text = selectedDate.toString()},
+                  defaultValue: user?.profile.birthday,
+                  name: 'Birthday'),
               const SizedBox(height: 20),
               SelectInput(
                 controller: sexController,
-                defaultValue: newUser?.sex ?? 'XX',
+                defaultValue: user?.profile.sex ?? 'XX',
                 name: 'Sex',
                 items: const [
                   DropdownMenuItem(
@@ -110,54 +97,60 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 ],
               ),
               const SizedBox(height: 20),
+              // TODO: Update TextInput with option to be numbers only
+              TextInput(
+                controller: heightController,
+                defaultValue: user?.profile.height.amount.toString() ?? '67',
+                name: 'Height (inches)',
+              ),
+              const SizedBox(height: 20),
+              // TODO: Update TextInput with option to be numbers only
+              TextInput(
+                controller: weightController,
+                defaultValue: user?.profile.weight.amount.toString() ?? '150',
+                name: 'Weight (pounds)',
+              ),
+              const SizedBox(height: 20),
               SelectInput(
                 controller: exerciseFrequencyController,
-                defaultValue: newUser?.exerciseFrequency ?? 'none',
+                defaultValue: user?.profile.exerciseFrequency ?? 'sometimes',
                 name: 'Exercise Frequency',
                 items: const [
                   DropdownMenuItem(
-                    value: 'none',
+                    value: 'never',
                     child: Text('Never'),
                   ),
                   DropdownMenuItem(
-                    value: 'light',
-                    child: Text('1-2 Times Per Week'),
+                    value: 'sometimes',
+                    child: Text('Sometimes'),
                   ),
                   DropdownMenuItem(
-                    value: 'moderate',
-                    child: Text('3-6 Times Per Week'),
-                  ),
-                  DropdownMenuItem(
-                    value: 'very',
-                    child: Text('1 Time Per Day'),
-                  ),
-                  DropdownMenuItem(
-                    value: 'extra',
-                    child: Text('2+ Times Per Day'),
+                    value: 'often',
+                    child: Text('Often'),
                   ),
                 ],
               ),
               const SizedBox(height: 20),
               SelectInput(
                 controller: goalController,
-                defaultValue: newUser?.goal ?? 'none',
+                defaultValue: user?.profile.goal ?? 'maintain',
                 name: 'Goal',
                 items: const [
                   DropdownMenuItem(
-                    value: 'none',
-                    child: Text('No Goal'),
+                    value: 'maintain',
+                    child: Text('Maintain (No Goal)'),
                   ),
                   DropdownMenuItem(
-                    value: 'gainMuscle',
+                    value: 'lose_fat',
+                    child: Text('Lose Fat'),
+                  ),
+                  DropdownMenuItem(
+                    value: 'gain_fat',
+                    child: Text('Gain Fat'),
+                  ),
+                  DropdownMenuItem(
+                    value: 'gain_muscle',
                     child: Text('Gain Muscle'),
-                  ),
-                  DropdownMenuItem(
-                    value: 'loseWeight',
-                    child: Text('Lose Weight'),
-                  ),
-                  DropdownMenuItem(
-                    value: 'gainWeight',
-                    child: Text('Gain Weight'),
                   ),
                 ],
               ),

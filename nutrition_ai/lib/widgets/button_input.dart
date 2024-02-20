@@ -11,6 +11,7 @@ class ButtonInput extends StatelessWidget {
   final IconData icon;
   final String message;
   final ButtonInputTheme theme;
+  final bool removeMargin;
 
   const ButtonInput({
     super.key,
@@ -18,6 +19,7 @@ class ButtonInput extends StatelessWidget {
     required this.icon,
     required this.message,
     required this.theme,
+    this.removeMargin = false,
   });
 
   @override
@@ -26,13 +28,13 @@ class ButtonInput extends StatelessWidget {
       onTap: onTap,
       child: Container(
         padding: const EdgeInsets.all(20),
-        margin: const EdgeInsets.symmetric(horizontal: 40),
+        margin: EdgeInsets.symmetric(horizontal: removeMargin ? 0 : 40),
         decoration: BoxDecoration(
-          color: theme == ButtonInputTheme.primary ?
-          Theme.of(context).primaryColor :
-          theme == ButtonInputTheme.secondary ?
-          Colors.grey :
-          Colors.red,
+          color: theme == ButtonInputTheme.primary
+              ? Theme.of(context).primaryColor
+              : theme == ButtonInputTheme.secondary
+              ? Colors.grey
+              : Colors.red,
           borderRadius: BorderRadius.circular(4),
         ),
         child: Center(

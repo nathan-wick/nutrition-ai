@@ -40,7 +40,7 @@ class UserProvider with ChangeNotifier {
       photo: userAuthentication?.photoURL ?? '',
       profile: ProfileModel(
         birthday: DateTime.now().subtract(const Duration(days: 7305)),
-        sex: 'xy',
+        sex: 'XX',
         height: MeasurementModel(
           amount: 67,
           unit: 'inches',

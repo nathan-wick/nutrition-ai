@@ -1,12 +1,12 @@
 import 'measurement.dart';
 
 class ProfileModel {
-  final DateTime birthday;
-  final String sex;
-  final MeasurementModel height;
-  final MeasurementModel weight;
-  final String exerciseFrequency;
-  final String goal;
+  DateTime birthday;
+  String sex;
+  MeasurementModel height;
+  MeasurementModel weight;
+  String exerciseFrequency;
+  String goal;
   final int? age;
   final double? bodyMassIndex;
   final double? totalDailyEnergyExpenditure;
