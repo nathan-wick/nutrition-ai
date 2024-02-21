@@ -4,7 +4,6 @@ import 'package:provider/provider.dart';
 
 import '../widgets/button_input.dart';
 import '../providers/user.dart';
-import '../widgets/square_tile.dart';
 
 class SignInScreen extends StatefulWidget {
   const SignInScreen({super.key});
@@ -46,7 +45,7 @@ class _SignInScreenState extends State<SignInScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     FadeInUp(
-                      duration: const Duration(milliseconds: 300),
+                      duration: const Duration(milliseconds: 200),
                       child: const Text(
                         "Welcome to",
                         style: TextStyle(
@@ -54,31 +53,28 @@ class _SignInScreenState extends State<SignInScreen> {
                             fontSize: 18),
                       ),
                     ),
-                    const SizedBox(
-                      height: 5,
-                    ),
                     FadeInUp(
                       duration: const Duration(milliseconds: 200),
                       child: const Text(
                         "NutriMind",
                         style: TextStyle(
                             color: Colors.white,
-                            fontSize: 50,
+                            fontSize: 48,
                             fontWeight: FontWeight.w600),
                       ),
                     ),
                   ],
                 ),
               ),
-              const SizedBox(height: 50),
+              const SizedBox(height: 80),
               Container(
                 decoration: const BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(60),
-                        topRight: Radius.circular(60))),
+                        topLeft: Radius.circular(50),
+                        topRight: Radius.circular(50))),
                 child: Padding(
-                  padding: const EdgeInsets.all(30),
+                  padding: const EdgeInsets.all(20),
                   child: Column(
                     children: <Widget>[
                       const SizedBox(
@@ -94,10 +90,10 @@ class _SignInScreenState extends State<SignInScreen> {
                         ),
                       ),
                       const SizedBox(
-                        height: 20,
+                        height: 40,
                       ),
                       FadeInUp(
-                        duration: const Duration(milliseconds: 400),
+                        duration: const Duration(milliseconds: 600),
                         child: ButtonInput(
                           onTap: () => userProvider.signInAnonymously(context),
                           icon: Icons.arrow_forward,

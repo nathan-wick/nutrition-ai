@@ -32,38 +32,35 @@ class _SelectInputState extends State<SelectInput> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 40.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          Align(
-            alignment: Alignment.centerLeft,
-            child: Text(
-              widget.name,
-              style: const TextStyle(
-                fontSize: 16,
-              ),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: [
+        Align(
+          alignment: Alignment.centerLeft,
+          child: Text(
+            widget.name,
+            style: const TextStyle(
+              fontSize: 16,
             ),
           ),
-          const SizedBox(height: 6),
-          DropdownButton<String>(
-            value: _dropdownValue,
-            items: widget.items,
-            onChanged: (String? value) {
-              setState(() {
-                _dropdownValue = value ?? '';
-                widget.controller.text = value ?? '';
-              });
-              if (widget.onChanged != null) {
-                widget.onChanged!(value ?? '');
-              }
-            },
-            isExpanded: true,
-          ),
-        ],
-      ),
+        ),
+        const SizedBox(height: 6),
+        DropdownButton<String>(
+          value: _dropdownValue,
+          items: widget.items,
+          onChanged: (String? value) {
+            setState(() {
+              _dropdownValue = value ?? '';
+              widget.controller.text = value ?? '';
+            });
+            if (widget.onChanged != null) {
+              widget.onChanged!(value ?? '');
+            }
+          },
+          isExpanded: true,
+        ),
+      ],
     );
   }
 }
