@@ -1,4 +1,8 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:nutrition_ai/models/nutrient.dart';
 import 'package:provider/provider.dart';
 import 'package:animate_do/animate_do.dart';
 
@@ -28,12 +32,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
       body: SingleChildScrollView(
         child: Container(
           width: double.infinity,
-          decoration: const BoxDecoration(
+          decoration: BoxDecoration(
             gradient: LinearGradient(
               begin: Alignment.topCenter,
               colors: [
                 Colors.green,
-                Colors.green,
+                Theme.of(context).primaryColor,
                 Colors.white,
               ],
             ),
@@ -42,16 +46,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               const SizedBox(
-                height: 30,
+                height: 20,
               ),
               Padding(
                 padding: const EdgeInsets.all(20),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    const SizedBox(
-                      height: 5,
-                    ),
                     Column(
                       children: [
                         const SizedBox(height: 20),
@@ -61,7 +62,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             borderRadius: BorderRadius.all(Radius.circular(20)),
                             boxShadow: [
                               BoxShadow(
-                                color: Color.fromRGBO(13, 131, 78, 0.298),
+                                color: Colors.black,
                                 blurRadius: 20,
                                 offset: Offset(0, 10),
                               ),
@@ -69,24 +70,28 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           ),
                           child: Column(
                             children: [
-                              const SizedBox(
-                                  height: 20), // Adjust the height as needed
+                              const SizedBox(height: 20),
                               Center(
-                                child: Image.network(
-                                  user?.photo ?? '',
-                                  width: 100,
-                                  height: 100,
-                                  errorBuilder: (BuildContext context,
-                                      Object exception,
-                                      StackTrace? stackTrace) {
-                                    return const Icon(
-                                      Icons.account_circle,
-                                      size: 100,
-                                    );
-                                  },
-                                ),
+                                child: user?.photo != null
+                                    ? Image.network(
+                                        user?.photo ?? '',
+                                        width: 100,
+                                        height: 100,
+                                        errorBuilder: (BuildContext context,
+                                            Object exception,
+                                            StackTrace? stackTrace) {
+                                          return const Icon(
+                                            Icons.account_circle,
+                                            size: 100,
+                                          );
+                                        },
+                                      )
+                                    : const Icon(
+                                        Icons.account_circle,
+                                        size: 100,
+                                      ),
                               ),
-                              const SizedBox(height: 10),
+                              const SizedBox(height: 20),
                               Align(
                                 alignment: Alignment.center,
                                 child: Column(
@@ -95,123 +100,225 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     Text(
                                       user?.name ?? "Anonymous User",
                                       style: const TextStyle(
-                                        color: Color.fromARGB(255, 28, 77, 0),
                                         fontSize: 18,
-                                        fontWeight: FontWeight.w600,
+                                        fontWeight: FontWeight.bold,
                                       ),
                                     ),
-                                    const SizedBox(height: 2),
                                     Text(
                                       user?.email ?? '',
                                       style: const TextStyle(
-                                        color:
-                                            Color.fromARGB(255, 100, 100, 100),
-                                        fontSize: 15,
+                                        color: Colors.grey,
+                                        fontSize: 14,
                                         fontWeight: FontWeight.w400,
                                       ),
                                     ),
                                   ],
                                 ),
                               ),
-                              const SizedBox(height: 20),
-                              Align(
-                                alignment: Alignment.centerLeft,
-                                child: IconButton(
-                                  onPressed: () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) =>
-                                            const SettingsScreen(),
-                                      ),
-                                    );
-                                  },
-                                  icon: const Icon(Icons.settings),
-                                  tooltip: 'Settings',
+                              Padding(
+                                padding: const EdgeInsets.all(20),
+                                child: Column(
+                                  children: [
+                                    Platform.isIOS || Platform.isMacOS
+                                        ? ButtonInput(
+                                            onTap: () =>
+                                                Navigator.popAndPushNamed(
+                                                    context, '/settings'),
+                                            icon: Icons.settings,
+                                            message: 'Settings',
+                                            theme: ButtonInputTheme.primary,
+                                          )
+                                        : Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceEvenly,
+                                            children: [
+                                              ButtonInput(
+                                                onTap: () => userProvider
+                                                    .signOut(context),
+                                                icon: Icons.arrow_back,
+                                                message: 'Sign Out',
+                                                theme:
+                                                    ButtonInputTheme.secondary,
+                                              ),
+                                              ButtonInput(
+                                                onTap: () =>
+                                                    Navigator.popAndPushNamed(
+                                                        context, '/settings'),
+                                                icon: Icons.settings,
+                                                message: 'Settings',
+                                                theme: ButtonInputTheme.primary,
+                                              ),
+                                            ],
+                                          ),
+                                    const SizedBox(height: 20),
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        const Text('Birthday',
+                                            textAlign: TextAlign.left),
+                                        Text(
+                                            DateFormat('MMMM d, y').format(
+                                                user?.profile.birthday ??
+                                                    DateTime.now()),
+                                            textAlign: TextAlign.right),
+                                      ],
+                                    ),
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        const Text('Sex',
+                                            textAlign: TextAlign.left),
+                                        Text(
+                                            user?.profile.sex == 'XX'
+                                                ? 'female'
+                                                : 'male',
+                                            textAlign: TextAlign.right),
+                                      ],
+                                    ),
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        const Text('Height',
+                                            textAlign: TextAlign.left),
+                                        Text(
+                                            '${user?.profile.height.amount.toStringAsFixed(0) ?? '?'} inches',
+                                            textAlign: TextAlign.right),
+                                      ],
+                                    ),
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        const Text('Weight',
+                                            textAlign: TextAlign.left),
+                                        Text(
+                                            '${user?.profile.weight.amount.toStringAsFixed(0) ?? '?'} pounds',
+                                            textAlign: TextAlign.right),
+                                      ],
+                                    ),
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        const Text('Exercise Frequency',
+                                            textAlign: TextAlign.left),
+                                        Text(
+                                            user?.profile.exerciseFrequency ??
+                                                '?',
+                                            textAlign: TextAlign.right),
+                                      ],
+                                    ),
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        const Text('Goal',
+                                            textAlign: TextAlign.left),
+                                        Text(user?.profile.goal ?? '?',
+                                            textAlign: TextAlign.right),
+                                      ],
+                                    ),
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        const Text('Body Mass Index',
+                                            textAlign: TextAlign.left),
+                                        Text(
+                                            user?.profile.bodyMassIndex
+                                                    ?.toStringAsFixed(0) ??
+                                                '?',
+                                            textAlign: TextAlign.right),
+                                      ],
+                                    ),
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        const Text(
+                                            'Total Daily Energy Expenditure',
+                                            textAlign: TextAlign.left),
+                                        Text(
+                                            user?.profile
+                                                    .totalDailyEnergyExpenditure
+                                                    ?.toStringAsFixed(0) ??
+                                                '?',
+                                            textAlign: TextAlign.right),
+                                      ],
+                                    ),
+                                  ],
                                 ),
                               ),
                             ],
                           ),
                         ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-              SingleChildScrollView(
-                child: Column(
-                  children: <Widget>[
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 10, // Adjust horizontal padding
-                        vertical: 0, // Adjust vertical padding
-                      ),
-                      child: Column(
-                        children: <Widget>[
-                          const SizedBox(height: 1),
-                          FadeInUp(
-                            duration: const Duration(milliseconds: 1000),
-                            child: GridView.builder(
-                              gridDelegate:
-                                  const SliverGridDelegateWithFixedCrossAxisCount(
-                                crossAxisCount: 3,
-                                crossAxisSpacing:
-                                    8.0, // Adjust the spacing between columns
-                                mainAxisSpacing:
-                                    8.0, // Adjust the spacing between rows
+                        const SizedBox(height: 20),
+                        Container(
+                          decoration: const BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.all(Radius.circular(20)),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black,
+                                blurRadius: 20,
+                                offset: Offset(0, 10),
                               ),
-                              shrinkWrap:
-                                  true, // Ensure the GridView takes only the required space
-                              physics: const NeverScrollableScrollPhysics(),
-                              itemCount: gridTexts.length,
-                              itemBuilder: (BuildContext context, int index) {
-                                return Container(
-                                  decoration: BoxDecoration(
-                                    color: const Color.fromARGB(255, 243, 242,
-                                        242), // Set the color of grid items
-                                    borderRadius: BorderRadius.circular(
-                                        10), // Set border radius
-                                    boxShadow: const [
-                                      BoxShadow(
-                                        color:
-                                            Color.fromRGBO(13, 131, 78, 0.298),
-                                        blurRadius: 20,
-                                        offset: Offset(0, 10),
+                            ],
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.all(20),
+                            child: Column(
+                              children: [
+                                const Align(
+                                  alignment: Alignment.center,
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: [
+                                      Text(
+                                        "Recommended Daily Nutrients",
+                                        style: TextStyle(
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.bold,
+                                        ),
                                       ),
                                     ],
                                   ),
-                                  child: Center(
-                                    child: Text(
-                                      gridTexts[
-                                          index], // Replace this with your text content
-                                      style: const TextStyle(
-                                        color: Color.fromARGB(255, 38, 58, 43),
-                                        fontFamily:
-                                            'Poppins', // Use the Poppins font
-                                        fontWeight: FontWeight
-                                            .bold, // or FontWeight.bold for bold
-                                        fontSize:
-                                            14, // Adjust the font size as needed
-                                      ),
-                                      textAlign:
-                                          TextAlign.center, // Center the text
-                                    ),
-                                  ),
-                                );
-                              },
+                                ),
+                                const SizedBox(height: 20),
+                                ListView.builder(
+                                  itemCount:
+                                      user?.recommendedNutrients.length ?? 0,
+                                  physics: const NeverScrollableScrollPhysics(),
+                                  shrinkWrap: true,
+                                  itemBuilder:
+                                      (BuildContext recommendedNutrientContext,
+                                          int recommendedNutrientIndex) {
+                                    List<NutrientModel> nutrients =
+                                        user?.recommendedNutrients ?? [];
+                                    return Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text(
+                                            nutrients[recommendedNutrientIndex]
+                                                .name,
+                                            textAlign: TextAlign.left),
+                                        Text(
+                                            '${nutrients[recommendedNutrientIndex].amount?.amount.toStringAsFixed(0) ?? 0} ${nutrients[recommendedNutrientIndex].amount?.unit}',
+                                            textAlign: TextAlign.right),
+                                      ],
+                                    );
+                                  },
+                                ),
+                              ],
                             ),
                           ),
-                          // ),
-                          const SizedBox(height: 30),
-                          ButtonInput(
-                            onTap: () => userProvider.signOut(context),
-                            icon: Icons.arrow_back,
-                            message: 'Sign Out',
-                            theme: ButtonInputTheme.secondary,
-                          ),
-                          const SizedBox(height: 5),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
                   ],
                 ),

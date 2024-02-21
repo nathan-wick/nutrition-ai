@@ -29,15 +29,15 @@ class _DateInputState extends State<DateInput> {
   @override
   void initState() {
     super.initState();
-    selectedDate =
-        widget.defaultValue ?? DateTime.now();
+    selectedDate = widget.defaultValue ?? DateTime.now();
   }
 
   Future<void> _selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
       context: context,
       initialDate: selectedDate,
-      firstDate: widget.firstDate ?? DateTime.now().subtract(const Duration(days: 36500)),
+      firstDate: widget.firstDate ??
+          DateTime.now().subtract(const Duration(days: 36500)),
       lastDate: widget.lastDate ?? DateTime.now(),
     );
     if (picked != null && picked != selectedDate) {
@@ -50,33 +50,29 @@ class _DateInputState extends State<DateInput> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 40.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          Align(
-            alignment: Alignment.centerLeft,
-            child: Text(
-              widget.name,
-              style: const TextStyle(
-                fontSize: 16,
-              ),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: [
+        Align(
+          alignment: Alignment.centerLeft,
+          child: Text(
+            widget.name,
+            style: const TextStyle(
+              fontSize: 16,
             ),
           ),
-          const SizedBox(height: 6),
-          ButtonInput(
-            onTap: () {
-              _selectDate(context);
-            },
-            message: DateFormat('MMMM d, y').format(selectedDate),
-            icon: Icons.date_range,
-            theme: ButtonInputTheme.primary,
-            removeMargin: true,
-          ),
-        ],
-      ),
+        ),
+        const SizedBox(height: 6),
+        ButtonInput(
+          onTap: () {
+            _selectDate(context);
+          },
+          message: DateFormat('MMMM d, y').format(selectedDate),
+          icon: Icons.date_range,
+          theme: ButtonInputTheme.primary,
+        ),
+      ],
     );
   }
 }

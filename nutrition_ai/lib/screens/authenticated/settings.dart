@@ -51,111 +51,112 @@ class _SettingsScreenState extends State<SettingsScreen> {
     final UserModel? user = userProvider.user;
     birthday = user?.profile.birthday ?? DateTime.now();
     return Scaffold(
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
-        title: const Text('Settings'),
-      ),
       body: SafeArea(
         child: SingleChildScrollView(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              const SizedBox(height: 40),
-              ButtonInput(
-                onTap: () {
-                  save(userProvider, user);
-                },
-                icon: Icons.arrow_back,
-                message: 'Save and Exit',
-                theme: ButtonInputTheme.primary,
-              ),
-              const SizedBox(height: 40),
-              TextInput(
-                controller: nameController,
-                defaultValue: user?.name,
-                name: 'Name',
-              ),
-              const SizedBox(height: 20),
-              DateInput(
-                  onSelectedDateChanged: (DateTime selectedDate) =>
-                      birthday = selectedDate,
-                  defaultValue: user?.profile.birthday,
-                  name: 'Birthday'),
-              const SizedBox(height: 20),
-              SelectInput(
-                controller: sexController,
-                defaultValue: user?.profile.sex ?? 'XX',
-                name: 'Sex',
-                items: const [
-                  DropdownMenuItem(
-                    value: 'XX',
-                    child: Text('Female'),
-                  ),
-                  DropdownMenuItem(
-                    value: 'XY',
-                    child: Text('Male'),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 20),
-              // TODO: Update TextInput with option to be numbers only
-              TextInput(
-                controller: heightController,
-                defaultValue: user?.profile.height.amount.toString() ?? '67',
-                name: 'Height (inches)',
-              ),
-              const SizedBox(height: 20),
-              // TODO: Update TextInput with option to be numbers only
-              TextInput(
-                controller: weightController,
-                defaultValue: user?.profile.weight.amount.toString() ?? '150',
-                name: 'Weight (pounds)',
-              ),
-              const SizedBox(height: 20),
-              SelectInput(
-                controller: exerciseFrequencyController,
-                defaultValue: user?.profile.exerciseFrequency ?? 'sometimes',
-                name: 'Exercise Frequency',
-                items: const [
-                  DropdownMenuItem(
-                    value: 'never',
-                    child: Text('Never'),
-                  ),
-                  DropdownMenuItem(
-                    value: 'sometimes',
-                    child: Text('Sometimes'),
-                  ),
-                  DropdownMenuItem(
-                    value: 'often',
-                    child: Text('Often'),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 20),
-              SelectInput(
-                controller: goalController,
-                defaultValue: user?.profile.goal ?? 'maintain',
-                name: 'Goal',
-                items: const [
-                  DropdownMenuItem(
-                    value: 'maintain',
-                    child: Text('Maintain (No Goal)'),
-                  ),
-                  DropdownMenuItem(
-                    value: 'lose_fat',
-                    child: Text('Lose Fat'),
-                  ),
-                  DropdownMenuItem(
-                    value: 'gain_fat',
-                    child: Text('Gain Fat'),
-                  ),
-                  DropdownMenuItem(
-                    value: 'gain_muscle',
-                    child: Text('Gain Muscle'),
-                  ),
-                ],
-              ),
-            ],
+          child: Padding(
+            padding: const EdgeInsets.all(20),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                const SizedBox(height: 40),
+                ButtonInput(
+                  onTap: () {
+                    save(userProvider, user);
+                  },
+                  icon: Icons.arrow_back,
+                  message: 'Save and Exit',
+                  theme: ButtonInputTheme.primary,
+                ),
+                const SizedBox(height: 40),
+                TextInput(
+                  controller: nameController,
+                  defaultValue: user?.name,
+                  name: 'Name',
+                ),
+                const SizedBox(height: 20),
+                DateInput(
+                    onSelectedDateChanged: (DateTime selectedDate) =>
+                        birthday = selectedDate,
+                    defaultValue: user?.profile.birthday,
+                    name: 'Birthday'),
+                const SizedBox(height: 20),
+                SelectInput(
+                  controller: sexController,
+                  defaultValue: user?.profile.sex ?? 'XX',
+                  name: 'Sex',
+                  items: const [
+                    DropdownMenuItem(
+                      value: 'XX',
+                      child: Text('Female'),
+                    ),
+                    DropdownMenuItem(
+                      value: 'XY',
+                      child: Text('Male'),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 20),
+                TextInput(
+                  controller: heightController,
+                  defaultValue:
+                      user?.profile.height.amount.toStringAsFixed(0) ?? '67',
+                  name: 'Height (inches)',
+                  numbersOnly: true,
+                ),
+                const SizedBox(height: 20),
+                TextInput(
+                  controller: weightController,
+                  defaultValue:
+                      user?.profile.weight.amount.toStringAsFixed(0) ?? '150',
+                  name: 'Weight (pounds)',
+                  numbersOnly: true,
+                ),
+                const SizedBox(height: 20),
+                SelectInput(
+                  controller: exerciseFrequencyController,
+                  defaultValue: user?.profile.exerciseFrequency ?? 'sometimes',
+                  name: 'Exercise Frequency',
+                  items: const [
+                    DropdownMenuItem(
+                      value: 'never',
+                      child: Text('Never'),
+                    ),
+                    DropdownMenuItem(
+                      value: 'sometimes',
+                      child: Text('Sometimes'),
+                    ),
+                    DropdownMenuItem(
+                      value: 'often',
+                      child: Text('Often'),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 20),
+                SelectInput(
+                  controller: goalController,
+                  defaultValue: user?.profile.goal ?? 'maintain',
+                  name: 'Goal',
+                  items: const [
+                    DropdownMenuItem(
+                      value: 'maintain',
+                      child: Text('Maintain (No Goal)'),
+                    ),
+                    DropdownMenuItem(
+                      value: 'lose_fat',
+                      child: Text('Lose Fat'),
+                    ),
+                    DropdownMenuItem(
+                      value: 'gain_fat',
+                      child: Text('Gain Fat'),
+                    ),
+                    DropdownMenuItem(
+                      value: 'gain_muscle',
+                      child: Text('Gain Muscle'),
+                    ),
+                  ],
+                ),
+              ],
+            ),
           ),
         ),
       ),

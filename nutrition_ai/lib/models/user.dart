@@ -5,8 +5,8 @@ import 'profile.dart';
 
 class UserModel {
   String name;
-  final String email;
-  final String photo;
+  final String? email;
+  final String? photo;
   final ProfileModel profile;
   final List<FoodModel> approvedFoods;
   final List<FoodModel> rejectedFoods;
@@ -14,8 +14,8 @@ class UserModel {
 
   UserModel({
     required this.name,
-    required this.email,
-    required this.photo,
+    this.email,
+    this.photo,
     required this.profile,
     required this.approvedFoods,
     required this.rejectedFoods,

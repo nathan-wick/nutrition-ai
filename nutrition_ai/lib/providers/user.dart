@@ -39,8 +39,8 @@ class UserProvider with ChangeNotifier {
     } else {
       final defaultUser = UserModel(
         name: userAuthentication?.displayName ?? 'Anonymous User',
-        email: userAuthentication?.email ?? '',
-        photo: userAuthentication?.photoURL ?? '',
+        email: userAuthentication?.email,
+        photo: userAuthentication?.photoURL,
         profile: ProfileModel(
           birthday: DateTime.now().subtract(const Duration(days: 7305)),
           sex: 'XX',
@@ -109,7 +109,8 @@ class UserProvider with ChangeNotifier {
       password: password,
     );
     if (userAuthentication != null) {
-      Navigator.popAndPushNamed(context, '/profile');
+      // TODO Navigate to preferences instead of recommendations
+      Navigator.popAndPushNamed(context, '/recommendations');
     }
   }
 
@@ -128,14 +129,16 @@ class UserProvider with ChangeNotifier {
       await authentication.signInWithCredential(credential);
     }
     if (userAuthentication != null) {
-      Navigator.popAndPushNamed(context, '/profile');
+      // TODO Navigate to preferences instead of recommendations
+      Navigator.popAndPushNamed(context, '/recommendations');
     }
   }
 
   Future<void> signInAnonymously(BuildContext context) async {
     await authentication.signInAnonymously();
     if (userAuthentication != null) {
-      Navigator.popAndPushNamed(context, '/profile');
+      // TODO Navigate to preferences instead of recommendations
+      Navigator.popAndPushNamed(context, '/recommendations');
     }
   }
 }
