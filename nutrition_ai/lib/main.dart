@@ -36,8 +36,7 @@ class App extends StatelessWidget {
       child: MaterialApp(
         title: 'NutriMind',
         theme: ThemeData(
-          primarySwatch: Colors.green,
-          primaryColor: Colors.green,
+          primaryColor: Colors.teal,
         ),
         routes: {
           '/': (context) =>

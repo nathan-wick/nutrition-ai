@@ -131,4 +131,11 @@ class UserProvider with ChangeNotifier {
       Navigator.popAndPushNamed(context, '/profile');
     }
   }
+
+  Future<void> signInAnonymously(BuildContext context) async {
+    await authentication.signInAnonymously();
+    if (userAuthentication != null) {
+      Navigator.popAndPushNamed(context, '/profile');
+    }
+  }
 }
