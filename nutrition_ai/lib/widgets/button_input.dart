@@ -27,7 +27,7 @@ class ButtonInput extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        padding: const EdgeInsets.all(20),
+        padding: const EdgeInsets.all(14),
         margin: EdgeInsets.symmetric(horizontal: removeMargin ? 0 : 40),
         decoration: BoxDecoration(
           color: theme == ButtonInputTheme.primary
@@ -35,7 +35,7 @@ class ButtonInput extends StatelessWidget {
               : theme == ButtonInputTheme.secondary
               ? Colors.grey
               : Colors.red,
-          borderRadius: BorderRadius.circular(4),
+          borderRadius: BorderRadius.circular(50),
         ),
         child: Center(
           child: Row(

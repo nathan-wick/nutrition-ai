@@ -93,7 +93,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
                                     Text(
-                                      "Welcome ${user?.name.split(' ')[0] ?? ''}",
+                                      user?.name ?? "Anonymous User",
                                       style: const TextStyle(
                                         color: Color.fromARGB(255, 28, 77, 0),
                                         fontSize: 18,
