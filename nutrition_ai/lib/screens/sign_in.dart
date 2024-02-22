@@ -87,8 +87,8 @@ class _SignInScreenState extends State<SignInScreen> {
                                 onTap: () =>
                                     userProvider.signInAnonymously(context),
                                 icon: Icons.arrow_forward,
-                                message: 'Skip Sign-In',
-                                theme: ButtonInputTheme.secondary,
+                                message: 'Continue',
+                                theme: ButtonInputTheme.primary,
                               )
                             : ButtonInput(
                                 onTap: () =>
