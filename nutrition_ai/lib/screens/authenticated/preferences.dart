@@ -167,7 +167,7 @@ class _PreferencesScreenState extends State<PreferencesScreen> {
                                           for (var ingredient
                                               in food.ingredients!)
                                             Text(
-                                                "• ${ingredient.name} - ${ingredient.amount}"),
+                                                "• ${ingredient.name} - ${ingredient.amount.amount.toStringAsFixed(0)}${ingredient.amount.unit}"),
                                       ],
                                     ),
                                   ],
