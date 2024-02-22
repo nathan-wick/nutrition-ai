@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:nutrition_ai/utilities/fetch_food_image.dart';
 
 import '../../models/food.dart';
 
@@ -33,16 +34,7 @@ class FoodScreen extends StatelessWidget {
               padding: const EdgeInsets.only(top: 50),
               child: Column(
                 children: [
-                  food.image != null
-                      ? Align(
-                          alignment: Alignment.center,
-                          child: Image.network(
-                            food.image ?? '',
-                            height: 300,
-                            width: 500,
-                          ),
-                        )
-                      : const SizedBox(height: 20),
+                  // TODO Add image
                   const SizedBox(height: 20),
                   Text(
                     food.name,
