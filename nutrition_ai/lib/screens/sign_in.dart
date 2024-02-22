@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:animate_do/animate_do.dart';
 import 'package:provider/provider.dart';
@@ -48,9 +50,7 @@ class _SignInScreenState extends State<SignInScreen> {
                       duration: const Duration(milliseconds: 200),
                       child: const Text(
                         "Welcome to",
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 18),
+                        style: TextStyle(color: Colors.white, fontSize: 18),
                       ),
                     ),
                     FadeInUp(
@@ -82,24 +82,21 @@ class _SignInScreenState extends State<SignInScreen> {
                       ),
                       FadeInUp(
                         duration: const Duration(milliseconds: 400),
-                        child: ButtonInput(
-                          onTap: () => userProvider.signInWithGoogle(context),
-                          icon: Icons.account_circle,
-                          message: 'Sign-In With Google',
-                          theme: ButtonInputTheme.primary,
-                        ),
-                      ),
-                      const SizedBox(
-                        height: 40,
-                      ),
-                      FadeInUp(
-                        duration: const Duration(milliseconds: 600),
-                        child: ButtonInput(
-                          onTap: () => userProvider.signInAnonymously(context),
-                          icon: Icons.arrow_forward,
-                          message: 'Skip Sign-In',
-                          theme: ButtonInputTheme.secondary,
-                        ),
+                        child: Platform.isIOS || Platform.isMacOS
+                            ? ButtonInput(
+                                onTap: () =>
+                                    userProvider.signInAnonymously(context),
+                                icon: Icons.arrow_forward,
+                                message: 'Continue',
+                                theme: ButtonInputTheme.primary,
+                              )
+                            : ButtonInput(
+                                onTap: () =>
+                                    userProvider.signInWithGoogle(context),
+                                icon: Icons.account_circle,
+                                message: 'Sign-In With Google',
+                                theme: ButtonInputTheme.primary,
+                              ),
                       ),
                     ],
                   ),
