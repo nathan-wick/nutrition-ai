@@ -31,6 +31,19 @@ class IngredientModel {
     };
   }
 
+  factory IngredientModel.fromMap(Map<String, dynamic> map) {
+    return IngredientModel(
+      code: map['code'],
+      name: map['name'],
+      moistureChange: map['moistureChange'].toDouble(),
+      retentionCode: map['retentionCode'].toDouble(),
+      amount: MeasurementModel.fromMap(map['amount']),
+      nutrients: map['nutrients']
+          .map<NutrientModel>((nutrient) => NutrientModel.fromMap(nutrient))
+          .toList(),
+    );
+  }
+
   IngredientModel.fromDocumentSnapshot(DocumentSnapshot snapshot)
       : code = snapshot['code'],
         name = snapshot['name'],
@@ -38,7 +51,6 @@ class IngredientModel {
         retentionCode = snapshot['retentionCode'],
         amount = snapshot['amount'],
         nutrients = snapshot['nutrients']
-            .map<NutrientModel>(
-                (nutrient) => NutrientModel.fromDocumentSnapshot(nutrient))
+            .map<NutrientModel>((nutrient) => NutrientModel.fromMap(nutrient))
             .toList();
 }

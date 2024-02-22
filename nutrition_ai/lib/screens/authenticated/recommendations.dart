@@ -66,9 +66,7 @@ class _RecommendationsScreenState extends State<RecommendationsScreen> {
                       FoodModel food = foods[foodIndex];
                       return Card(
                         child: ListTile(
-                          leading: CircleAvatar(
-                            backgroundImage: NetworkImage(food.image ?? ''),
-                          ),
+                          // TODO Add image
                           title: Text(
                             food.name,
                             style: const TextStyle(

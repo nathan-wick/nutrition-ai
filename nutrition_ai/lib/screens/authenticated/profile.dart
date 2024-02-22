@@ -4,10 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:nutrition_ai/models/nutrient.dart';
 import 'package:provider/provider.dart';
-import 'package:animate_do/animate_do.dart';
 
 import '../../models/user.dart';
-import '../../screens/authenticated/settings.dart';
 import '../../providers/user.dart';
 import '../../widgets/button_input.dart';
 import '../../widgets/main_navigation_bar.dart';

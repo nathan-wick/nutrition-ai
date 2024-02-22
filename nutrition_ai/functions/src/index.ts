@@ -51,7 +51,7 @@ exports.getUSDAFoods = onSchedule(
     {
         "memory": `4GiB`,
         "schedule": `0 * * * *`,
-        "timeoutSeconds": 300,
+        "timeoutSeconds": 600,
     },
     async () => {
 
