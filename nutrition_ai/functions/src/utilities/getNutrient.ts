@@ -29,7 +29,11 @@ const getNutrient = (code: number,) => {
         break;
 
     }
-    return nutrients.find((nutrient,) => nutrient.code === nutrientCode,);
+    return nutrients.find((nutrient,) => nutrient.code === nutrientCode,) ?? {
+        code,
+        "description": ``,
+        "name": `Unknown Nutrient`,
+    };
 
 };
 
