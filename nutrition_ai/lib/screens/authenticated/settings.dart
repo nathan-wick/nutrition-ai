@@ -51,6 +51,19 @@ class _SettingsScreenState extends State<SettingsScreen> {
     final UserModel? user = userProvider.user;
     birthday = user?.profile.birthday ?? DateTime.now();
     return Scaffold(
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
+        backgroundColor: Theme.of(context).primaryColor,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back_ios),
+          color: Colors.white,
+          onPressed: () {
+            save(userProvider, user);
+          },
+        ),
+        shadowColor: Theme.of(context).shadowColor,
+        title: const Text('Settings', style: TextStyle(color: Colors.white)),
+      ),
       body: SafeArea(
         child: SingleChildScrollView(
           child: Padding(
@@ -58,16 +71,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                const SizedBox(height: 40),
-                ButtonInput(
-                  onTap: () {
-                    save(userProvider, user);
-                  },
-                  icon: Icons.arrow_back,
-                  message: 'Save and Exit',
-                  theme: ButtonInputTheme.primary,
-                ),
-                const SizedBox(height: 40),
+                const SizedBox(height: 20),
                 TextInput(
                   controller: nameController,
                   defaultValue: user?.name,
@@ -154,6 +158,15 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       child: Text('Gain Muscle'),
                     ),
                   ],
+                ),
+                const SizedBox(height: 40),
+                ButtonInput(
+                  onTap: () {
+                    save(userProvider, user);
+                  },
+                  icon: Icons.save_alt,
+                  message: 'Save and Exit',
+                  theme: ButtonInputTheme.primary,
                 ),
               ],
             ),

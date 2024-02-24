@@ -6,15 +6,14 @@ import {getBodyMassIndex,} from "./utilities/getBodyMassIndex";
 import {getFirestore,} from "firebase-admin/firestore";
 import {getTotalDailyEnergyExpenditure,} from "./utilities/getTotalDailyEnergyExpenditure";
 import getUSDACategories from "./utilities/getUSDACategories";
-import getUSDAFoods from "./utilities/getUSDAFoods";
-import getUSDANutrients from "./utilities/getUSDANutrients";
+import {getUSDAFoods,} from "./utilities/getUSDAFoods";
 import {initializeApp,} from "firebase-admin/app";
 import {onDocumentWritten,} from "firebase-functions/v2/firestore";
 import {onSchedule,} from "firebase-functions/v2/scheduler";
 
 initializeApp();
-
-const database = getFirestore();
+const maximumBatchSize = 500,
+    database = getFirestore();
 
 exports.userChanged = onDocumentWritten(
     `users/{userId}`,
@@ -33,10 +32,10 @@ exports.userChanged = onDocumentWritten(
             if (profileChanged && profileAfter) {
 
                 const userAfter = event.data.after.data() as User;
-                profileAfter.age = getAge(profileAfter.birthday,);
-                profileAfter.bodyMassIndex = getBodyMassIndex(profileAfter,);
-                profileAfter.totalDailyEnergyExpenditure = getTotalDailyEnergyExpenditure(profileAfter,);
-                userAfter.recommendedNutrients = calculateRecommendedNutrients(profileAfter,);
+                userAfter.profile.age = getAge(userAfter.profile.birthday,);
+                userAfter.profile.bodyMassIndex = getBodyMassIndex(userAfter.profile,);
+                userAfter.profile.totalDailyEnergyExpenditure = getTotalDailyEnergyExpenditure(userAfter.profile,);
+                userAfter.recommendedNutrients = calculateRecommendedNutrients(userAfter.profile,);
                 database.collection(`users`,).doc(event.params.userId,).
                     set(userAfter,);
 
@@ -51,17 +50,42 @@ exports.getUSDAFoods = onSchedule(
     {
         "memory": `4GiB`,
         "schedule": `0 * * * *`,
-        "timeoutSeconds": 600,
+        "timeoutSeconds": 300,
     },
     async () => {
 
-        const usdaCollectionExists = (await database.collection(`usda_foods`,).limit(1,).
-                get()).size > 0,
-            writeUSDAFoods = () => getUSDAFoods().forEach(async (food,) => await database.collection(`usda_foods`,).doc(String(food.code,),).
-                set(food,),);
+        const usdaCollectionName = `usda_foods`,
+            usdaCollectionExists = (await database.collection(usdaCollectionName,).limit(1,).
+                get()).size > 0;
         if (!usdaCollectionExists) {
 
-            writeUSDAFoods();
+            const foods = getUSDAFoods(),
+                foodBatches = [];
+            while (foods.length > 0) {
+
+                foodBatches.push(foods.splice(
+                    0,
+                    maximumBatchSize,
+                ),);
+
+            }
+            await Promise.all(foodBatches.map(async (foodBatch,) => {
+
+                const writeBatch = database.batch();
+                foodBatch.forEach((food,) => {
+
+                    const randomFoodId = `${Math.random().toString(36,).
+                            slice(-6,)}-${food.code}`,
+                        documentReference = database.collection(usdaCollectionName,).doc(randomFoodId,);
+                    writeBatch.set(
+                        documentReference,
+                        food,
+                    );
+
+                },);
+                await writeBatch.commit();
+
+            },),);
 
         }
 
@@ -82,28 +106,8 @@ exports.getUSDACategories = onSchedule(
                 set(category,),);
         if (!usdaCollectionExists) {
 
+            // TODO Rewrite getUSDACategories function to use batches
             writeUSDACategories();
-
-        }
-
-    },
-);
-
-exports.getUSDANutrients = onSchedule(
-    {
-        "memory": `4GiB`,
-        "schedule": `0 * * * *`,
-        "timeoutSeconds": 300,
-    },
-    async () => {
-
-        const usdaCollectionExists = (await database.collection(`usda_nutrients`,).limit(1,).
-                get()).size > 0,
-            writeUSDANutrients = () => getUSDANutrients().forEach(async (nutrient,) => await database.collection(`usda_nutrients`,).doc(String(nutrient.code,),).
-                set(nutrient,),);
-        if (!usdaCollectionExists) {
-
-            writeUSDANutrients();
 
         }
 

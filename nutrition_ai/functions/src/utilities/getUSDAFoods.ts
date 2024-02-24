@@ -13,7 +13,7 @@ export const getUSDAFoods = () => {
 
     const usdaFoods: USDAFood[] = usdaFoodsJSON,
         usdaIngredients: USDAIngredient[] = usdaIngredientsJSON as USDAIngredient[],
-        usdaIngredientNutrients: USDAIngredientNutrients[] = usdaIngredientNutrientsJSON as USDAIngredientNutrients[],
+        usdaIngredientNutrients: USDAIngredientNutrients[] = (usdaIngredientNutrientsJSON as USDAIngredientNutrients[]).filter((usdaIngredientNutrient,) => Number(usdaIngredientNutrient.nutrientValue,) > 0,),
         foods: Food[] = usdaFoods.map((usdaFood,) => {
 
             const ingredients: Ingredient[] = usdaIngredients.filter((usdaIngredient,) => usdaIngredient.foodCode === usdaFood.code,).map((usdaIngredient,) => {
@@ -27,7 +27,8 @@ export const getUSDAFoods = () => {
                     };
                     return nutrient;
 
-                },);
+                },).
+                    filter((nutrient,) => nutrient.name !== `unknown`,);
                 return {
                     "amount": {
                         "amount": Number(usdaIngredient.weight,),
@@ -40,7 +41,8 @@ export const getUSDAFoods = () => {
                     "retentionCode": Number(usdaIngredient.retentionCode,),
                 };
 
-            },);
+            },).
+                filter((ingredient,) => ingredient.amount.amount > 0 && ingredient.nutrients.length > 0,);
             return {
                 "category": {
                     "code": Number(usdaFood.categoryCode,),
@@ -52,8 +54,8 @@ export const getUSDAFoods = () => {
                 "name": usdaFood.name,
             };
 
-        },);
-
+        },).
+            filter((food,) => food.ingredients.length > 0 && food.category.code !== 9999,);
     return foods;
 
 };

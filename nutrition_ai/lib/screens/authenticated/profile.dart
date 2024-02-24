@@ -140,7 +140,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                   : ButtonInput(
                                                       onTap: () => userProvider
                                                           .signOut(context),
-                                                      icon: Icons.arrow_back,
+                                                      icon: Icons.arrow_back_ios,
                                                       message: 'Sign Out',
                                                       theme: ButtonInputTheme
                                                           .secondary,
@@ -262,14 +262,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         ),
                         const SizedBox(height: 20),
                         Container(
-                          decoration: const BoxDecoration(
+                          decoration: BoxDecoration(
                             color: Colors.white,
-                            borderRadius: BorderRadius.all(Radius.circular(20)),
+                            borderRadius:
+                                const BorderRadius.all(Radius.circular(20)),
                             boxShadow: [
                               BoxShadow(
-                                color: Colors.black,
-                                blurRadius: 20,
-                                offset: Offset(0, 10),
+                                color: Theme.of(context).shadowColor,
+                                blurRadius: 16,
+                                offset: const Offset(0, 8),
                               ),
                             ],
                           ),
