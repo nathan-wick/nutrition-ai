@@ -18,14 +18,12 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
+  final isApple = Platform.isIOS || Platform.isMacOS;
+
   @override
   Widget build(BuildContext context) {
     final userProvider = Provider.of<UserProvider>(context);
     final UserModel? user = userProvider.user;
-    var gridTexts = [
-      '${user?.profile.bodyMassIndex}\nBody Mass Index',
-      '${user?.profile.totalDailyEnergyExpenditure}\nTotal Daily Energy Expenditure',
-    ];
     return Scaffold(
       body: SingleChildScrollView(
         child: Container(
@@ -117,7 +115,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 padding: const EdgeInsets.all(20),
                                 child: Column(
                                   children: [
-                                    Platform.isIOS || Platform.isMacOS
+                                    isApple
                                         ? ButtonInput(
                                             onTap: () =>
                                                 Navigator.popAndPushNamed(
@@ -130,14 +128,23 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                             mainAxisAlignment:
                                                 MainAxisAlignment.spaceEvenly,
                                             children: [
-                                              ButtonInput(
-                                                onTap: () => userProvider
-                                                    .signOut(context),
-                                                icon: Icons.arrow_back,
-                                                message: 'Sign Out',
-                                                theme:
-                                                    ButtonInputTheme.secondary,
-                                              ),
+                                              user?.email == null
+                                                  ? ButtonInput(
+                                                      onTap: () => userProvider
+                                                          .signOut(context),
+                                                      icon: Icons.account_circle,
+                                                      message: 'Sign In',
+                                                      theme: ButtonInputTheme
+                                                          .primary,
+                                                    )
+                                                  : ButtonInput(
+                                                      onTap: () => userProvider
+                                                          .signOut(context),
+                                                      icon: Icons.arrow_back,
+                                                      message: 'Sign Out',
+                                                      theme: ButtonInputTheme
+                                                          .secondary,
+                                                    ),
                                               ButtonInput(
                                                 onTap: () =>
                                                     Navigator.popAndPushNamed(

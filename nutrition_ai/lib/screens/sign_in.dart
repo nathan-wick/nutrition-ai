@@ -17,6 +17,7 @@ class SignInScreen extends StatefulWidget {
 class _SignInScreenState extends State<SignInScreen> {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
+  final isApple = Platform.isIOS || Platform.isMacOS;
 
   @override
   Widget build(BuildContext context) {
@@ -82,7 +83,7 @@ class _SignInScreenState extends State<SignInScreen> {
                       ),
                       FadeInUp(
                         duration: const Duration(milliseconds: 400),
-                        child: Platform.isIOS || Platform.isMacOS
+                        child: isApple
                             ? ButtonInput(
                                 onTap: () =>
                                     userProvider.signInAnonymously(context),
@@ -94,8 +95,25 @@ class _SignInScreenState extends State<SignInScreen> {
                                 onTap: () =>
                                     userProvider.signInWithGoogle(context),
                                 icon: Icons.account_circle,
-                                message: 'Sign-In With Google',
+                                message: 'Sign In With Google',
                                 theme: ButtonInputTheme.primary,
+                              ),
+                      ),
+                      const SizedBox(
+                        height: 40,
+                      ),
+                      FadeInUp(
+                        duration: const Duration(milliseconds: 600),
+                        child: !isApple
+                            ? ButtonInput(
+                                onTap: () =>
+                                    userProvider.signInAnonymously(context),
+                                icon: Icons.arrow_forward,
+                                message: 'Skip Sign In',
+                                theme: ButtonInputTheme.secondary,
+                              )
+                            : const SizedBox(
+                                height: 0,
                               ),
                       ),
                     ],
