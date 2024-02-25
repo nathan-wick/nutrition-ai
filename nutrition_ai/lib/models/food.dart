@@ -4,7 +4,7 @@ import 'category.dart';
 import 'ingredient.dart';
 
 class FoodModel {
-  final int code;
+  final String code;
   final String name;
   final String description;
   final CategoryModel category;
@@ -29,13 +29,26 @@ class FoodModel {
     };
   }
 
+  factory FoodModel.fromMap(Map<String, dynamic> map) {
+    return FoodModel(
+      code: map['code'],
+      name: map['name'],
+      description: map['description'],
+      category: CategoryModel.fromMap(map['category']),
+      ingredients: map['ingredients']
+          .map<IngredientModel>(
+              (ingredient) => IngredientModel.fromMap(ingredient))
+          .toList(),
+    );
+  }
+
   FoodModel.fromDocumentSnapshot(DocumentSnapshot snapshot)
       : code = snapshot['code'],
         name = snapshot['name'],
         description = snapshot['description'],
         category = CategoryModel.fromMap(snapshot['category']),
         ingredients = snapshot['ingredients']
-            .map<IngredientModel>((ingredient) =>
-                IngredientModel.fromMap(ingredient))
+            .map<IngredientModel>(
+                (ingredient) => IngredientModel.fromMap(ingredient))
             .toList();
 }

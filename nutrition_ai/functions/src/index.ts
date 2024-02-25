@@ -74,9 +74,7 @@ exports.getUSDAFoods = onSchedule(
                 const writeBatch = database.batch();
                 foodBatch.forEach((food,) => {
 
-                    const randomFoodId = `${Math.random().toString(36,).
-                            slice(-6,)}-${food.code}`,
-                        documentReference = database.collection(usdaCollectionName,).doc(randomFoodId,);
+                    const documentReference = database.collection(usdaCollectionName,).doc(food.code,);
                     writeBatch.set(
                         documentReference,
                         food,
@@ -100,14 +98,36 @@ exports.getUSDACategories = onSchedule(
     },
     async () => {
 
-        const usdaCollectionExists = (await database.collection(`usda_categories`,).limit(1,).
-                get()).size > 0,
-            writeUSDACategories = () => getUSDACategories().forEach(async (category,) => await database.collection(`usda_categories`,).doc(String(category.code,),).
-                set(category,),);
+        const usdaCollectionName = `usda_categories`,
+            usdaCollectionExists = (await database.collection(usdaCollectionName,).limit(1,).
+                get()).size > 0;
         if (!usdaCollectionExists) {
 
-            // TODO Rewrite getUSDACategories function to use batches
-            writeUSDACategories();
+            const categories = getUSDACategories(),
+                categoryBatches = [];
+            while (categories.length > 0) {
+
+                categoryBatches.push(categories.splice(
+                    0,
+                    maximumBatchSize,
+                ),);
+
+            }
+            await Promise.all(categoryBatches.map(async (categoryBatch,) => {
+
+                const writeBatch = database.batch();
+                categoryBatch.forEach((category,) => {
+
+                    const documentReference = database.collection(usdaCollectionName,).doc(String(category.code,),);
+                    writeBatch.set(
+                        documentReference,
+                        category,
+                    );
+
+                },);
+                await writeBatch.commit();
+
+            },),);
 
         }
 

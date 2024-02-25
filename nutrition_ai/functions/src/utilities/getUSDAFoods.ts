@@ -48,7 +48,8 @@ export const getUSDAFoods = () => {
                     "code": Number(usdaFood.categoryCode,),
                     "name": usdaFood.categoryName,
                 },
-                "code": Number(usdaFood.code,),
+                "code": `${Math.random().toString(36,).
+                    slice(-6,)}-${usdaFood.code}`,
                 "description": usdaFood.description,
                 ingredients,
                 "name": usdaFood.name,

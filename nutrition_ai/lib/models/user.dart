@@ -45,11 +45,11 @@ class UserModel {
         profile = ProfileModel.fromMap(snapshot['profile']),
         approvedFoods = snapshot['approvedFoods']
             .map<FoodModel>(
-                (approvedFood) => FoodModel.fromDocumentSnapshot(approvedFood))
+                (approvedFood) => FoodModel.fromMap(approvedFood))
             .toList(),
         rejectedFoods = snapshot['rejectedFoods']
             .map<FoodModel>(
-                (rejectedFood) => FoodModel.fromDocumentSnapshot(rejectedFood))
+                (rejectedFood) => FoodModel.fromMap(rejectedFood))
             .toList(),
         recommendedNutrients = snapshot['recommendedNutrients']
             .map<NutrientModel>((recommendedNutrient) =>

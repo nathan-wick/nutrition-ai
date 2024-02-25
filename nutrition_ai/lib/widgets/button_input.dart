@@ -33,7 +33,7 @@ class ButtonInput extends StatelessWidget {
               ? Theme.of(context).primaryColor
               : theme == ButtonInputTheme.secondary
                   ? Colors.grey
-                  : Colors.red,
+                  : Colors.pink,
           borderRadius: BorderRadius.circular(50),
           boxShadow: displayShadow
               ? [
@@ -54,7 +54,7 @@ class ButtonInput extends StatelessWidget {
                 color: Colors.white,
                 size: 20,
               ),
-              const SizedBox(width: 14),
+              const SizedBox(width: 8),
               Text(
                 message,
                 style: const TextStyle(
