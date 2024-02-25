@@ -11,6 +11,7 @@ class ButtonInput extends StatelessWidget {
   final IconData icon;
   final String message;
   final ButtonInputTheme theme;
+  final bool displayShadow;
 
   const ButtonInput({
     super.key,
@@ -18,6 +19,7 @@ class ButtonInput extends StatelessWidget {
     required this.icon,
     required this.message,
     required this.theme,
+    this.displayShadow = true,
   });
 
   @override
@@ -30,9 +32,18 @@ class ButtonInput extends StatelessWidget {
           color: theme == ButtonInputTheme.primary
               ? Theme.of(context).primaryColor
               : theme == ButtonInputTheme.secondary
-              ? Colors.grey
-              : Colors.red,
+                  ? Colors.grey
+                  : Colors.pink,
           borderRadius: BorderRadius.circular(50),
+          boxShadow: displayShadow
+              ? [
+                  BoxShadow(
+                    color: Theme.of(context).shadowColor,
+                    blurRadius: 4,
+                    offset: const Offset(0, 2),
+                  ),
+                ]
+              : [],
         ),
         child: Center(
           child: Row(
@@ -43,7 +54,7 @@ class ButtonInput extends StatelessWidget {
                 color: Colors.white,
                 size: 20,
               ),
-              const SizedBox(width: 14),
+              const SizedBox(width: 8),
               Text(
                 message,
                 style: const TextStyle(

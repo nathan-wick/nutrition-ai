@@ -2,343 +2,286 @@
     {
         "code": 208,
         "name": "Energy",
-        "description": "The foundation of your diet. Energy, measured in calories, is derived from macronutrients.",
         "defaultMeasurementUnit": "kcal"
     },
     {
         "code": 203,
         "name": "Protein",
-        "description": "Vital for building and repairing tissues. It's found in meat, fish, eggs, beans, nuts, and seeds.",
         "defaultMeasurementUnit": "g"
     },
     {
         "code": 205,
         "name": "Carbohydrate",
-        "description": "Your body's main energy source. Choose complex carbs (whole grains, fruits, vegetables) over simple sugars.",
         "defaultMeasurementUnit": "g"
     },
     {
         "code": 204,
         "name": "Fat",
-        "description": "A necessary energy source and needed for absorbing vitamins. Aim for healthy fats (avocados, nuts, olive oil) over unhealthy ones.",
         "defaultMeasurementUnit": "g"
     },
     {
         "code": 221,
         "name": "Alcohol",
-        "description": "No nutritional value and carries a host of health risks when consumed.",
         "defaultMeasurementUnit": "g"
     },
     {
         "code": 269,
         "name": "Sugar",
-        "description": "Simple sugars (table sugar, sugary drinks) provide calories but little nutrition. Overconsumption is strongly linked to health issues.",
         "defaultMeasurementUnit": "g"
     },
     {
         "code": 291,
         "name": "Dietary Fiber",
-        "description": "Essential for digestion, blood sugar control, and promotes fullness. Sources include fruits, vegetables, and whole grains.",
         "defaultMeasurementUnit": "g"
     },
     {
         "code": 255,
         "name": "Water",
-        "description": "Crucial for all bodily functions like hydration, temperature regulation, and waste removal.",
         "defaultMeasurementUnit": "g"
     },
     {
         "code": 606,
         "name": "Saturated Fatty Acid",
-        "description": "Found mostly in animal products and some plant-based sources (coconut oil). Excessive intake can lead to health problems, so moderation is key.",
         "defaultMeasurementUnit": "g"
     },
     {
         "code": 645,
         "name": "Monounsaturated Fatty Acid",
-        "description": "Healthy fats found in olives, nuts, and avocados. These benefit heart health.",
         "defaultMeasurementUnit": "g"
     },
     {
         "code": 646,
         "name": "Polyunsaturated Fatty Acid",
-        "description": "Includes essential omega-3s and omega-6s. Great sources are fatty fish, nuts, and seeds.",
         "defaultMeasurementUnit": "g"
     },
     {
         "code": 601,
         "name": "Cholesterol",
-        "description": "Our bodies make cholesterol, but dietary cholesterol is found in animal products. Monitor intake, focusing on the types of fats that raise bad cholesterol levels.",
         "defaultMeasurementUnit": "g"
     },
     {
         "code": 607,
         "name": "Butyric Acid",
-        "description": "While not essential in the diet, butyric acid is produced by gut bacteria during the digestion of certain fibers. It plays a role in maintaining gut health and supporting the integrity of the intestinal lining.",
         "defaultMeasurementUnit": "g"
     },
     {
         "code": 608,
         "name": "Caproic Acid",
-        "description": "Caproic acid is a medium-chain fatty acid, and although not considered essential, it may have antimicrobial properties. It is found in small amounts in some dairy products and certain oils.",
         "defaultMeasurementUnit": "g"
     },
     {
         "code": 609,
         "name": "Caprylic Acid",
-        "description": "Caprylic acid is a medium-chain fatty acid with potential antimicrobial properties. While not essential, it's found in coconut oil and may contribute to overall health.",
         "defaultMeasurementUnit": "g"
     },
     {
         "code": 610,
         "name": "Capric Acid",
-        "description": "Capric acid is another medium-chain fatty acid found in coconut oil. While not essential, it may offer antimicrobial benefits and contribute to the flavor of certain foods.",
         "defaultMeasurementUnit": "g"
     },
     {
         "code": 611,
         "name": "Lauric Acid",
-        "description": "Lauric acid, present in coconut oil, has antimicrobial properties. Although not essential, it may support immune function and contribute to a healthy diet when consumed in moderation.",
         "defaultMeasurementUnit": "g"
     },
     {
         "code": 612,
         "name": "Myristic Acid",
-        "description": "Myristic acid is a saturated fatty acid found in some animal fats and tropical oils. It's not considered essential, but it plays a role in various physiological functions when consumed in moderation.",
         "defaultMeasurementUnit": "g"
     },
     {
         "code": 613,
         "name": "Palmitic Acid",
-        "description": "Palmitic acid is a common saturated fatty acid found in both animal and plant fats. While not essential, it's involved in various cellular functions, and moderation is recommended for a balanced diet.",
         "defaultMeasurementUnit": "g"
     },
     {
         "code": 614,
         "name": "Stearic Acid",
-        "description": "Stearic acid is a saturated fatty acid found in animal fats and some plant oils. It's not considered essential, but it is metabolized to oleic acid, which has potential health benefits when consumed in moderation.",
         "defaultMeasurementUnit": "g"
     },
     {
         "code": 626,
         "name": "Palmitoleic Acid",
-        "description": "Palmitoleic acid is a monounsaturated fatty acid found in small amounts in some animal and plant oils. While not essential, it may have anti-inflammatory properties and contribute to a balanced diet.",
         "defaultMeasurementUnit": "g"
     },
     {
         "code": 617,
         "name": "Oleic Acid",
-        "description": "Oleic acid is a monounsaturated fatty acid abundant in olive oil and certain nuts. While not essential, it is associated with heart health and can be included in a balanced diet.",
         "defaultMeasurementUnit": "g"
     },
     {
         "code": 628,
         "name": "Eicosenoic Acid",
-        "description": "Eicosenoic acid is a monounsaturated fatty acid found in some plant oils. Not considered essential, its presence in the diet contributes to overall fatty acid diversity.",
         "defaultMeasurementUnit": "g"
     },
     {
         "code": 630,
         "name": "Erucic Acid",
-        "description": "Erucic acid is a monounsaturated fatty acid found in certain plant oils. While not essential, it is consumed in small amounts and has limited evidence of potential health effects.",
         "defaultMeasurementUnit": "g"
     },
     {
         "code": 618,
         "name": "Linoleic Acid",
-        "description": "Linoleic acid is an essential polyunsaturated fatty acid, meaning it must be obtained from the diet. It is a precursor to omega-6 fatty acids and plays a vital role in skin health, hormone production, and overall well-being.",
         "defaultMeasurementUnit": "g"
     },
     {
         "code": 619,
         "name": "Alpha-Linolenic Acid",
-        "description": "Alpha-linolenic acid is an essential polyunsaturated fatty acid and a precursor to omega-3 fatty acids. It's crucial for brain health, reducing inflammation, and supporting cardiovascular function.",
         "defaultMeasurementUnit": "g"
     },
     {
         "code": 627,
         "name": "Stearidonic Acid",
-        "description": "Stearidonic acid is a polyunsaturated fatty acid and a precursor to omega-3 fatty acids. While not essential, it can be converted into longer-chain omega-3s, contributing to their overall levels in the body.",
         "defaultMeasurementUnit": "g"
     },
     {
         "code": 620,
         "name": "Arachidonic Acid",
-        "description": "Arachidonic acid is a polyunsaturated fatty acid that can be synthesized in the body. While not strictly essential in the diet, it plays a role in inflammatory responses and cellular function.",
         "defaultMeasurementUnit": "g"
     },
     {
         "code": 629,
         "name": "Eicosapentaenoic Acid",
-        "description": "Eicosapentaenoic acid (EPA) is an essential omega-3 fatty acid with anti-inflammatory properties. Found in fatty fish, it contributes to cardiovascular health and supports cognitive function.",
         "defaultMeasurementUnit": "g"
     },
     {
         "code": 631,
         "name": "Docosapentaenoic Acid",
-        "description": "Docosapentaenoic acid (DPA) is an omega-3 fatty acid found in marine oils. While not strictly essential, it may have health benefits, and its presence contributes to overall omega-3 fatty acid intake.",
         "defaultMeasurementUnit": "g"
     },
     {
         "code": 621,
         "name": "Docosahexaenoic Acid",
-        "description": "Docosahexaenoic acid (DHA) is an essential omega-3 fatty acid crucial for brain health, vision, and nervous system function. Found in fatty fish, it is recommended for overall well-being.",
         "defaultMeasurementUnit": "g"
     },
     {
         "code": 320,
         "name": "Vitamin A",
-        "description": "Vitamin A is essential for maintaining healthy vision, skin, and immune function. It comes in two forms: retinol (found in animal products) and provitamin A carotenoids (like beta-carotene in fruits and vegetables), both crucial for overall health.",
         "defaultMeasurementUnit": "mcg"
     },
     {
         "code": 337,
         "name": "Lycopene",
-        "description": "Lycopene, a carotenoid in tomatoes and watermelon, has antioxidant properties linked to reducing the risk of certain chronic diseases, making it a valuable dietary component.",
         "defaultMeasurementUnit": "mg"
     },
     {
         "code": 338,
         "name": "Lutein + Zeaxanthin",
-        "description": "Lutein and zeaxanthin, found in leafy greens and colorful vegetables, are essential for eye health and may help prevent age-related macular degeneration, making them beneficial additions to the diet.",
         "defaultMeasurementUnit": "mg"
     },
     {
         "code": 323,
         "name": "Vitamin E",
-        "description": "Vitamin E, an antioxidant found in nuts, seeds, and oils, is essential for protecting cells from oxidative damage. It contributes to skin health, immune function, and overall well-being.",
         "defaultMeasurementUnit": "mg"
     },
     {
         "code": 328,
         "name": "Vitamin D",
-        "description": "Vitamin D is crucial for bone health, immune function, and overall well-being. While the body can produce it with sunlight exposure, dietary sources like fatty fish and fortified foods are important for maintaining adequate levels.",
         "defaultMeasurementUnit": "mg"
     },
     {
         "code": 430,
         "name": "Vitamin K",
-        "description": "Vitamin K, found in leafy greens and broccoli, is essential for blood clotting and bone health. It plays a vital role in ensuring proper calcium utilization in the body.",
         "defaultMeasurementUnit": "mg"
     },
     {
         "code": 401,
         "name": "Vitamin C",
-        "description": "Vitamin C, abundant in fruits and vegetables, is essential for collagen formation, immune function, and antioxidant defense. Regular intake supports overall health and well-being.",
         "defaultMeasurementUnit": "mg"
     },
     {
         "code": 404,
         "name": "Thiamin",
-        "description": "Thiamin, or vitamin B1, found in whole grains and legumes, is essential for energy metabolism and nerve function. It supports the proper functioning of the cardiovascular and nervous systems.",
         "defaultMeasurementUnit": "mg"
     },
     {
         "code": 405,
         "name": "Riboflavin",
-        "description": "Riboflavin, or vitamin B2, present in dairy products and leafy greens, is essential for energy metabolism and the maintenance of healthy skin and eyes.",
         "defaultMeasurementUnit": "mg"
     },
     {
         "code": 406,
         "name": "Niacin",
-        "description": "Niacin, or vitamin B3, found in meat, fish, and nuts, is essential for energy metabolism and plays a role in maintaining skin health and nerve function.",
         "defaultMeasurementUnit": "mg"
     },
     {
         "code": 415,
         "name": "Vitamin B-6",
-        "description": "Vitamin B-6, found in meat, fish, and vegetables, is essential for amino acid metabolism, neurotransmitter synthesis, and immune function.",
         "defaultMeasurementUnit": "mg"
     },
     {
         "code": 417,
         "name": "Folate",
-        "description": "Folate, abundant in leafy greens and legumes, is essential for DNA synthesis and cell division. Adequate intake is crucial during pregnancy for preventing neural tube defects.",
         "defaultMeasurementUnit": "mg"
     },
     {
         "code": 431,
         "name": "Folic Acid",
-        "description": "Folic acid is a synthetic form of folate, often used in supplements and fortified foods. It serves the same functions as natural folate and is important for overall health.",
         "defaultMeasurementUnit": "mg"
     },
     {
         "code": 418,
         "name": "Vitamin B-12",
-        "description": "Vitamin B-12, found in animal products, is essential for nerve function, DNA synthesis, and the formation of red blood cells. Adequate intake is crucial for vegetarians and vegans who may need supplementation.",
         "defaultMeasurementUnit": "mg"
     },
     {
         "code": 421,
         "name": "Choline",
-        "description": "Choline, found in eggs and meat, is essential for brain development, nerve function, and liver health. It plays a crucial role in various physiological processes.",
         "defaultMeasurementUnit": "mg"
     },
     {
         "code": 301,
         "name": "Calcium",
-        "description": "Calcium is essential for bone health, muscle function, and nerve transmission. Dairy products, leafy greens, and fortified foods are excellent sources to meet daily requirements.",
         "defaultMeasurementUnit": "mg"
     },
     {
         "code": 303,
         "name": "Iron",
-        "description": "Iron is crucial for oxygen transport in the blood and overall energy metabolism. Red meat, poultry, fish, and plant sources like lentils and spinach are important for meeting iron needs.",
         "defaultMeasurementUnit": "mg"
     },
     {
         "code": 304,
         "name": "Magnesium",
-        "description": "Magnesium, found in nuts, seeds, and leafy greens, is essential for muscle and nerve function, energy metabolism, and bone health.",
         "defaultMeasurementUnit": "mg"
     },
     {
         "code": 305,
         "name": "Phosphorus",
-        "description": "Phosphorus is essential for bone health, energy metabolism, and acid-base balance. It is found in a variety of foods, including dairy, meat, and whole grains.",
         "defaultMeasurementUnit": "mg"
     },
     {
         "code": 306,
         "name": "Potassium",
-        "description": "Potassium is essential for maintaining proper fluid balance, nerve transmission, and muscle contraction. Fruits, vegetables, and legumes are rich sources.",
         "defaultMeasurementUnit": "mg"
     },
     {
         "code": 307,
         "name": "Sodium",
-        "description": "While necessary in small amounts for nerve and muscle function, excess sodium, often found in processed foods, can contribute to health issues. Focus on whole foods to maintain a balanced intake.",
         "defaultMeasurementUnit": "mg"
     },
     {
         "code": 309,
         "name": "Zinc",
-        "description": "Zinc is essential for immune function, wound healing, and DNA synthesis. Meat, dairy, and legumes are good sources to include in the diet.",
         "defaultMeasurementUnit": "mg"
     },
     {
         "code": 312,
         "name": "Copper",
-        "description": "Copper is essential for iron metabolism, connective tissue formation, and overall antioxidant defense. It is found in nuts, seeds, and organ meats.",
         "defaultMeasurementUnit": "mg"
     },
     {
         "code": 317,
         "name": "Selenium",
-        "description": "Selenium is crucial for antioxidant defense, thyroid function, and immune health. Seafood, meat, and Brazil nuts are good dietary sources.",
         "defaultMeasurementUnit": "mg"
     },
     {
         "code": 262,
         "name": "Caffeine",
-        "description": "Caffeine, found in coffee and tea, can enhance alertness and concentration. While not essential, moderate consumption can be part of a healthy diet for many individuals.",
         "defaultMeasurementUnit": "mg"
     },
     {
         "code": 263,
         "name": "Theobromine",
-        "description": "Theobromine, found in chocolate, has mild stimulant effects and may have cardiovascular benefits in moderate amounts. While not essential, it can be enjoyed in moderation as part of a balanced diet.",
         "defaultMeasurementUnit": "mg"
     }
 ]

@@ -24,17 +24,25 @@ class _PreferencesScreenState extends State<PreferencesScreen> {
   int foodsPerFetch = 7;
   int currentFoodIndex = 0;
   bool updatingUser = false;
-  String foodImage =
-      "https://firebasestorage.googleapis.com/v0/b/nathan-wick-nutrition-ai.appspot.com/o/category_images%2Ftest.jpeg?alt=media&token=9564fe97-a118-41d8-bb01-bdbaff95e18e";
+  String? foodImage;
 
-  Future<void> fetchFoods() async {
-    if (!fetchingFoods && moreFoodsExist) {
+  Future<void> fetchFoods(UserModel? user) async {
+    if (!fetchingFoods && moreFoodsExist && user != null) {
       fetchingFoods = true;
       final List<FoodModel> newFoods = [];
-      final foodsReference = FirebaseFirestore.instance
-          .collection("usda_foods")
-          .orderBy(FieldPath.documentId)
-          .limit(foodsPerFetch);
+      final List<String> viewedCodes = [];
+      viewedCodes.addAll(user.approvedFoods.map((food) => food.code).toList());
+      viewedCodes.addAll(user.rejectedFoods.map((food) => food.code).toList());
+      final foodsReference = viewedCodes.isEmpty
+          ? FirebaseFirestore.instance
+              .collection("usda_foods")
+              .orderBy("code")
+              .limit(foodsPerFetch)
+          : FirebaseFirestore.instance
+              .collection("usda_foods")
+              .where("code", whereNotIn: viewedCodes)
+              .orderBy("code")
+              .limit(foodsPerFetch);
       QuerySnapshot foodsSnapshot;
       if (lastVisibleFoodSnapshot == null) {
         foodsSnapshot = await foodsReference.get();
@@ -52,24 +60,23 @@ class _PreferencesScreenState extends State<PreferencesScreen> {
       setState(() {
         foods.addAll(newFoods);
       });
-      // TODO Does this need to be inside a setState?
       lastVisibleFoodSnapshot =
           foodsSnapshot.docs.isNotEmpty ? foodsSnapshot.docs.last : null;
       fetchingFoods = false;
+      setFoodImage();
     }
   }
 
-  Future<void> nextFood() async {
+  Future<void> nextFood(UserModel? user) async {
     if (!fetchingFoods && moreFoodsExist) {
-      if (currentFoodIndex < foods.length - 1) {
-        await fetchFoods();
+      if (currentFoodIndex == foods.length - 1) {
+        await fetchFoods(user);
       }
-      final newFoodImage = await fetchFoodImage(
-          foods[currentFoodIndex].category.code.toStringAsFixed(0));
+      final nextFoodIndex = currentFoodIndex + 1;
       setState(() {
-        currentFoodIndex++;
-        foodImage = newFoodImage;
+        currentFoodIndex = nextFoodIndex;
       });
+      setFoodImage();
     }
   }
 
@@ -79,7 +86,7 @@ class _PreferencesScreenState extends State<PreferencesScreen> {
       FoodModel foodToApprove = foods[currentFoodIndex];
       bool userAlreadyApproved = user.approvedFoods
           .any((approvedFood) => approvedFood.code == foodToApprove.code);
-      await nextFood(); // TODO This may need moved to after we update user
+      await nextFood(user);
       if (!userAlreadyApproved) {
         user.approvedFoods.add(foodToApprove);
         await userProvider.updateUser(user);
@@ -94,28 +101,30 @@ class _PreferencesScreenState extends State<PreferencesScreen> {
       FoodModel foodToReject = foods[currentFoodIndex];
       bool userAlreadyRejected = user.rejectedFoods
           .any((approvedFood) => approvedFood.code == foodToReject.code);
-      await nextFood(); // TODO This may need moved to after we update user
+      await nextFood(user);
       if (!userAlreadyRejected) {
-        user.approvedFoods.add(foodToReject);
+        user.rejectedFoods.add(foodToReject);
         await userProvider.updateUser(user);
       }
       updatingUser = false;
     }
   }
 
-  @override
-  void initState() {
-    super.initState();
-    fetchFoods();
+  Future<void> setFoodImage() async {
+    final String? newFoodImage = await fetchFoodImage(
+        foods[currentFoodIndex].category.code.toStringAsFixed(0));
+    setState(() {
+      foodImage = newFoodImage;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     final userProvider = Provider.of<UserProvider>(context);
     final UserModel? user = userProvider.user;
-    FoodModel? food;
-    if (foods.isNotEmpty) {
-      food = foods[currentFoodIndex];
+    final FoodModel? food = foods.isNotEmpty ? foods[currentFoodIndex] : null;
+    if (foods.isEmpty) {
+      fetchFoods(user);
     }
     return Scaffold(
       body: food != null
@@ -125,12 +134,14 @@ class _PreferencesScreenState extends State<PreferencesScreen> {
                   child: SingleChildScrollView(
                     child: Column(
                       children: [
-                        Align(
-                          alignment: Alignment.center,
-                          child: Image.network(
-                            foodImage,
-                          ),
-                        ),
+                        foodImage == null
+                            ? const SizedBox(height: 20)
+                            : Align(
+                                alignment: Alignment.center,
+                                child: Image.network(
+                                  foodImage!,
+                                ),
+                              ),
                         const SizedBox(height: 20),
                         Text(
                           food.name,
@@ -188,9 +199,9 @@ class _PreferencesScreenState extends State<PreferencesScreen> {
                       Expanded(
                         child: ButtonInput(
                           onTap: () {
-                            approveFood(userProvider, user);
+                            rejectFood(userProvider, user);
                           },
-                          icon: Icons.close,
+                          icon: Icons.thumb_down,
                           message: 'Reject',
                           theme: ButtonInputTheme.danger,
                         ),
@@ -198,9 +209,9 @@ class _PreferencesScreenState extends State<PreferencesScreen> {
                       const SizedBox(width: 8),
                       ButtonInput(
                         onTap: () {
-                          nextFood();
+                          nextFood(user);
                         },
-                        icon: Icons.arrow_forward,
+                        icon: Icons.arrow_forward_ios,
                         message: 'Skip',
                         theme: ButtonInputTheme.secondary,
                       ),
@@ -208,9 +219,9 @@ class _PreferencesScreenState extends State<PreferencesScreen> {
                       Expanded(
                         child: ButtonInput(
                           onTap: () {
-                            rejectFood(userProvider, user);
+                            approveFood(userProvider, user);
                           },
-                          icon: Icons.check,
+                          icon: Icons.thumb_up,
                           message: 'Approve',
                           theme: ButtonInputTheme.primary,
                         ),
@@ -219,6 +230,7 @@ class _PreferencesScreenState extends State<PreferencesScreen> {
                     ],
                   ),
                 ),
+                const SizedBox(height: 8),
               ],
             )
           : const Center(

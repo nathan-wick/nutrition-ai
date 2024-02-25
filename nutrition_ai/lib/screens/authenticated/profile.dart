@@ -132,7 +132,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                   ? ButtonInput(
                                                       onTap: () => userProvider
                                                           .signOut(context),
-                                                      icon: Icons.account_circle,
+                                                      icon:
+                                                          Icons.account_circle,
                                                       message: 'Sign In',
                                                       theme: ButtonInputTheme
                                                           .primary,
@@ -140,7 +141,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                   : ButtonInput(
                                                       onTap: () => userProvider
                                                           .signOut(context),
-                                                      icon: Icons.arrow_back,
+                                                      icon:
+                                                          Icons.arrow_back_ios,
                                                       message: 'Sign Out',
                                                       theme: ButtonInputTheme
                                                           .secondary,
@@ -235,7 +237,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                         Text(
                                             user?.profile.bodyMassIndex
                                                     ?.toStringAsFixed(0) ??
-                                                '?',
+                                                '...',
                                             textAlign: TextAlign.right),
                                       ],
                                     ),
@@ -250,7 +252,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                             user?.profile
                                                     .totalDailyEnergyExpenditure
                                                     ?.toStringAsFixed(0) ??
-                                                '?',
+                                                '...',
                                             textAlign: TextAlign.right),
                                       ],
                                     ),
@@ -262,14 +264,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         ),
                         const SizedBox(height: 20),
                         Container(
-                          decoration: const BoxDecoration(
+                          decoration: BoxDecoration(
                             color: Colors.white,
-                            borderRadius: BorderRadius.all(Radius.circular(20)),
+                            borderRadius:
+                                const BorderRadius.all(Radius.circular(20)),
                             boxShadow: [
                               BoxShadow(
-                                color: Colors.black,
-                                blurRadius: 20,
-                                offset: Offset(0, 10),
+                                color: Theme.of(context).shadowColor,
+                                blurRadius: 16,
+                                offset: const Offset(0, 8),
                               ),
                             ],
                           ),
@@ -294,31 +297,48 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   ),
                                 ),
                                 const SizedBox(height: 20),
-                                ListView.builder(
-                                  itemCount:
-                                      user?.recommendedNutrients.length ?? 0,
-                                  physics: const NeverScrollableScrollPhysics(),
-                                  shrinkWrap: true,
-                                  itemBuilder:
-                                      (BuildContext recommendedNutrientContext,
-                                          int recommendedNutrientIndex) {
-                                    List<NutrientModel> nutrients =
-                                        user?.recommendedNutrients ?? [];
-                                    return Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Text(
-                                            nutrients[recommendedNutrientIndex]
-                                                .name,
-                                            textAlign: TextAlign.left),
-                                        Text(
-                                            '${nutrients[recommendedNutrientIndex].amount?.amount.toStringAsFixed(0) ?? 0} ${nutrients[recommendedNutrientIndex].amount?.unit}',
-                                            textAlign: TextAlign.right),
-                                      ],
-                                    );
-                                  },
-                                ),
+                                user != null &&
+                                        user.recommendedNutrients.isNotEmpty
+                                    ? ListView.builder(
+                                        itemCount:
+                                            user?.recommendedNutrients.length ??
+                                                0,
+                                        physics:
+                                            const NeverScrollableScrollPhysics(),
+                                        shrinkWrap: true,
+                                        itemBuilder: (BuildContext
+                                                recommendedNutrientContext,
+                                            int recommendedNutrientIndex) {
+                                          List<NutrientModel> nutrients =
+                                              user?.recommendedNutrients ?? [];
+                                          return Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Text(
+                                                  nutrients[
+                                                          recommendedNutrientIndex]
+                                                      .name,
+                                                  textAlign: TextAlign.left),
+                                              Text(
+                                                  '${nutrients[recommendedNutrientIndex].amount?.amount.toStringAsFixed(0) ?? 0} ${nutrients[recommendedNutrientIndex].amount?.unit}',
+                                                  textAlign: TextAlign.right),
+                                            ],
+                                          );
+                                        },
+                                      )
+                                    : const Align(
+                                        alignment: Alignment.center,
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          children: [
+                                            Text(
+                                              "Update your settings for tailored nutrition advise.",
+                                            ),
+                                          ],
+                                        ),
+                                      ),
                               ],
                             ),
                           ),

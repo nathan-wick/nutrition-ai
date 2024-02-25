@@ -9,86 +9,54 @@ import {Ingredient as USDAIngredient,} from "../types/usda/Ingredient";
 import {IngredientNutrients as USDAIngredientNutrients,} from "../types/usda/IngredientNutrients";
 import getNutrient from "./getNutrient";
 
-const getUSDAFoods = () => {
+export const getUSDAFoods = () => {
 
-    let foods: Food[] = [];
     const usdaFoods: USDAFood[] = usdaFoodsJSON,
         usdaIngredients: USDAIngredient[] = usdaIngredientsJSON as USDAIngredient[],
-        usdaIngredientNutrients: USDAIngredientNutrients[] = usdaIngredientNutrientsJSON as USDAIngredientNutrients[],
-        getFoods = () => usdaFoods.forEach((usdaFood,) => {
+        usdaIngredientNutrients: USDAIngredientNutrients[] = (usdaIngredientNutrientsJSON as USDAIngredientNutrients[]).filter((usdaIngredientNutrient,) => Number(usdaIngredientNutrient.nutrientValue,) > 0,),
+        foods: Food[] = usdaFoods.map((usdaFood,) => {
 
-            const food: Food = {
+            const ingredients: Ingredient[] = usdaIngredients.filter((usdaIngredient,) => usdaIngredient.foodCode === usdaFood.code,).map((usdaIngredient,) => {
+
+                const nutrients: Nutrient[] = usdaIngredientNutrients.filter((usdaNutrient,) => usdaNutrient.ingredientCode === usdaIngredient.code,).map((usdaNutrient,) => {
+
+                    const nutrient = getNutrient(Number(usdaNutrient.nutrientCode,),);
+                    nutrient.amount = {
+                        "amount": Number(usdaNutrient.nutrientValue,),
+                        "unit": nutrient?.defaultMeasurementUnit ?? `g`,
+                    };
+                    return nutrient;
+
+                },).
+                    filter((nutrient,) => nutrient.name !== `unknown`,);
+                return {
+                    "amount": {
+                        "amount": Number(usdaIngredient.weight,),
+                        "unit": `g`,
+                    },
+                    "code": Number(usdaIngredient.code,),
+                    "moistureChange": Number(usdaIngredient.moistureChange,),
+                    "name": usdaIngredient.name,
+                    nutrients,
+                    "retentionCode": Number(usdaIngredient.retentionCode,),
+                };
+
+            },).
+                filter((ingredient,) => ingredient.amount.amount > 0 && ingredient.nutrients.length > 0,);
+            return {
                 "category": {
                     "code": Number(usdaFood.categoryCode,),
                     "name": usdaFood.categoryName,
                 },
-                "code": Number(usdaFood.code,),
+                "code": `${Math.random().toString(36,).
+                    slice(-6,)}-${usdaFood.code}`,
                 "description": usdaFood.description,
-                "ingredients": [],
+                ingredients,
                 "name": usdaFood.name,
             };
-            foods.push(food,);
 
-        },),
-        getIngredients = () => usdaIngredients.forEach((usdaIngredient,) => {
-
-            const ingredient: Ingredient = {
-                "amount": {
-                    "amount": Number(usdaIngredient.weight,),
-                    "unit": `g`,
-                },
-                "code": Number(usdaIngredient.code,),
-                "moistureChange": Number(usdaIngredient.moistureChange,),
-                "name": usdaIngredient.name,
-                "nutrients": [],
-                "retentionCode": Number(usdaIngredient.retentionCode,),
-            };
-            foods.find((food,) => food.code === Number(usdaIngredient.foodCode,),)?.
-                ingredients.push(ingredient,);
-
-        },),
-        getNutrients = () => usdaIngredientNutrients.forEach((usdaIngredientNutrient,) => {
-
-            if (Number(usdaIngredientNutrient.nutrientValue,) > 0) {
-
-                const relatedUSDAIngredient = usdaIngredients.find((usdaIngredient,) => usdaIngredient.code === usdaIngredientNutrient.ingredientCode,);
-                if (relatedUSDAIngredient) {
-
-                    const nutrient = getNutrient(Number(usdaIngredientNutrient.nutrientCode,),);
-                    if (nutrient) {
-
-                        nutrient.amount = {
-                            "amount": Number(usdaIngredientNutrient.nutrientValue,),
-                            "unit": nutrient.defaultMeasurementUnit ?? `g`,
-                        };
-                        foods.find((food,) => food.code === Number(relatedUSDAIngredient.foodCode,),)?.
-                            ingredients.find((ingredient,) => ingredient.code === Number(usdaIngredientNutrient.ingredientCode,),)?.
-                            nutrients.push(nutrient,);
-
-                    }
-
-                }
-
-            }
-
-        },),
-        filterFoodsWithNutrients = () => {
-
-            foods = foods.filter((food,) => {
-
-                const nutrients: Nutrient[] = [];
-                food.ingredients.forEach((ingredient,) => nutrients.push(...ingredient.nutrients,),);
-                return nutrients.length > 0;
-
-            },);
-
-        };
-    getFoods();
-    getIngredients();
-    getNutrients();
-    filterFoodsWithNutrients();
+        },).
+            filter((food,) => food.ingredients.length > 0 && food.category.code !== 9999,);
     return foods;
 
 };
-
-export default getUSDAFoods;

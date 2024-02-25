@@ -67,7 +67,7 @@ class _SignInScreenState extends State<SignInScreen> {
                   ],
                 ),
               ),
-              const SizedBox(height: 80),
+              const SizedBox(height: 80), // TODO Make this as tall as possible without causing scroll
               Container(
                 decoration: const BoxDecoration(
                     color: Colors.white,
@@ -87,7 +87,7 @@ class _SignInScreenState extends State<SignInScreen> {
                             ? ButtonInput(
                                 onTap: () =>
                                     userProvider.signInAnonymously(context),
-                                icon: Icons.arrow_forward,
+                                icon: Icons.arrow_forward_ios,
                                 message: 'Continue',
                                 theme: ButtonInputTheme.primary,
                               )
@@ -108,13 +108,16 @@ class _SignInScreenState extends State<SignInScreen> {
                             ? ButtonInput(
                                 onTap: () =>
                                     userProvider.signInAnonymously(context),
-                                icon: Icons.arrow_forward,
+                                icon: Icons.arrow_forward_ios,
                                 message: 'Skip Sign In',
                                 theme: ButtonInputTheme.secondary,
                               )
                             : const SizedBox(
                                 height: 0,
                               ),
+                      ),
+                      const SizedBox(
+                        height: 40,
                       ),
                     ],
                   ),

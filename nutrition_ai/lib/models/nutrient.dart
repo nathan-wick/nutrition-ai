@@ -5,14 +5,12 @@ import 'measurement.dart';
 class NutrientModel {
   final String name;
   final int code;
-  final String description;
   final MeasurementModel? amount;
   final String? defaultMeasurementUnit;
 
   NutrientModel({
     required this.name,
     required this.code,
-    required this.description,
     this.amount,
     this.defaultMeasurementUnit,
   });
@@ -21,7 +19,6 @@ class NutrientModel {
     return {
       'name': name,
       'code': code,
-      'description': description,
       'amount': amount?.toJson(),
       'defaultMeasurementUnit': defaultMeasurementUnit,
     };
@@ -31,7 +28,6 @@ class NutrientModel {
     return NutrientModel(
       name: map['name'],
       code: map['code'],
-      description: map['description'],
       amount: MeasurementModel.fromMap(map['amount']),
       defaultMeasurementUnit: map['defaultMeasurementUnit'],
     );
@@ -40,7 +36,6 @@ class NutrientModel {
   NutrientModel.fromDocumentSnapshot(DocumentSnapshot snapshot)
       : name = snapshot['name'],
         code = snapshot['code'],
-        description = snapshot['description'],
         amount = MeasurementModel.fromMap(snapshot['amount']),
         defaultMeasurementUnit = snapshot['defaultMeasurementUnit'];
 }

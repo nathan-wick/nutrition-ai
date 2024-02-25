@@ -26,7 +26,7 @@ class IngredientModel {
       'name': name,
       'moistureChange': moistureChange,
       'retentionCode': retentionCode,
-      'amount': amount,
+      'amount': amount.toJson(),
       'nutrients': nutrients.map((nutrient) => nutrient.toJson()).toList(),
     };
   }

@@ -37,6 +37,7 @@ class App extends StatelessWidget {
         title: 'NutriMind',
         theme: ThemeData(
           primaryColor: Colors.teal,
+          shadowColor: Colors.black
         ),
         routes: {
           '/': (context) =>

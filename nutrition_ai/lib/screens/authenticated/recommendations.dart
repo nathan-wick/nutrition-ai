@@ -28,12 +28,14 @@ class _RecommendationsScreenState extends State<RecommendationsScreen> {
           headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
             return [
               SliverAppBar(
-                pinned: true,
                 automaticallyImplyLeading: false,
-                title: const Text('Recommendations'),
+                backgroundColor: Theme.of(context).primaryColor,
+                pinned: true,
+                title: const Text('Recommendations', style: TextStyle(color: Colors.white)),
                 actions: [
                   IconButton(
                     icon: const Icon(Icons.refresh),
+                    color: Colors.white,
                     onPressed: () {
                       // TODO: Refresh recommendations
                     },
