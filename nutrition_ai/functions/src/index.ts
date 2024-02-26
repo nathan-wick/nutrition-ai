@@ -1,10 +1,10 @@
 import {Profile,} from "./types/Profile";
 import {User,} from "./types/User";
-import {calculateRecommendedNutrients,} from "./utilities/calculateRecommendedNutrients";
-import {getAge,} from "./utilities/getAge";
-import {getBodyMassIndex,} from "./utilities/getBodyMassIndex";
+import {calculateAge,} from "./utilities/profile_calculations/calculateAge";
+import {calculateBodyMassIndex,} from "./utilities/profile_calculations/calculateBodyMassIndex";
+import {calculateRecommendedNutrients,} from "./utilities/profile_calculations/calculateRecommendedNutrients";
+import {calculateTotalDailyEnergyExpenditure,} from "./utilities/profile_calculations/calculateTotalDailyEnergyExpenditure";
 import {getFirestore,} from "firebase-admin/firestore";
-import {getTotalDailyEnergyExpenditure,} from "./utilities/getTotalDailyEnergyExpenditure";
 import getUSDACategories from "./utilities/getUSDACategories";
 import {getUSDAFoods,} from "./utilities/getUSDAFoods";
 import {initializeApp,} from "firebase-admin/app";
@@ -32,9 +32,9 @@ exports.userChanged = onDocumentWritten(
             if (profileChanged && profileAfter) {
 
                 const userAfter = event.data.after.data() as User;
-                userAfter.profile.age = getAge(userAfter.profile.birthday,);
-                userAfter.profile.bodyMassIndex = getBodyMassIndex(userAfter.profile,);
-                userAfter.profile.totalDailyEnergyExpenditure = getTotalDailyEnergyExpenditure(userAfter.profile,);
+                userAfter.profile.age = calculateAge(userAfter.profile.birthday,);
+                userAfter.profile.bodyMassIndex = calculateBodyMassIndex(userAfter.profile,);
+                userAfter.profile.totalDailyEnergyExpenditure = calculateTotalDailyEnergyExpenditure(userAfter.profile,);
                 userAfter.recommendedNutrients = calculateRecommendedNutrients(userAfter.profile,);
                 database.collection(`users`,).doc(event.params.userId,).
                     set(userAfter,);

@@ -1,5 +1,5 @@
 import {Profile,} from "../../types/Profile";
-import {getAge,} from "../getAge";
+import {getAge,} from "../profile_calculations/calculateAge";
 
 export const calculateEicosapentaenoicAcid = (profile: Profile,) => {
 

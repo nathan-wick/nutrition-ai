@@ -1,7 +1,7 @@
-import {Profile,} from "../types/Profile";
-import {getBasalMetabolicRate,} from "./getBasalMetabolicRate";
+import {Profile,} from "../../types/Profile";
+import {calculateBasalMetabolicRate,} from "./calculateBasalMetabolicRate";
 
-export const getTotalDailyEnergyExpenditure = (profile: Profile,) => {
+export const calculateTotalDailyEnergyExpenditure = (profile: Profile,) => {
 
     let activityMultiplier = 0;
     switch (profile.exerciseFrequency) {
@@ -19,7 +19,7 @@ export const getTotalDailyEnergyExpenditure = (profile: Profile,) => {
         activityMultiplier = 1.375;
 
     }
-    const bmr = getBasalMetabolicRate(profile,),
+    const bmr = calculateBasalMetabolicRate(profile,),
         tdee = bmr * activityMultiplier;
     return tdee;
 
