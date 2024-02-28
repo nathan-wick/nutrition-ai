@@ -1,50 +1,85 @@
 // TODO Enable one-var
 /* eslint-disable one-var */
 import {Food,} from "../types/Food";
+import {RankedFood,} from "../types/RankedFood";
 import {User,} from "../types/User";
+import {shuffleFoods,} from "./shuffleFoods";
 
-export const getRecommendedDailyFoods = (user: User,) => {
+export const getRecommendedDailyFoods = async (database: FirebaseFirestore.Firestore, user: User,) => {
 
-    const recommendedFoodsLimit = 30;
+    const maximumRecommendedFoods = 30,
+        minimumRecommendedFoods = 20,
+        recommendedWaterAmount = user.recommendedNutrients.find((recommendedNutrient,) => recommendedNutrient.code === 255,)?.amount ?? {
+            "amount": 3785,
+            "unit": `g`,
+        },
+        foodsToRank = user.approvedFoods,
+        rankFood = (foodToRank: Food,) => {
 
-    // Get the recommended water amount.
-    const recommendedWaterAmount = user.recommendedNutrients.find((recommendedNutrient,) => recommendedNutrient.code === 255,)?.amount ?? {
-        "amount": 3785,
-        "unit": `g`,
-    };
+            const allNutrients = foodToRank.ingredients.flatMap((ingredient,) => ingredient.nutrients,);
+            return allNutrients.filter((nutrient,) => user.recommendedNutrients.some((recommendedNutrient,) => recommendedNutrient.code === nutrient.code,),).length;
 
-    // Get some food to rank, starting with the user's approved foods.
-    const foodsToRank = user.approvedFoods;
-    if (foodsToRank.length < recommendedFoodsLimit) {
-
-        // TODO Push random foods from the database to foodsToRank.
-
-    }
-    // TODO Sort foodsToRank into a random order
-
-    const rankedFoods = foodsToRank.map((foodToRank,) => ({
-            "food": foodToRank,
-            // TODO Give rank (0 being the worst, 0.5 being average, and 1 being the best)
-            "rank": 0,
-        }),),
-        recommendedDailyNutrients = user.recommendedNutrients.map((recommendedNutrient,) => ({
+        },
+        recommendedDailyNutrients = user.recommendedNutrients.filter((recommendedNutrient,) => recommendedNutrient.code !== 255,).map((recommendedNutrient,) => ({
             "actualAmount": 0,
             "nutrientCode": recommendedNutrient.code,
             "recommendedAmount": recommendedNutrient.amount?.amount ?? 0,
             "unit": recommendedNutrient.amount?.unit ?? `g`,
         }),),
-        recommendedDailyFoods: Food[] = [];
+        recommendedDailyRankedFoods: RankedFood[] = [],
+        recommendFood = (rankedFood: RankedFood,) => {
 
-    // TODO Iterate through ranked foods and add them to recommendedDailyFoods. Track the total nutrients.
+            if (recommendedDailyRankedFoods.length > maximumRecommendedFoods) {
 
-    /*
-     * TODO If we are under the recommended nutrients, swap foods till we are at the recommended nutrients.
-     * Foods with lowest rank get swapped out first.
-     * If we run out of rankedFoods, get more random foods from the database.
-     */
+                recommendedDailyRankedFoods.sort((food1, food2,) => food1.rank - food2.rank,);
+                recommendedDailyRankedFoods.splice(
+                    0,
+                    1,
+                );
+
+            }
+            recommendedDailyRankedFoods.push(rankedFood,);
+            rankedFood.food.ingredients.forEach((ingredient,) => ingredient.nutrients.forEach((nutrient,) => {
+
+                const recommendedNutrientToUpdate = recommendedDailyNutrients.find((recommendedDailyNutrient,) => recommendedDailyNutrient.nutrientCode === nutrient.code,);
+                if (recommendedNutrientToUpdate) {
+
+                    recommendedNutrientToUpdate.actualAmount += nutrient.amount?.amount ?? 0;
+
+                }
+
+            },),);
+
+        };
+    if (foodsToRank.length < minimumRecommendedFoods) {
+
+        const randomFoodsFromDatabaseSnapshot = await database.collection(`usda_foods`,).where(
+            `code`,
+            `not-in`,
+            [
+                ...user.approvedFoods.map((approvedFood,) => approvedFood.code,),
+                ...user.rejectedFoods.map((rejectedFood,) => rejectedFood.code,),
+            ],
+        ).
+            orderBy(`code`,).
+            limit(minimumRecommendedFoods - foodsToRank.length,).
+            get();
+        randomFoodsFromDatabaseSnapshot.forEach((document,) => foodsToRank.push(document.data() as Food,),);
+
+    }
+    const rankedFoods: RankedFood[] = shuffleFoods(foodsToRank,).map((foodToRank,) => ({
+        "food": foodToRank,
+        "rank": rankFood(foodToRank,),
+    }),);
+
+    // TODO Iterate through rankedFoods and run each rankedFood through recommendFood()
+
+    // TODO Create function to get the currently recommendedFood's accuracy
+
+    // TODO Repeat with new food until we meet a certain accuracy
 
     // TODO Water stuff
 
-    return recommendedDailyFoods;
+    return recommendedDailyRankedFoods.map((recommendedDailyRankedFood,) => recommendedDailyRankedFood.food,);
 
 };
