@@ -81,14 +81,23 @@ export const getRecommendedDailyFoods = async (database: FirebaseFirestore.Fires
     const calculateRecommendedFoodsAccuracy = () => {
 
         let totalNutrientAccuracy = 0;
+        let noValue = 0;
         recommendedDailyNutrients.forEach((recommendedNutrient,) => {
 
             const {actualAmount, recommendedAmount,} = recommendedNutrient;
             const nutrientAccuracy = actualAmount / recommendedAmount;
-            totalNutrientAccuracy += nutrientAccuracy;
+            if (actualAmount > 0) {
+
+                totalNutrientAccuracy += nutrientAccuracy;
+
+            } else {
+
+                noValue++;
+
+            }
 
         },);
-        const averageAccuracy = totalNutrientAccuracy / recommendedDailyNutrients.length;
+        const averageAccuracy = totalNutrientAccuracy / (recommendedDailyNutrients.length - noValue);
         return averageAccuracy;
 
     };
@@ -120,6 +129,26 @@ export const getRecommendedDailyFoods = async (database: FirebaseFirestore.Fires
     };
 
     // TODO Repeat with new food until we meet a certain accuracy
+
+    const getExtraFood = async () => {
+
+        const newFoods: Food[] = [];
+        const randomFoodsFromDatabaseSnapshot = await database.collection(`usda_foods`,).where(
+            `code`,
+            `not-in`,
+            [
+                ...user.approvedFoods.map((approvedFood,) => approvedFood.code,),
+                ...user.rejectedFoods.map((rejectedFood,) => rejectedFood.code,),
+                ...foodsToRank.map((foodToRank,) => foodToRank.code,),
+            ],
+        ).
+            orderBy(`code`,).
+            limit(minimumRecommendedFoods - foodsToRank.length,).
+            get();
+        randomFoodsFromDatabaseSnapshot.forEach((document,) => newFoods.push(document.data() as Food,),);
+        return newFoods;
+
+    };
 
 
     return recommendedDailyRankedFoods.map((recommendedDailyRankedFood,) => recommendedDailyRankedFood.food,);
