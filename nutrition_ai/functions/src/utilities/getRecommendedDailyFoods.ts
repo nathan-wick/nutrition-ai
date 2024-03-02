@@ -74,11 +74,53 @@ export const getRecommendedDailyFoods = async (database: FirebaseFirestore.Fires
 
     // TODO Iterate through rankedFoods and run each rankedFood through recommendFood()
 
+    rankedFoods.forEach(recommendFood,);
+
     // TODO Create function to get the currently recommendedFood's accuracy
+
+    const calculateRecommendedFoodsAccuracy = () => {
+
+        let totalNutrientAccuracy = 0;
+        recommendedDailyNutrients.forEach((recommendedNutrient,) => {
+
+            const {actualAmount, recommendedAmount,} = recommendedNutrient;
+            const nutrientAccuracy = actualAmount / recommendedAmount;
+            totalNutrientAccuracy += nutrientAccuracy;
+
+        },);
+        const averageAccuracy = totalNutrientAccuracy / recommendedDailyNutrients.length;
+        return averageAccuracy;
+
+    };
+
+    const updateActualAmounts = () => {
+
+        recommendedDailyNutrients.forEach((recommendedNutrient,) => {
+
+            rankedFoods.forEach((rankedFood,) => {
+
+                rankedFood.food.ingredients.forEach((ingredient,) => {
+
+                    ingredient.nutrients.forEach((nutrient,) => {
+
+                        if (nutrient.code === recommendedNutrient.nutrientCode) {
+
+                            recommendedNutrient.actualAmount += nutrient.amount?.amount ?? 0;
+
+                        }
+
+                    },);
+
+                },);
+
+            },);
+
+        },);
+
+    };
 
     // TODO Repeat with new food until we meet a certain accuracy
 
-    // TODO Water stuff
 
     return recommendedDailyRankedFoods.map((recommendedDailyRankedFood,) => recommendedDailyRankedFood.food,);
 
