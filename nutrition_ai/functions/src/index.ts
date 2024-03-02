@@ -5,15 +5,35 @@ import {calculateBodyMassIndex,} from "./utilities/profile_calculations/calculat
 import {calculateRecommendedNutrients,} from "./utilities/profile_calculations/calculateRecommendedNutrients";
 import {calculateTotalDailyEnergyExpenditure,} from "./utilities/profile_calculations/calculateTotalDailyEnergyExpenditure";
 import {getFirestore,} from "firebase-admin/firestore";
+import {getRecommendedDailyFoods,} from "./utilities/getRecommendedDailyFoods";
 import getUSDACategories from "./utilities/getUSDACategories";
 import {getUSDAFoods,} from "./utilities/getUSDAFoods";
 import {initializeApp,} from "firebase-admin/app";
+import {onCall,} from "firebase-functions/v2/https";
 import {onDocumentWritten,} from "firebase-functions/v2/firestore";
 import {onSchedule,} from "firebase-functions/v2/scheduler";
 
 initializeApp();
 const maximumBatchSize = 500,
     database = getFirestore();
+
+exports.getRecommendedDailyFoods = onCall(async (request,) => {
+
+    const userId = String(request.auth?.uid,),
+        userDocument = await database.collection(`users`,).doc(userId,).
+            get();
+    if (userDocument.exists) {
+
+        const user = userDocument.data() as User;
+        return getRecommendedDailyFoods(
+            database,
+            user,
+        );
+
+    }
+    return [];
+
+},);
 
 exports.userChanged = onDocumentWritten(
     `users/{userId}`,

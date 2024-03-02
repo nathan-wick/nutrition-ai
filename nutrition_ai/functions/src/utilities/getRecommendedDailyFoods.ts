@@ -22,7 +22,7 @@ export const getRecommendedDailyFoods = async (database: FirebaseFirestore.Fires
         water: Food = {
             "category": {
                 "code": 7702,
-                "name": `Tap water`,
+                "name": `Water`,
             },
             "code": `water`,
             "description": `filtered tap water; well water; water fountain; water bottled`,
@@ -127,7 +127,7 @@ export const getRecommendedDailyFoods = async (database: FirebaseFirestore.Fires
         rankedFoods.forEach((rankedFood,) => recommendFood(rankedFood,),);
         iterations += 1;
 
-    } while (calculateRecommendedDailyNutrientsAccuracy() < 0.5 && iterations < maximumIterations);
+    } while (calculateRecommendedDailyNutrientsAccuracy() < 0.8 && iterations < maximumIterations);
     recommendedDailyFoods = recommendedDailyRankedFoods.map((recommendedDailyRankedFood,) => recommendedDailyRankedFood.food,);
     recommendedDailyFoods.push(water,);
     return recommendedDailyFoods;
