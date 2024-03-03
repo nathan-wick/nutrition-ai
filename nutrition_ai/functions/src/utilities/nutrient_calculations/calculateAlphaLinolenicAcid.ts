@@ -2,33 +2,27 @@ import {Profile,} from "../../types/Profile";
 
 export const calculateAlphaLinolenicAcid = (profile: Profile,) => {
 
-    const ALA_BASELINE_MALE = 1.6,
-        ALA_BASELINE_FEMALE = 1.1;
-    let baseRecommendation = profile.sex === `male`
-            ? ALA_BASELINE_MALE
-            : ALA_BASELINE_FEMALE,
-        scalingFactor = 0;
-    if (profile.age && profile.age >= 65) {
+    let amount = 0;
+    if (profile.sex === `male`) {
 
-        baseRecommendation *= 1.05;
+        amount += 1.6;
 
-    }
-    if (profile.exerciseFrequency === `sometimes`) {
+    } else {
 
-        baseRecommendation *= 1.1;
-
-    } else if (profile.exerciseFrequency === `often`) {
-
-        baseRecommendation *= 1.2;
+        amount += 1.1;
 
     }
-    scalingFactor = Math.min(
-        profile.totalDailyEnergyExpenditure ?? 2500 / 2500,
-        1.2,
-    );
-    baseRecommendation *= scalingFactor;
+    if (profile.exerciseFrequency === `often`) {
+
+        amount += 0.2;
+
+    } else if (profile.exerciseFrequency === `sometimes`) {
+
+        amount += 0.1;
+
+    }
     return {
-        "amount": baseRecommendation,
+        amount,
         "unit": `g`,
     };
 
