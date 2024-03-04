@@ -260,18 +260,6 @@ class _PreferencesScreenState extends State<PreferencesScreen> {
                   Text("You've run out of food! Please come again later."),
                   SizedBox(
                       height: 20), // Add spacing between ingredients and button
-                  ElevatedButton(
-                    onPressed: () async {
-                      // Call the function to run the options again
-                      await fetchFoods(user);
-                      // Update the UI to display the new ingredients
-                      setState(() {});
-                    },
-                    child: Text(
-                      'See Options Again',
-                      style: TextStyle(fontSize: 16),
-                    ),
-                  ),
                 ],
               ),
             ),
