@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:nutrition_ai/utilities/fetch_food_image.dart';
 import 'package:provider/provider.dart';
-
+import 'package:animate_do/animate_do.dart';
 import '../../models/food.dart';
 import '../../models/user.dart';
 import '../../providers/user.dart';
@@ -118,6 +118,7 @@ class _PreferencesScreenState extends State<PreferencesScreen> {
     });
   }
 
+  
   @override
   Widget build(BuildContext context) {
     final userProvider = Provider.of<UserProvider>(context);
@@ -126,23 +127,51 @@ class _PreferencesScreenState extends State<PreferencesScreen> {
     if (foods.isEmpty) {
       fetchFoods(user);
     }
-    return Scaffold(
-      body: food != null
-          ? Column(
-              children: [
-                Expanded(
-                  child: SingleChildScrollView(
-                    child: Column(
-                      children: [
-                        foodImage == null
-                            ? const SizedBox(height: 20)
-                            : Align(
-                                alignment: Alignment.center,
+     return Scaffold(
+    body: food != null
+        ? Column(
+            children: [
+              Expanded(
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      SizedBox(height: 100.0),
+                      foodImage == null
+                          ? SizedBox(height: 100)
+                          : Container(
+                              width: 150,
+                              height: 150,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: Colors.green,
+                              ),
+                              child: ClipOval(
                                 child: Image.network(
                                   foodImage!,
+                                  fit: BoxFit.cover,
                                 ),
                               ),
-                        const SizedBox(height: 20),
+                            ),
+                      SingleChildScrollView(
+                        // flex:1,
+  child: Container(
+    color: Color.fromARGB(255, 195, 126, 126),
+    child: Column(
+      mainAxisSize: MainAxisSize.min, // Set mainAxisSize to MainAxisSize.min
+      crossAxisAlignment: CrossAxisAlignment.stretch, // Stretch children horizontally
+      children: [
+        Flexible( // Wrap your RenderFlex with Flexible
+          fit: FlexFit.loose, // Set FlexFit.loose for flexible behavior
+          child: Card(
+            
+            margin: const EdgeInsets.only(left: 50, right: 50, top: 80,bottom: 80),
+            elevation: 3,
+            child: Padding(
+              padding: EdgeInsets.all(50.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const SizedBox(height: 20),
                         Text(
                           food.name,
                           style: const TextStyle(
@@ -150,101 +179,105 @@ class _PreferencesScreenState extends State<PreferencesScreen> {
                             fontWeight: FontWeight.bold,
                           ),
                         ),
-                        const SizedBox(height: 20),
-                        Column(
-                          children: [
-                            Card(
-                              margin:
-                                  const EdgeInsets.only(left: 10, right: 10),
-                              elevation: 3,
-                              child: Padding(
-                                padding: const EdgeInsets.all(16.0),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    const Text(
-                                      "Ingredients",
-                                      style: TextStyle(
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-                                    const SizedBox(height: 8.0),
-                                    Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        if (food.ingredients != null)
-                                          for (var ingredient
-                                              in food.ingredients!)
-                                            Text(
-                                                "• ${ingredient.name} - ${ingredient.amount.amount.toStringAsFixed(0)}${ingredient.amount.unit}"),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                              ),
+                 const Text(
+                    "Ingredients",
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)
+                  ), 
+                  const SizedBox(height: 8.0),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      if(food.ingredients  != null)
+                        for (var ingredient in food.ingredients!)
+                          Text(
+                            "• ${ingredient.name} - ${ingredient.amount.amount.toStringAsFixed(0)}${ingredient.amount.unit}"
+                          ),
+                    ],
+                  )
+                ],
+              ),
+            ),
+          ),
+        ),
+      ],
+    ),
+  ),
+),
+                ClipRect(
+                child: Align(
+                    alignment: Alignment.bottomCenter,
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: ButtonInput(
+                              onTap: () {
+                                rejectFood(userProvider, user);
+                              },
+                              icon: Icons.thumb_down,
+                              message: 'Reject',
+                              theme: ButtonInputTheme.danger,
                             ),
-                          ],
-                        ),
-                      ],
+                          ),
+                          SizedBox(width: 8),
+                          ButtonInput(
+                            onTap: () {
+                              nextFood(user);
+                            },
+                            icon: Icons.arrow_forward_ios,
+                            message: 'Skip',
+                            theme: ButtonInputTheme.secondary,
+                          ),
+                          SizedBox(width: 8),
+                          Expanded(
+                            child: ButtonInput(
+                              onTap: () {
+                                approveFood(userProvider, user);
+                              },
+                              icon: Icons.thumb_up,
+                              message: 'Approve',
+                              theme: ButtonInputTheme.primary,
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
-                ),
-                Align(
-                  alignment: Alignment.bottomCenter,
-                  child: Row(
-                    children: [
-                      const SizedBox(width: 8),
-                      Expanded(
-                        child: ButtonInput(
-                          onTap: () {
-                            rejectFood(userProvider, user);
-                          },
-                          icon: Icons.thumb_down,
-                          message: 'Reject',
-                          theme: ButtonInputTheme.danger,
-                        ),
-                      ),
-                      const SizedBox(width: 8),
-                      ButtonInput(
-                        onTap: () {
-                          nextFood(user);
-                        },
-                        icon: Icons.arrow_forward_ios,
-                        message: 'Skip',
-                        theme: ButtonInputTheme.secondary,
-                      ),
-                      const SizedBox(width: 8),
-                      Expanded(
-                        child: ButtonInput(
-                          onTap: () {
-                            approveFood(userProvider, user);
-                          },
-                          icon: Icons.thumb_up,
-                          message: 'Approve',
-                          theme: ButtonInputTheme.primary,
-                        ),
-                      ),
-                      const SizedBox(width: 8),
+                  ),
+
                     ],
                   ),
                 ),
-                const SizedBox(height: 8),
-              ],
-            )
-          : const Center(
+              ),
+            ],
+          )
+        : Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Text("You've run out of food! Please come again later."),
+                  SizedBox(
+                      height: 20), // Add spacing between ingredients and button
+                  ElevatedButton(
+                    onPressed: () async {
+                      // Call the function to run the options again
+                      await fetchFoods(user);
+                      // Update the UI to display the new ingredients
+                      setState(() {});
+                    },
+                    child: Text(
+                      'See Options Again',
+                      style: TextStyle(fontSize: 16),
+                    ),
+                  ),
                 ],
               ),
             ),
-      bottomNavigationBar: const MainNavigationBar(
-        defaultIndex: 1,
-      ),
-    );
-  }
+                  bottomNavigationBar: const MainNavigationBar(
+        defaultIndex: 1,),
+  );
 }
+}
+
