@@ -2,38 +2,23 @@ import {Profile,} from "../../types/Profile";
 
 export const calculateCholine = (profile: Profile,) => {
 
-    const cholineAIs = {
-            "female": 425,
-            "male": 550,
-        },
+    let amount = 0;
+    if (profile.sex === `male`) {
 
-        adjustmentFactors = {
-            "exerciseFrequency": {
-                "never": 1.0,
-                "often": 1.2,
-                "sometimes": 1.1,
-            },
-            "goal": {
-                "gain_fat": 1.05,
-                "gain_muscle": 1.15,
-                "lose_fat": 1.0,
-                "maintain": 1.0,
-            },
-        };
-    let cholineRequirement = cholineAIs[profile.sex];
-    cholineRequirement *= adjustmentFactors.exerciseFrequency[profile.exerciseFrequency];
-    cholineRequirement *= adjustmentFactors.goal[profile.goal];
-    if (profile.totalDailyEnergyExpenditure) {
+        amount = 425;
 
-        if (profile.totalDailyEnergyExpenditure > 3000) {
+    } else {
 
-            cholineRequirement *= 1.1;
+        amount = 450;
 
-        }
+    }
+    if (profile.age ?? 22 < 19) {
+
+        amount -= 50;
 
     }
     return {
-        "amount": cholineRequirement,
+        amount,
         "unit": `mg`,
     };
 
