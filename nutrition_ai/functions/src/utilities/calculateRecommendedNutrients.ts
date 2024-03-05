@@ -174,7 +174,7 @@ export const calculateRecommendedNutrients = (profile: Profile,) => {
             const amount = getAmount(recommendedNutrientCode,);
             if (amount) {
 
-                amount.amount = Math.round(amount.amount,);
+                amount.amount = Number(amount.amount.toFixed(2,),);
                 recommendedNutrient.amount = amount;
                 recommendedNutrients.push(recommendedNutrient,);
 
