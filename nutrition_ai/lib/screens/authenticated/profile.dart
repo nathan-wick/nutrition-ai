@@ -298,8 +298,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                         user.recommendedNutrients.isNotEmpty
                                     ? ListView.builder(
                                         itemCount:
-                                            user?.recommendedNutrients.length ??
-                                                0,
+                                            user.recommendedNutrients.length,
                                         physics:
                                             const NeverScrollableScrollPhysics(),
                                         shrinkWrap: true,
@@ -307,7 +306,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                 recommendedNutrientContext,
                                             int recommendedNutrientIndex) {
                                           List<NutrientModel> nutrients =
-                                              user?.recommendedNutrients ?? [];
+                                              user.recommendedNutrients;
                                           return Row(
                                             mainAxisAlignment:
                                                 MainAxisAlignment.spaceBetween,
