@@ -3,9 +3,10 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:nutrition_ai/models/nutrient.dart';
 import 'package:provider/provider.dart';
 
+import '../../models/nutrient.dart';
+import '../../utilities/to_number_string.dart';
 import '../../models/user.dart';
 import '../../providers/user.dart';
 import '../../widgets/button_input.dart';
@@ -192,7 +193,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                         const Text('Height',
                                             textAlign: TextAlign.left),
                                         Text(
-                                            '${user?.profile.height.amount.toStringAsFixed(0) ?? '?'} inches',
+                                            '${toNumberString(user?.profile.height.amount ?? 0)} inches',
                                             textAlign: TextAlign.right),
                                       ],
                                     ),
@@ -203,7 +204,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                         const Text('Weight',
                                             textAlign: TextAlign.left),
                                         Text(
-                                            '${user?.profile.weight.amount.toStringAsFixed(0) ?? '?'} pounds',
+                                            '${toNumberString(user?.profile.weight.amount ?? 0)} pounds',
                                             textAlign: TextAlign.right),
                                       ],
                                     ),
@@ -236,9 +237,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                         const Text('Body Mass Index',
                                             textAlign: TextAlign.left),
                                         Text(
-                                            user?.profile.bodyMassIndex
-                                                    ?.toStringAsFixed(0) ??
-                                                '...',
+                                            '${user?.profile.bodyMassIndex?.toStringAsFixed(0) ?? 0}',
                                             textAlign: TextAlign.right),
                                       ],
                                     ),
@@ -250,10 +249,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                             'Total Daily Energy Expenditure',
                                             textAlign: TextAlign.left),
                                         Text(
-                                            user?.profile
-                                                    .totalDailyEnergyExpenditure
-                                                    ?.toStringAsFixed(0) ??
-                                                '...',
+                                            '${user?.profile.totalDailyEnergyExpenditure?.toStringAsFixed(0) ?? 0} kcal',
                                             textAlign: TextAlign.right),
                                       ],
                                     ),
@@ -322,7 +318,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                       .name,
                                                   textAlign: TextAlign.left),
                                               Text(
-                                                  '${nutrients[recommendedNutrientIndex].amount?.amount.toStringAsFixed(0) ?? 0} ${nutrients[recommendedNutrientIndex].amount?.unit}',
+                                                  '${toNumberString(nutrients[recommendedNutrientIndex].amount?.amount ?? 0)} ${nutrients[recommendedNutrientIndex].amount?.unit}',
                                                   textAlign: TextAlign.right),
                                             ],
                                           );
