@@ -1,8 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:nutrition_ai/utilities/fetch_food_image.dart';
 import 'package:provider/provider.dart';
-import 'package:animate_do/animate_do.dart';
+
+import '../../utilities/fetch_food_image.dart';
 import '../../models/food.dart';
 import '../../models/user.dart';
 import '../../providers/user.dart';
@@ -129,100 +129,105 @@ class _PreferencesScreenState extends State<PreferencesScreen> {
     return Scaffold(
       body: food != null
           ? Container(
-              decoration: BoxDecoration(
-                color: Color.fromARGB(149, 133, 147, 134),
+              decoration: const BoxDecoration(
+                color: Colors.teal,
+                // TODO Use a static image or gradient
                 image: DecorationImage(
                   image: NetworkImage(
-                      "https://res.cloudinary.com/drf6yjgkn/image/upload/v1709818526/by93hhaa368ftsshtaxy.jpg"), // Adjust the image path
-                  fit: BoxFit
-                      .fitHeight, // This will cover the entire container space
+                      "https://res.cloudinary.com/drf6yjgkn/image/upload/v1709818526/by93hhaa368ftsshtaxy.jpg"),
+                  fit: BoxFit.fitHeight,
                 ),
               ),
-              // Use the full screen height instead of a fixed height to accommodate content dynamically
               height: MediaQuery.of(context).size.height,
               child: Stack(
                 children: [
-                  // Positioned container for the rounded corner effect and background color change
                   Positioned(
-                    top:
-                        250, // Adjust this value based on the image size and your desired spacing
+                    top: 250,
                     left: 0,
                     right: 0,
-                    bottom: 0, // Extends to the bottom of the screen
+                    bottom: 0,
                     child: Container(
                       decoration: const BoxDecoration(
                         borderRadius: BorderRadius.only(
                           topLeft: Radius.circular(50),
                           topRight: Radius.circular(50),
                         ),
-                        color: Color.fromARGB(255, 243, 252, 243),
+                        // TODO Use theme colors
+                        color: Colors.white,
                       ),
                       child: SingleChildScrollView(
-  child: Column(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: [
-      Padding(
-        padding: const EdgeInsets.only(top: 16.0,bottom:100, left: 16.0, right:16.0, ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const SizedBox(height: 100),
-            Container(
-              width: MediaQuery.of(context).size.width, // Set the width to the full width of the screen
-              height: 400, // Set a fixed height for the container
-              child: Card(
-                // Title and Ingredients list here
-                child: Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        food.name,
-                        style: const TextStyle(
-                          fontSize: 24,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      const SizedBox(height: 20),
-                      const Text(
-                        "Ingredients",
-                        style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      const SizedBox(height: 8.0),
-                      // List your ingredients here
-                      Expanded( // Wrap the Column with Expanded
-                        child: SingleChildScrollView( // Add SingleChildScrollView
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              if (food.ingredients != null)
-                                for (var ingredient in food.ingredients!)
-                                  Text(
-                                    "• ${ingredient.name} - ${ingredient.amount.amount.toStringAsFixed(0)}${ingredient.amount.unit}",
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.only(
+                                top: 16.0,
+                                bottom: 80,
+                                left: 16.0,
+                                right: 16.0,
+                              ),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  const SizedBox(height: 100),
+                                  SizedBox(
+                                    width: MediaQuery.of(context).size.width,
+                                    // TODO Container height should be dynamic to match children
+                                    height: 400,
+                                    child: Card(
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(16.0),
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              food.name,
+                                              style: const TextStyle(
+                                                fontSize: 24,
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                            ),
+                                            const SizedBox(height: 20),
+                                            const Text(
+                                              "Ingredients",
+                                              style: TextStyle(
+                                                fontSize: 20,
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                            ),
+                                            const SizedBox(height: 8.0),
+                                            Expanded(
+                                              child: SingleChildScrollView(
+                                                // TODO This should be a ListView. See profile screen for examples
+                                                child: Column(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    if (food.ingredients !=
+                                                        null)
+                                                      for (var ingredient
+                                                          in food.ingredients!)
+                                                        Text(
+                                                          "• ${ingredient.name} - ${ingredient.amount.amount.toStringAsFixed(0)}${ingredient.amount.unit}",
+                                                        ),
+                                                  ],
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
                                   ),
-                            ],
-                          ),
+                                ],
+                              ),
+                            ),
+                          ],
                         ),
                       ),
-                    ],
-                  ),
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
-    ],
-  ),
-),
-
                     ),
                   ),
-                  // Positioned image container
                   if (foodImage != null)
                     Positioned(
                       top: 100,
@@ -231,17 +236,16 @@ class _PreferencesScreenState extends State<PreferencesScreen> {
                       child: Align(
                         alignment: Alignment.center,
                         child: Container(
-                          margin: EdgeInsets.all(15),
+                          margin: const EdgeInsets.all(16),
                           width: 250,
                           height: 250,
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
                             boxShadow: [
                               BoxShadow(
-                                color: Color.fromARGB(255, 93, 92, 92)
-                                    .withOpacity(0.3),
-                                offset: Offset(-1, 10),
-                                blurRadius: 10,
+                                color: Theme.of(context).shadowColor,
+                                blurRadius: 4,
+                                offset: const Offset(0, 2),
                               ),
                             ],
                           ),
@@ -258,23 +262,23 @@ class _PreferencesScreenState extends State<PreferencesScreen> {
                     alignment: Alignment.bottomCenter,
                     child: Padding(
                       padding: const EdgeInsets.only(
-                          bottom: 15,
-                          left: 10,
-                          right: 10), // Adjust padding values as needed
-                      child: Container(
-                        height: 50, // Fixed height for the button row
+                          bottom: 16, left: 8, right: 8),
+                      child: SizedBox(
+                        height: 50,
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
-                            ButtonInput(
-                              onTap: () {
-                                rejectFood(userProvider, user);
-                              },
-                              icon: Icons.thumb_down,
-                              message: 'Reject',
-                              theme: ButtonInputTheme.danger,
+                            Expanded(
+                              child: ButtonInput(
+                                onTap: () {
+                                  rejectFood(userProvider, user);
+                                },
+                                icon: Icons.thumb_down,
+                                message: 'Reject',
+                                theme: ButtonInputTheme.danger,
+                              ),
                             ),
-                            const SizedBox(width: 6),
+                            const SizedBox(width: 8),
                             ButtonInput(
                               onTap: () {
                                 nextFood(user);
@@ -283,7 +287,7 @@ class _PreferencesScreenState extends State<PreferencesScreen> {
                               message: 'Skip',
                               theme: ButtonInputTheme.secondary,
                             ),
-                            const SizedBox(width: 6),
+                            const SizedBox(width: 8),
                             Expanded(
                               child: ButtonInput(
                                 onTap: () {
@@ -294,7 +298,6 @@ class _PreferencesScreenState extends State<PreferencesScreen> {
                                 theme: ButtonInputTheme.primary,
                               ),
                             ),
-                            const SizedBox(width: 6),
                           ],
                         ),
                       ),
