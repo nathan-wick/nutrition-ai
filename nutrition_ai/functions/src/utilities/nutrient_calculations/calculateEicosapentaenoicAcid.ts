@@ -1,5 +1,4 @@
 import {Profile,} from "../../types/Profile";
-import {getAge,} from "../profile_calculations/calculateAge";
 
 export const calculateEicosapentaenoicAcid = (profile: Profile,) => {
 
@@ -11,7 +10,7 @@ export const calculateEicosapentaenoicAcid = (profile: Profile,) => {
             "lose_fat": 0.5,
             "maintain": 0.25,
         },
-        age = getAge(profile.birthday,);
+        age = profile.age ?? 22;
     if (age >= 50) {
 
         adjustmentFactor *= 1.2;
