@@ -24,11 +24,12 @@ exports.getRecommendedDailyFoods = onCall(async (request,) => {
             get();
     if (userDocument.exists) {
 
-        const user = userDocument.data() as User;
-        return getRecommendedDailyFoods(
-            database,
-            user,
-        );
+        const user = userDocument.data() as User,
+            recommendedDailyFoods = await getRecommendedDailyFoods(
+                database,
+                user,
+            );
+        return recommendedDailyFoods;
 
     }
     return [];
