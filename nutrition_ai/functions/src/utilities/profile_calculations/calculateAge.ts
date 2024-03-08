@@ -1,4 +1,4 @@
-export const getAge = (birthday: Date,) =>
+export const calculateAge = (birthday: Date,) =>
 
     /*
      *Const today = new Date(),
