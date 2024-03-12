@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
@@ -19,7 +20,7 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-  final isApple = Platform.isIOS || Platform.isMacOS;
+  final isApple = !kIsWeb && (Platform.isIOS || Platform.isMacOS);
 
   @override
   Widget build(BuildContext context) {
@@ -297,8 +298,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                         user.recommendedNutrients.isNotEmpty
                                     ? ListView.builder(
                                         itemCount:
-                                            user?.recommendedNutrients.length ??
-                                                0,
+                                            user.recommendedNutrients.length,
                                         physics:
                                             const NeverScrollableScrollPhysics(),
                                         shrinkWrap: true,
@@ -306,7 +306,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                 recommendedNutrientContext,
                                             int recommendedNutrientIndex) {
                                           List<NutrientModel> nutrients =
-                                              user?.recommendedNutrients ?? [];
+                                              user.recommendedNutrients;
                                           return Row(
                                             mainAxisAlignment:
                                                 MainAxisAlignment.spaceBetween,
