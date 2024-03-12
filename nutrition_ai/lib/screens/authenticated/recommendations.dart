@@ -1,12 +1,9 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:nutrition_ai/models/category.dart';
-import 'package:nutrition_ai/models/ingredient.dart';
-import 'package:nutrition_ai/models/measurement.dart';
-import 'package:nutrition_ai/models/nutrient.dart';
+import 'package:cloud_functions/cloud_functions.dart';
 
 import '../../models/food.dart';
 import '../../widgets/main_navigation_bar.dart';
-import 'food.dart';
 
 class RecommendationsScreen extends StatefulWidget {
   const RecommendationsScreen({super.key});
@@ -16,76 +13,41 @@ class RecommendationsScreen extends StatefulWidget {
 }
 
 class _RecommendationsScreenState extends State<RecommendationsScreen> {
-  late List<FoodModel> recommendations;
+  List<FoodModel> recommendedDailyFoods = [];
+  bool isGettingRecommendedDailyFoods = false;
 
   @override
   void initState() {
     super.initState();
-    recommendations = [];
-    List<FoodModel> dummyFoods = [
-      FoodModel(
-        name: 'Cheese Sandwich',
-        code: '0000',
-        description: 'TEST FOOD',
-        category: (CategoryModel(name: 'AA', code: 2)),
-        ingredients: List.generate(
-            5,
-                (index) => IngredientModel(
-              name: 'Salt',
-              code: 22,
-              moistureChange: 22,
-              retentionCode: 22,
-              amount: MeasurementModel(amount: 22, unit: 'g'),
-              nutrients: List.generate(
-                  4, (index) => NutrientModel(name: 'Calcium', code: 22)),
-            )),
-      ),
-      FoodModel(
-        name: 'Chocolate Pudding',
-        code: '0000',
-        description: 'TEST FOOD',
-        category: (CategoryModel(name: 'AA', code: 2)),
-        ingredients: List.generate(
-            5,
-                (index) => IngredientModel(
-              name: 'Salt',
-              code: 22,
-              moistureChange: 22,
-              retentionCode: 22,
-              amount: MeasurementModel(amount: 22, unit: 'g'),
-              nutrients: List.generate(
-                  4, (index) => NutrientModel(name: 'Calcium', code: 22)),
-            )),
-      ),
-      FoodModel(
-        name: 'Collard Greens',
-        code: '0000',
-        description: 'TEST FOOD',
-        category: (CategoryModel(name: 'AA', code: 2)),
-        ingredients: List.generate(
-            5,
-                (index) => IngredientModel(
-              name: 'Salt',
-              code: 22,
-              moistureChange: 22,
-              retentionCode: 22,
-              amount: MeasurementModel(amount: 22, unit: 'g'),
-              nutrients: List.generate(
-                  4, (index) => NutrientModel(name: 'Calcium', code: 22)),
-            )),
-      ),
-    ];
-    recommendations = dummyFoods;
-    //fetchFoods();
+    getRecommendedDailyFoods();
   }
-  Future<void> fetchFoods() async {
-    //CALL FUNCTION TO GET NEW FOODS
-    await Future.delayed(const Duration(seconds: 2));
-    List<FoodModel> newFoods = [
-    ];
 
+  Future<void> getRecommendedDailyFoods() async {
+    if (isGettingRecommendedDailyFoods) {
+      return;
+    }
     setState(() {
-      recommendations = newFoods;
+      isGettingRecommendedDailyFoods = true;
+    });
+    List<FoodModel> newRecommendedDailyFoods = [];
+    try {
+      final results = await FirebaseFunctions.instance
+          .httpsCallable('getRecommendedDailyFoods')
+          .call();
+      if (results.data is List) {
+        for (final foodData in results.data as List) {
+          newRecommendedDailyFoods
+              .add(FoodModel.fromMap(foodData as Map<String, dynamic>));
+        }
+      }
+    } on FirebaseFunctionsException catch (error) {
+      if (kDebugMode) {
+        print(error);
+      }
+    }
+    setState(() {
+      recommendedDailyFoods = newRecommendedDailyFoods;
+      isGettingRecommendedDailyFoods = false;
     });
   }
 
@@ -107,8 +69,7 @@ class _RecommendationsScreenState extends State<RecommendationsScreen> {
               return [
                 SliverAppBar(
                   automaticallyImplyLeading: false,
-                  backgroundColor: Colors
-                      .transparent,
+                  backgroundColor: Colors.transparent,
                   pinned: true,
                   title: const Text('Recommendations',
                       style: TextStyle(color: Colors.white)),
@@ -117,8 +78,7 @@ class _RecommendationsScreenState extends State<RecommendationsScreen> {
                       icon: const Icon(Icons.refresh),
                       color: Colors.white,
                       onPressed: () {
-                        // TODO: Refresh recommendations
-                        fetchFoods();
+                        getRecommendedDailyFoods();
                       },
                     ),
                   ],
@@ -127,13 +87,12 @@ class _RecommendationsScreenState extends State<RecommendationsScreen> {
             },
             body: Card(
               color: const Color(0xFFF3FCF3),
-              margin:
-              const EdgeInsets.all(8),
+              margin: const EdgeInsets.all(8),
               child: ListView.builder(
                 itemCount: 1,
                 itemBuilder: (BuildContext recommendationContext,
                     int recommendationIndex) {
-                  List<FoodModel> foods = recommendations;
+                  List<FoodModel> foods = recommendedDailyFoods;
                   return Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
@@ -162,7 +121,9 @@ class _RecommendationsScreenState extends State<RecommendationsScreen> {
                                       child: Column(
                                         mainAxisSize: MainAxisSize.min,
                                         children: <Widget>[
-                                          Image.network('https://firebasestorage.googleapis.com/v0/b/nathan-wick-nutrition-ai.appspot.com/o/category_images%2F6411.jpeg?alt=media&token=8c1f3f6b-5547-4122-b298-54a31630ce5d'), // Food image
+                                          // TODO Use fetchFoodImage()
+                                          Image.network(
+                                              'https://firebasestorage.googleapis.com/v0/b/nathan-wick-nutrition-ai.appspot.com/o/category_images%2F6411.jpeg?alt=media&token=8c1f3f6b-5547-4122-b298-54a31630ce5d'),
                                           Text(
                                             food.name,
                                             style: const TextStyle(
@@ -174,26 +135,41 @@ class _RecommendationsScreenState extends State<RecommendationsScreen> {
                                           Column(
                                             children: [
                                               Card(
-                                                margin: const EdgeInsets.only(left: 10, right: 10),
+                                                margin: const EdgeInsets.only(
+                                                    left: 10, right: 10),
                                                 elevation: 3,
                                                 child: Padding(
-                                                  padding: const EdgeInsets.all(16.0),
+                                                  padding: const EdgeInsets.all(
+                                                      16.0),
                                                   child: Column(
-                                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
                                                     children: [
                                                       const Text(
                                                         "Ingredients",
                                                         style: TextStyle(
                                                           fontSize: 20,
-                                                          fontWeight: FontWeight.bold,
+                                                          fontWeight:
+                                                              FontWeight.bold,
                                                         ),
                                                       ),
-                                                      const SizedBox(height: 8.0),
+                                                      const SizedBox(
+                                                          height: 8.0),
                                                       Column(
-                                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                                        children: food.ingredients?.map((ingredient) => Text(
-                                                            "• ${ingredient.name} - ${ingredient.amount.amount.toStringAsFixed(0)}${ingredient.amount.unit}"
-                                                        )).toList() ?? [Text("No ingredients available")],
+                                                        crossAxisAlignment:
+                                                            CrossAxisAlignment
+                                                                .start,
+                                                        children: food
+                                                                .ingredients
+                                                                ?.map((ingredient) =>
+                                                                    Text(
+                                                                        "• ${ingredient.name} - ${ingredient.amount.amount.toStringAsFixed(0)}${ingredient.amount.unit}"))
+                                                                .toList() ??
+                                                            [
+                                                              const Text(
+                                                                  "No ingredients available")
+                                                            ],
                                                       ),
                                                     ],
                                                   ),
@@ -229,7 +205,8 @@ class _RecommendationsScreenState extends State<RecommendationsScreen> {
                                       child: Padding(
                                         padding: const EdgeInsets.only(left: 8),
                                         child: Column(
-                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
                                           children: [
                                             Text(
                                               food.name,
