@@ -7,7 +7,7 @@ export const getRecommendedDailyFoods = async (database: FirebaseFirestore.Fires
 
     const maximumRecommendedFoods = 30,
         minimumRecommendedFoods = 20,
-        maximumIterations = 10,
+        maximumIterations = 2,
         recommendedDailyRankedFoods: RankedFood[] = [],
         recommendedDailyNutrients = user.recommendedNutrients.filter((recommendedNutrient,) => recommendedNutrient.code !== 255,).map((recommendedNutrient,) => ({
             "actualAmount": 0,

@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_functions/cloud_functions.dart';
@@ -34,12 +36,10 @@ class _RecommendationsScreenState extends State<RecommendationsScreen> {
       final results = await FirebaseFunctions.instance
           .httpsCallable('getRecommendedDailyFoods')
           .call();
-      if (results.data is List) {
-        for (final foodData in results.data as List) {
-          newRecommendedDailyFoods
-              .add(FoodModel.fromMap(foodData as Map<String, dynamic>));
-        }
-      }
+      final recommendedFoodsData = results.data as List;
+      newRecommendedDailyFoods = recommendedFoodsData
+          .map((data) => FoodModel.fromMap(jsonDecode(jsonEncode(data))))
+          .toList();
     } on FirebaseFunctionsException catch (error) {
       if (kDebugMode) {
         print(error);
