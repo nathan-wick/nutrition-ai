@@ -34,7 +34,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             gradient: LinearGradient(
               begin: Alignment.topCenter,
               colors: [
-                Colors.green,
+                Colors.blueGrey,
                 Theme.of(context).primaryColor,
                 Colors.white,
               ],
