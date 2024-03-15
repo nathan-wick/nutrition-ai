@@ -5,9 +5,9 @@ import {shuffleFoods,} from "./shuffleFoods";
 
 export const getRecommendedDailyFoods = async (database: FirebaseFirestore.Firestore, user: User,) => {
 
-    const maximumRecommendedFoods = 30,
-        minimumRecommendedFoods = 20,
-        maximumIterations = 10,
+    const maximumRecommendedFoods = 24,
+        minimumRecommendedFoods = 14,
+        maximumIterations = 8,
         recommendedDailyRankedFoods: RankedFood[] = [],
         recommendedDailyNutrients = user.recommendedNutrients.filter((recommendedNutrient,) => recommendedNutrient.code !== 255,).map((recommendedNutrient,) => ({
             "actualAmount": 0,
@@ -128,8 +128,10 @@ export const getRecommendedDailyFoods = async (database: FirebaseFirestore.Fires
         iterations += 1;
 
     } while (calculateRecommendedDailyNutrientsAccuracy() < 0.8 && iterations < maximumIterations);
-    recommendedDailyFoods = recommendedDailyRankedFoods.map((recommendedDailyRankedFood,) => recommendedDailyRankedFood.food,);
-    recommendedDailyFoods.push(water,);
+    recommendedDailyFoods = [
+        water,
+        ...recommendedDailyRankedFoods.map((recommendedDailyRankedFood,) => recommendedDailyRankedFood.food,),
+    ];
     return recommendedDailyFoods;
 
 };

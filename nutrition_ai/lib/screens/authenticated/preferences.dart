@@ -111,7 +111,7 @@ class _PreferencesScreenState extends State<PreferencesScreen> {
   }
 
   Future<void> setFoodImage() async {
-    final String? newFoodImage = await fetchFoodImage(
+    final String newFoodImage = await fetchFoodImage(
         foods[currentFoodIndex].category.code.toStringAsFixed(0));
     setState(() {
       foodImage = newFoodImage;
@@ -261,8 +261,8 @@ class _PreferencesScreenState extends State<PreferencesScreen> {
                   Align(
                     alignment: Alignment.bottomCenter,
                     child: Padding(
-                      padding: const EdgeInsets.only(
-                          bottom: 16, left: 8, right: 8),
+                      padding:
+                          const EdgeInsets.only(bottom: 16, left: 8, right: 8),
                       child: SizedBox(
                         height: 50,
                         child: Row(
@@ -311,7 +311,12 @@ class _PreferencesScreenState extends State<PreferencesScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Text("You've run out of food! Please come again later."),
+                  Text(
+                    "You've run out of food! Please come again later.",
+                    style: TextStyle(
+                      fontSize: 18,
+                    ),
+                  ),
                 ],
               ),
             ),

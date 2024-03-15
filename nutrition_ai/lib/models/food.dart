@@ -9,6 +9,7 @@ class FoodModel {
   final String description;
   final CategoryModel category;
   List<IngredientModel>? ingredients;
+  String? image;
 
   FoodModel({
     required this.code,
@@ -16,6 +17,7 @@ class FoodModel {
     required this.description,
     required this.category,
     this.ingredients,
+    this.image,
   });
 
   Map<String, dynamic> toJson() {

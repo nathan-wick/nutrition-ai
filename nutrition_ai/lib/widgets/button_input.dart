@@ -32,7 +32,7 @@ class ButtonInput extends StatelessWidget {
           color: theme == ButtonInputTheme.primary
               ? Theme.of(context).primaryColor
               : theme == ButtonInputTheme.secondary
-                  ? Colors.grey
+                  ? Colors.blueGrey
                   : Colors.pink,
           borderRadius: BorderRadius.circular(50),
           boxShadow: displayShadow
