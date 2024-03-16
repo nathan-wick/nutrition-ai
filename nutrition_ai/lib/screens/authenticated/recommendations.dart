@@ -50,7 +50,7 @@ class _RecommendationsScreenState extends State<RecommendationsScreen> {
                       recommendedDailyFood.name,
                       style: const TextStyle(
                         fontWeight: FontWeight.bold,
-                        fontSize: 18,
+                        fontSize: 14,
                       ),
                     ),
                     ListView.builder(
@@ -68,7 +68,7 @@ class _RecommendationsScreenState extends State<RecommendationsScreen> {
                         return Text(
                           ingredientString,
                           style: const TextStyle(
-                            fontSize: 14,
+                            fontSize: 12,
                           ),
                         );
                       },
@@ -159,6 +159,7 @@ class _RecommendationsScreenState extends State<RecommendationsScreen> {
                         style: TextStyle(
                           color: Colors.white,
                           fontSize: 18,
+                          fontWeight: FontWeight.bold,
                         ),
                       ),
                     ],
@@ -175,6 +176,7 @@ class _RecommendationsScreenState extends State<RecommendationsScreen> {
                             style: TextStyle(
                               color: Colors.white,
                               fontSize: 18,
+                              fontWeight: FontWeight.bold,
                             ),
                           ),
                         ],
