@@ -7,7 +7,7 @@ export const getRecommendedDailyFoods = async (database: FirebaseFirestore.Fires
 
     const maximumRecommendedFoods = 24,
         minimumRecommendedFoods = 14,
-        maximumIterations = 8,
+        maximumIterations = 4,
         recommendedDailyRankedFoods: RankedFood[] = [],
         recommendedDailyNutrients = user.recommendedNutrients.filter((recommendedNutrient,) => recommendedNutrient.code !== 255,).map((recommendedNutrient,) => ({
             "actualAmount": 0,
@@ -45,22 +45,50 @@ export const getRecommendedDailyFoods = async (database: FirebaseFirestore.Fires
             ],
             "name": `Water`,
         },
-        getRandomFoods = async (foods: Food[],) => {
+        getRandomFoods = async (currentFoods: Food[],) => {
 
-            const newFoods: Food[] = [],
-                randomFoodsFromDatabaseSnapshot = await database.collection(`usda_foods`,).where(
-                    `code`,
-                    `not-in`,
-                    [
-                        ...foods.map((food,) => food.code,),
+            let newFoods: Food[] = [],
+                iterations = 0;
+            const maximumGetRandomFoodIterations = 8;
+            do {
+
+                let iterationNewFoods: Food[] = [];
+                const startCode = newFoods.length > 0
+                        ? newFoods[newFoods.length - 1].code
+                        : currentFoods.length > 0
+                            ? currentFoods[currentFoods.length - 1].code
+                            : undefined,
+                    randomFoodsFromDatabaseSnapshot = startCode
+                        // eslint-disable-next-line no-await-in-loop
+                        ? await database.collection(`usda_foods`,).orderBy(`code`,).
+                            // eslint-disable-next-line no-await-in-loop
+                            startAfter(await database.collection(`usda_foods`,).doc(startCode,).
+                                get(),).
+                            limit(minimumRecommendedFoods,).
+                            get()
+                        // eslint-disable-next-line no-await-in-loop
+                        : await database.collection(`usda_foods`,).orderBy(`code`,).
+                            limit(minimumRecommendedFoods,).
+                            get(),
+                    codesToIgnore = new Set([
+                        ...currentFoods.map((currentFood,) => currentFood.code,),
+                        ...newFoods.map((newFood,) => newFood.code,),
                         ...user.rejectedFoods.map((rejectedFood,) => rejectedFood.code,),
-                    ],
-                ).
-                    orderBy(`code`,).
-                    limit(minimumRecommendedFoods,).
-                    get();
-            randomFoodsFromDatabaseSnapshot.forEach((document,) => newFoods.push(document.data() as Food,),);
-            return newFoods;
+                    ],);
+                    // eslint-disable-next-line no-loop-func
+                randomFoodsFromDatabaseSnapshot.forEach((document,) => iterationNewFoods.push(document.data() as Food,),);
+                iterationNewFoods = iterationNewFoods.filter((newFood,) => !codesToIgnore.has(newFood.code,),);
+                newFoods = [
+                    ...newFoods,
+                    ...iterationNewFoods,
+                ];
+                iterations += 1;
+
+            } while (newFoods.length < minimumRecommendedFoods && iterations < maximumGetRandomFoodIterations);
+            return [
+                ...currentFoods,
+                ...newFoods,
+            ];
 
         },
         rankFood = (foodToRank: Food,) => {
@@ -106,18 +134,13 @@ export const getRecommendedDailyFoods = async (database: FirebaseFirestore.Fires
         };
     let foods = user.approvedFoods,
         rankedFoods: RankedFood[] = [],
-        recommendedDailyFoods: Food[] = [],
         iterations = 0;
     do {
 
         if (foods.length < minimumRecommendedFoods || iterations > 0) {
 
             // eslint-disable-next-line no-await-in-loop
-            const newFoods = await getRandomFoods(foods,);
-            foods = [
-                ...foods,
-                ...newFoods,
-            ];
+            foods = await getRandomFoods(foods,);
 
         }
         rankedFoods = shuffleFoods(foods,).map((food,) => ({
@@ -128,10 +151,9 @@ export const getRecommendedDailyFoods = async (database: FirebaseFirestore.Fires
         iterations += 1;
 
     } while (calculateRecommendedDailyNutrientsAccuracy() < 0.8 && iterations < maximumIterations);
-    recommendedDailyFoods = [
+    return [
         water,
         ...recommendedDailyRankedFoods.map((recommendedDailyRankedFood,) => recommendedDailyRankedFood.food,),
     ];
-    return recommendedDailyFoods;
 
 };

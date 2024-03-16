@@ -131,7 +131,7 @@ class _PreferencesScreenState extends State<PreferencesScreen> {
           ? Container(
               decoration: const BoxDecoration(
                 color: Colors.teal,
-                // TODO Use a static image or gradient
+                // TODO Use a static image or gradient (preferred)
                 image: DecorationImage(
                   image: NetworkImage(
                       "https://res.cloudinary.com/drf6yjgkn/image/upload/v1709818526/by93hhaa368ftsshtaxy.jpg"),
