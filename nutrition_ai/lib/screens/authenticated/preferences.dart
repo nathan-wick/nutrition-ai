@@ -6,6 +6,7 @@ import '../../utilities/fetch_food_image.dart';
 import '../../models/food.dart';
 import '../../models/user.dart';
 import '../../providers/user.dart';
+import '../../utilities/to_number_string.dart';
 import '../../widgets/button_input.dart';
 import '../../widgets/main_navigation_bar.dart';
 
@@ -30,22 +31,33 @@ class _PreferencesScreenState extends State<PreferencesScreen> {
     if (!fetchingFoods && moreFoodsExist && user != null) {
       fetchingFoods = true;
       final List<FoodModel> newFoods = [];
-      final List<String> viewedCodes = [];
-      viewedCodes.addAll(user.approvedFoods.map((food) => food.code).toList());
-      viewedCodes.addAll(user.rejectedFoods.map((food) => food.code).toList());
-      final foodsReference = viewedCodes.isEmpty
-          ? FirebaseFirestore.instance
-              .collection("usda_foods")
-              .orderBy("code")
-              .limit(foodsPerFetch)
-          : FirebaseFirestore.instance
-              .collection("usda_foods")
-              .where("code", whereNotIn: viewedCodes)
-              .orderBy("code")
-              .limit(foodsPerFetch);
+      final foodsReference = FirebaseFirestore.instance
+          .collection("usda_foods")
+          .orderBy("code")
+          .limit(foodsPerFetch);
       QuerySnapshot foodsSnapshot;
       if (lastVisibleFoodSnapshot == null) {
-        foodsSnapshot = await foodsReference.get();
+        final List<String> viewedCodes = [];
+        viewedCodes
+            .addAll(user.approvedFoods.map((food) => food.code).toList());
+        viewedCodes
+            .addAll(user.rejectedFoods.map((food) => food.code).toList());
+        if (viewedCodes.isEmpty) {
+          foodsSnapshot = await foodsReference.get();
+        } else {
+          viewedCodes.sort();
+          lastVisibleFoodSnapshot = await FirebaseFirestore.instance
+              .collection("usda_foods")
+              .doc(viewedCodes.last)
+              .get();
+          if (lastVisibleFoodSnapshot == null) {
+            foodsSnapshot = await foodsReference.get();
+          } else {
+            foodsSnapshot = await foodsReference
+                .startAfterDocument(lastVisibleFoodSnapshot!)
+                .get();
+          }
+        }
       } else {
         foodsSnapshot = await foodsReference
             .startAfterDocument(lastVisibleFoodSnapshot!)
@@ -127,199 +139,197 @@ class _PreferencesScreenState extends State<PreferencesScreen> {
       fetchFoods(user);
     }
     return Scaffold(
-      body: food != null
-          ? Container(
-              decoration: const BoxDecoration(
-                color: Colors.teal,
-                // TODO Use a static image or gradient
-                image: DecorationImage(
-                  image: NetworkImage(
-                      "https://res.cloudinary.com/drf6yjgkn/image/upload/v1709818526/by93hhaa368ftsshtaxy.jpg"),
-                  fit: BoxFit.fitHeight,
-                ),
-              ),
-              height: MediaQuery.of(context).size.height,
-              child: Stack(
-                children: [
-                  Positioned(
-                    top: 250,
-                    left: 0,
-                    right: 0,
-                    bottom: 0,
-                    child: Container(
-                      decoration: const BoxDecoration(
-                        borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(50),
-                          topRight: Radius.circular(50),
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
+        backgroundColor: Colors.blueGrey,
+        title: const Text(
+          'Preferences',
+          style: TextStyle(color: Colors.white),
+        ),
+      ),
+      body: SafeArea(
+        child: Container(
+            width: double.infinity,
+            decoration: foodImage == null
+                ? BoxDecoration(
+                    gradient: LinearGradient(
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                      colors: [Colors.blueGrey, Theme.of(context).primaryColor],
+                    ),
+                  )
+                : BoxDecoration(
+                    color: Colors.blueGrey,
+                    image: DecorationImage(
+                      image: NetworkImage(foodImage ?? ''),
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+            child: fetchingFoods && foods.isEmpty
+                ? const Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Text(
+                          "Loading foods...",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
-                        // TODO Use theme colors
-                        color: Colors.white,
-                      ),
-                      child: SingleChildScrollView(
+                      ],
+                    ),
+                  )
+                : food == null
+                    ? const Center(
                         child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            Padding(
-                              padding: const EdgeInsets.only(
-                                top: 16.0,
-                                bottom: 80,
-                                left: 16.0,
-                                right: 16.0,
+                            Text(
+                              "You've run out of food! Please come again later.",
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
                               ),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  const SizedBox(height: 100),
-                                  SizedBox(
-                                    width: MediaQuery.of(context).size.width,
-                                    // TODO Container height should be dynamic to match children
-                                    height: 400,
-                                    child: Card(
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(16.0),
+                            ),
+                          ],
+                        ),
+                      )
+                    : Stack(
+                        children: [
+                          SingleChildScrollView(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                const SizedBox(
+                                  height: 400,
+                                ),
+                                Container(
+                                  width: double.infinity,
+                                  decoration: const BoxDecoration(
+                                    borderRadius: BorderRadius.only(
+                                      topLeft: Radius.circular(50),
+                                      topRight: Radius.circular(50),
+                                    ),
+                                    color: Colors.white,
+                                  ),
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: [
+                                      const SizedBox(
+                                        height: 20,
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.all(20),
+                                        child: Text(
+                                          food.name,
+                                          style: const TextStyle(
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.all(20),
                                         child: Column(
                                           crossAxisAlignment:
                                               CrossAxisAlignment.start,
                                           children: [
-                                            Text(
-                                              food.name,
-                                              style: const TextStyle(
-                                                fontSize: 24,
-                                                fontWeight: FontWeight.bold,
-                                              ),
-                                            ),
-                                            const SizedBox(height: 20),
                                             const Text(
                                               "Ingredients",
                                               style: TextStyle(
-                                                fontSize: 20,
                                                 fontWeight: FontWeight.bold,
+                                                fontSize: 14,
                                               ),
                                             ),
-                                            const SizedBox(height: 8.0),
-                                            Expanded(
-                                              child: SingleChildScrollView(
-                                                // TODO This should be a ListView. See profile screen for examples
-                                                child: Column(
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
-                                                  children: [
-                                                    if (food.ingredients !=
-                                                        null)
-                                                      for (var ingredient
-                                                          in food.ingredients!)
-                                                        Text(
-                                                          "• ${ingredient.name} - ${ingredient.amount.amount.toStringAsFixed(0)}${ingredient.amount.unit}",
-                                                        ),
-                                                  ],
-                                                ),
-                                              ),
-                                            ),
+                                            ListView.builder(
+                                              itemCount:
+                                                  food.ingredients?.length ?? 0,
+                                              physics:
+                                                  const NeverScrollableScrollPhysics(),
+                                              shrinkWrap: true,
+                                              itemBuilder: (
+                                                BuildContext ingredientContext,
+                                                int ingredientIndex,
+                                              ) {
+                                                final ingredient =
+                                                    food.ingredients![
+                                                        ingredientIndex];
+                                                final ingredientString =
+                                                    '• ${ingredient.name} (${toNumberString(ingredient.amount.amount)} ${ingredient.amount.unit})';
+                                                return Text(
+                                                  ingredientString,
+                                                  style: const TextStyle(
+                                                    fontSize: 12,
+                                                  ),
+                                                );
+                                              },
+                                            )
                                           ],
                                         ),
                                       ),
-                                    ),
+                                      const SizedBox(
+                                        height: 400,
+                                      ),
+                                    ],
                                   ),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                  if (foodImage != null)
-                    Positioned(
-                      top: 100,
-                      left: 0,
-                      right: 0,
-                      child: Align(
-                        alignment: Alignment.center,
-                        child: Container(
-                          margin: const EdgeInsets.all(16),
-                          width: 250,
-                          height: 250,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            boxShadow: [
-                              BoxShadow(
-                                color: Theme.of(context).shadowColor,
-                                blurRadius: 4,
-                                offset: const Offset(0, 2),
-                              ),
-                            ],
-                          ),
-                          child: ClipOval(
-                            child: Image.network(
-                              foodImage!,
-                              fit: BoxFit.cover,
+                                ),
+                              ],
                             ),
                           ),
-                        ),
-                      ),
-                    ),
-                  Align(
-                    alignment: Alignment.bottomCenter,
-                    child: Padding(
-                      padding:
-                          const EdgeInsets.only(bottom: 16, left: 8, right: 8),
-                      child: SizedBox(
-                        height: 50,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            Expanded(
-                              child: ButtonInput(
-                                onTap: () {
-                                  rejectFood(userProvider, user);
-                                },
-                                icon: Icons.thumb_down,
-                                message: 'Reject',
-                                theme: ButtonInputTheme.danger,
+                          Align(
+                            alignment: Alignment.bottomCenter,
+                            child: Padding(
+                              padding: const EdgeInsets.only(
+                                  bottom: 16, left: 8, right: 8),
+                              child: SizedBox(
+                                height: 50,
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
+                                  children: [
+                                    Expanded(
+                                      child: ButtonInput(
+                                        onTap: () {
+                                          rejectFood(userProvider, user);
+                                        },
+                                        icon: Icons.thumb_down,
+                                        message: 'Reject',
+                                        theme: ButtonInputTheme.danger,
+                                      ),
+                                    ),
+                                    const SizedBox(width: 8),
+                                    ButtonInput(
+                                      onTap: () {
+                                        nextFood(user);
+                                      },
+                                      icon: Icons.arrow_forward_ios,
+                                      message: 'Skip',
+                                      theme: ButtonInputTheme.secondary,
+                                    ),
+                                    const SizedBox(width: 8),
+                                    Expanded(
+                                      child: ButtonInput(
+                                        onTap: () {
+                                          approveFood(userProvider, user);
+                                        },
+                                        icon: Icons.thumb_up,
+                                        message: 'Approve',
+                                        theme: ButtonInputTheme.primary,
+                                      ),
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
-                            const SizedBox(width: 8),
-                            ButtonInput(
-                              onTap: () {
-                                nextFood(user);
-                              },
-                              icon: Icons.arrow_forward_ios,
-                              message: 'Skip',
-                              theme: ButtonInputTheme.secondary,
-                            ),
-                            const SizedBox(width: 8),
-                            Expanded(
-                              child: ButtonInput(
-                                onTap: () {
-                                  approveFood(userProvider, user);
-                                },
-                                icon: Icons.thumb_up,
-                                message: 'Approve',
-                                theme: ButtonInputTheme.primary,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  )
-                ],
-              ),
-            )
-          : const Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Text(
-                    "You've run out of food! Please come again later.",
-                    style: TextStyle(
-                      fontSize: 18,
-                    ),
-                  ),
-                ],
-              ),
-            ),
+                          ),
+                        ],
+                      )),
+      ),
       bottomNavigationBar: const MainNavigationBar(
         defaultIndex: 1,
       ),
