@@ -27,7 +27,7 @@ class ButtonInput extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        padding: const EdgeInsets.all(14),
+        padding: const EdgeInsets.all(10),
         decoration: BoxDecoration(
           color: theme == ButtonInputTheme.primary
               ? Theme.of(context).primaryColor
@@ -39,8 +39,8 @@ class ButtonInput extends StatelessWidget {
               ? [
                   BoxShadow(
                     color: Theme.of(context).shadowColor,
-                    blurRadius: 4,
-                    offset: const Offset(0, 2),
+                    blurRadius: 2,
+                    offset: const Offset(0, 1),
                   ),
                 ]
               : [],
@@ -52,7 +52,7 @@ class ButtonInput extends StatelessWidget {
               Icon(
                 icon,
                 color: Colors.white,
-                size: 20,
+                size: 14,
               ),
               const SizedBox(width: 8),
               Text(
@@ -60,7 +60,7 @@ class ButtonInput extends StatelessWidget {
                 style: const TextStyle(
                   color: Colors.white,
                   fontWeight: FontWeight.bold,
-                  fontSize: 18,
+                  fontSize: 14,
                 ),
               ),
             ],

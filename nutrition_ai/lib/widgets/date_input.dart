@@ -59,7 +59,7 @@ class _DateInputState extends State<DateInput> {
           child: Text(
             widget.name,
             style: const TextStyle(
-              fontSize: 16,
+              fontSize: 14,
             ),
           ),
         ),

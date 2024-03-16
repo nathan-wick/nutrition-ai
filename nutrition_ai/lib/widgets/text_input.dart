@@ -36,7 +36,7 @@ class _TextInputState extends State<TextInput> {
           child: Text(
             widget.name,
             style: const TextStyle(
-              fontSize: 16,
+              fontSize: 14,
             ),
           ),
         ),
