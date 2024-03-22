@@ -38,7 +38,7 @@ class UserProvider with ChangeNotifier {
       return null;
     } else {
       final defaultUser = UserModel(
-        name: userAuthentication?.displayName ?? 'Anonymous User',
+        name: userAuthentication?.displayName ?? '',
         email: userAuthentication?.email,
         photo: userAuthentication?.photoURL,
         profile: ProfileModel(
@@ -59,7 +59,7 @@ class UserProvider with ChangeNotifier {
         rejectedFoods: [],
         recommendedNutrients: [],
       );
-      return updateUser(defaultUser);
+      return await updateUser(defaultUser);
     }
   }
 
@@ -76,9 +76,9 @@ class UserProvider with ChangeNotifier {
         } else {
           user = await createUser();
         }
+        notifyListeners();
       });
     }
-    notifyListeners();
   }
 
   void listenToAuthenticationChanges() {
@@ -109,8 +109,7 @@ class UserProvider with ChangeNotifier {
       password: password,
     );
     if (userAuthentication != null) {
-      // TODO Navigate to preferences instead of recommendations
-      Navigator.popAndPushNamed(context, '/recommendations');
+      Navigator.popAndPushNamed(context, '/');
     }
   }
 
@@ -129,16 +128,14 @@ class UserProvider with ChangeNotifier {
       await authentication.signInWithCredential(credential);
     }
     if (userAuthentication != null) {
-      // TODO Navigate to preferences instead of recommendations
-      Navigator.popAndPushNamed(context, '/recommendations');
+      Navigator.popAndPushNamed(context, '/');
     }
   }
 
   Future<void> signInAnonymously(BuildContext context) async {
     await authentication.signInAnonymously();
     if (userAuthentication != null) {
-      // TODO Navigate to preferences instead of recommendations
-      Navigator.popAndPushNamed(context, '/recommendations');
+      Navigator.popAndPushNamed(context, '/');
     }
   }
 }
