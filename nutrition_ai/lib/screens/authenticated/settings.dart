@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:nutrition_ai/widgets/date_input.dart';
 import 'package:provider/provider.dart';
 
 import '../../models/measurement.dart';
@@ -8,6 +7,7 @@ import '../../providers/user.dart';
 import '../../widgets/select_input.dart';
 import '../../widgets/button_input.dart';
 import '../../widgets/text_input.dart';
+import '../../widgets/date_input.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
@@ -74,14 +74,15 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 const SizedBox(height: 20),
                 TextInput(
                   controller: nameController,
-                  defaultValue: user?.name,
+                  defaultValue: user?.name ?? '',
                   name: 'Name',
                 ),
                 const SizedBox(height: 20),
                 DateInput(
                     onSelectedDateChanged: (DateTime selectedDate) =>
                         birthday = selectedDate,
-                    defaultValue: user?.profile.birthday,
+                    defaultValue: user?.profile.birthday ??
+                        DateTime.now().subtract(const Duration(days: 7305)),
                     name: 'Birthday'),
                 const SizedBox(height: 20),
                 SelectInput(

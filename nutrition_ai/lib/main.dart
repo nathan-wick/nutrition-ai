@@ -1,4 +1,3 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -35,13 +34,10 @@ class App extends StatelessWidget {
       providers: [ChangeNotifierProvider(create: (context) => UserProvider())],
       child: MaterialApp(
         title: 'NutriMind',
-        theme: ThemeData(
-          primaryColor: Colors.teal,
-          shadowColor: Colors.black
-        ),
+        theme: ThemeData(primaryColor: Colors.teal, shadowColor: Colors.black),
         routes: {
           '/': (context) =>
-              checkAuthenticationState(context, const RecommendationsScreen()),
+              checkAuthenticationState(context, const ProfileScreen()),
           '/sign-in': (context) => const SignInScreen(),
           '/recommendations': (context) =>
               checkAuthenticationState(context, const RecommendationsScreen()),

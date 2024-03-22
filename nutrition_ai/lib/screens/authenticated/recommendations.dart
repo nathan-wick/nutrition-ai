@@ -194,7 +194,7 @@ class _RecommendationsScreenState extends State<RecommendationsScreen> {
         ),
       ),
       bottomNavigationBar: const MainNavigationBar(
-        defaultIndex: 0,
+        defaultIndex: 2,
       ),
     );
   }

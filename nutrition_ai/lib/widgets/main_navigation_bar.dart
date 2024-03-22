@@ -12,11 +12,11 @@ class MainNavigationBar extends StatefulWidget {
 
 class _MainNavigationBarState extends State<MainNavigationBar> {
   final screens = [
-    (BuildContext context) =>
-        Navigator.popAndPushNamed(context, '/recommendations'),
+    (BuildContext context) => Navigator.popAndPushNamed(context, '/profile'),
     (BuildContext context) =>
         Navigator.popAndPushNamed(context, '/preferences'),
-    (BuildContext context) => Navigator.popAndPushNamed(context, '/profile'),
+    (BuildContext context) =>
+        Navigator.popAndPushNamed(context, '/recommendations'),
   ];
   late int currentIndex;
   @override
@@ -37,16 +37,16 @@ class _MainNavigationBarState extends State<MainNavigationBar> {
       },
       items: const [
         BottomNavigationBarItem(
-          icon: Icon(Icons.lightbulb),
-          label: 'Recommendations',
+          icon: Icon(Icons.account_circle),
+          label: 'Profile',
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.thumb_up),
           label: 'Preferences',
         ),
         BottomNavigationBarItem(
-          icon: Icon(Icons.account_circle),
-          label: 'Profile',
+          icon: Icon(Icons.lightbulb),
+          label: 'Recommendations',
         ),
       ],
       selectedItemColor: Theme.of(context).primaryColor,
