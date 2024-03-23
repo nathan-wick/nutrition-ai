@@ -1,4 +1,4 @@
-name: nutrimind
+name: nutrition_ai
 description: An app that generates personalized meal plans tailored to the user's body, lifestyle, and preferences to help them achieve their goals.
 publish_to: 'none'
 version: 1.0.0
